@@ -1,4 +1,4 @@
-package MockObject;
+package com.perfumepedia.PerfumePedia.MockObject;
 
 import lombok.Getter;
 import lombok.Setter;

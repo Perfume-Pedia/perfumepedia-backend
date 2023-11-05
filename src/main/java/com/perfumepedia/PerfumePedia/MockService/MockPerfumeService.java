@@ -1,14 +1,14 @@
-package MockService;
+package com.perfumepedia.PerfumePedia.MockService;
 
-import MockObject.MockNote;
-import MockObject.MockPerfume;
+import com.perfumepedia.PerfumePedia.MockObject.MockNote;
+import com.perfumepedia.PerfumePedia.MockObject.MockPerfume;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 public class MockPerfumeService {
-    List<MockPerfume> mockPerfumes;
+    public List<MockPerfume> mockPerfumes;
 
     public MockPerfumeService() {
         mockPerfumes = new ArrayList<>();
