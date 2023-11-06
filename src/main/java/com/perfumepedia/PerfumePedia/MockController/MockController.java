@@ -7,15 +7,19 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 @RestController
+@RequestMapping("/api")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@CrossOrigin("*")
 public class MockController {
     private final ObjectMapper objectMapper;
 
@@ -24,13 +28,20 @@ public class MockController {
         this.objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true); // Enable Pretty Printer
     }
 
-    @RequestMapping("/api/search")
-    public List<MockPerfume> search(
+    @Tag(name = "검색 결과", description = "검색 결과를 반환하는 API")
+    @Parameters({
+            @Parameter(name = "lastid", description = "마지막 id값", example = "1234"),
+            @Parameter(name = "size", description = "향수 개수", example = "10"),
+    })
+    @ApiResponse(responseCode = "404", description = "해당 ID의 유저가 존재하지 않습니다.")
+    @GetMapping("/search")
+    public MockPerfumeService search(
             @RequestParam(name = "lastid") Long lastId,
             @RequestParam(name = "size") Integer size){
         MockPerfumeService mockPerfumeService = new MockPerfumeService();
-        System.out.println(mockPerfumeService.mockPerfumes);
+        System.out.println(mockPerfumeService.getData());
 
-        return mockPerfumeService.mockPerfumes;
+        return mockPerfumeService;
+
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class MockPerfume {
 
-    private String name;
+    private String perfume_name;
     private String brand_name;
     private String price;
     private String url;
