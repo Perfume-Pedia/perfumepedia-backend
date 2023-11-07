@@ -31,10 +31,10 @@ public class MockController {
     })
     @ApiResponse(responseCode = "404", description = "해당 ID의 유저가 존재하지 않습니다.")
     @GetMapping("/search")
-    public MockPerfumeService search(
-            @RequestParam(name = "lastid") Long lastId,
-            @RequestParam(name = "size") Integer size){
-        MockPerfumeService mockPerfumeService = new MockPerfumeService();
+    public MockPerfumeService search (
+            @RequestParam(name = "lastid") String lastId,
+            @RequestParam(name = "size") Integer size) throws Exception{
+        MockPerfumeService mockPerfumeService = new MockPerfumeService(lastId, size);
         System.out.println(mockPerfumeService.getData());
 
         return mockPerfumeService;
