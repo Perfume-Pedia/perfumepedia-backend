@@ -1,22 +1,15 @@
 package com.perfumepedia.PerfumePedia.MockService;
 
-import com.perfumepedia.PerfumePedia.MockObject.MockDto;
-import com.perfumepedia.PerfumePedia.MockObject.MockNote;
-import com.perfumepedia.PerfumePedia.MockObject.MockPerfume;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.IntStream;
+import com.perfumepedia.PerfumePedia.MockObject.MockPerfumeDto;
 
 public class MockPerfumeService {
-    private MockDto data;
+    private MockPerfumeDto data;
 
     public MockPerfumeService() {
-        data = new MockDto();
+        data = new MockPerfumeDto();
     }
 
-    public MockDto getData(){
+    public MockPerfumeDto getData(){
         return data;
     }
 
