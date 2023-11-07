@@ -11,5 +11,4 @@ public class MockHomeController {
     public String home(){
         return "home";
     }
-
 }
