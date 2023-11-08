@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,48 +23,53 @@ public class MockPerfumeDto {
         setItems();
     }
 
-    void setItems() throws Exception{
+    private void setItems() throws Exception{
         String jsonFilePath = "static/json/mockPerfume.json";
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        ClassLoader classLoader = getClass().getClassLoader();
+        InputStream inputStream = classLoader.getResourceAsStream(jsonFilePath);
 
-        JsonNode rootNode = objectMapper.readTree(new ClassPathResource(jsonFilePath).getFile());
+        if (inputStream != null) {
+            try {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode rootNode = objectMapper.readTree(inputStream);
 
-        JsonNode perfumesNode = rootNode.get("mockPerfumes");
+                JsonNode perfumesNode = rootNode.get("mockPerfumes");
 
-        boolean whenFindLastUuid = last_item_id.equals("0")? true: false;
+                boolean whenFindLastUuid = last_item_id.equals("0") ? true : false;
 
-        for (JsonNode perfumeNode : perfumesNode) {
-            if(size == 0)
-                break;
+                for (JsonNode perfumeNode : perfumesNode) {
+                    if (size == 0)
+                        break;
 
-            String uuid = perfumeNode.get("uuid").asText();
+                    String uuid = perfumeNode.get("uuid").asText();
 
-            if (uuid.equals(last_item_id)) {
-                whenFindLastUuid = true;
-                continue;
+                    if (uuid.equals(last_item_id)) {
+                        whenFindLastUuid = true;
+                        continue;
+                    }
+
+                    if (whenFindLastUuid) {
+                        String perfumeName = perfumeNode.get("perfume_name").asText();
+                        String brandName = perfumeNode.get("brand_name").asText();
+                        String imagePath = perfumeNode.get("image_path").asText();
+
+                        MockPerfume mockPerfume = new MockPerfume();
+
+                        mockPerfume.setUuid(uuid);
+                        mockPerfume.setPerfume_name(perfumeName);
+                        mockPerfume.setBrand_name(brandName);
+                        mockPerfume.setImage_path(imagePath);
+
+                        items.add(mockPerfume);
+
+                        size--;
+                        last_item_id = uuid;
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            if(whenFindLastUuid){
-                String perfumeName = perfumeNode.get("perfume_name").asText();
-                String brandName = perfumeNode.get("brand_name").asText();
-                String imagePath = perfumeNode.get("image_path").asText();
-
-                MockPerfume mockPerfume = new MockPerfume();
-
-                mockPerfume.setUuid(uuid);
-                mockPerfume.setPerfume_name(perfumeName);
-                mockPerfume.setBrand_name(brandName);
-                mockPerfume.setImage_path(imagePath);
-
-                items.add(mockPerfume);
-
-                size--;
-                last_item_id = uuid;
-            }
-
-
-
         }
     }
 
