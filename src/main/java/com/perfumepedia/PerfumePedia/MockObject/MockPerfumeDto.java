@@ -2,9 +2,6 @@ package com.perfumepedia.PerfumePedia.MockObject;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.InputStream;
 import java.util.ArrayList;
