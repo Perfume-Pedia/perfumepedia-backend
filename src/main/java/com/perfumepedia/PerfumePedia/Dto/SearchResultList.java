@@ -5,15 +5,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchResultList {
-    private List<Perfume> perfumeList=new ArrayList<>();
-
+    private Data data;
     private String last_item_id;
 
-    public List<Perfume> getPerfumeList() {
-        return perfumeList;
+    public SearchResultList(){
+        data = new Data();
     }
 
     public String getLast_item_id() {
         return last_item_id;
+    }
+
+    public class Data{
+        private List<Perfume> items=new ArrayList<>();
+
+        public List<Perfume> getPerfumeList() {
+            return items;
+        }
+
     }
 }

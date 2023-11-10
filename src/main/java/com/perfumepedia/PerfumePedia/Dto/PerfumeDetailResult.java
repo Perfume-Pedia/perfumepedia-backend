@@ -1,7 +1,6 @@
 package com.perfumepedia.PerfumePedia.Dto;
 
-import lombok.Data;
-
+import java.util.Date;
 import java.util.List;
 
 public class PerfumeDetailResult {
@@ -16,7 +15,7 @@ public class PerfumeDetailResult {
     private String price;
     private String url;
     private String image_path;
-    private Data created_at;
+    private Date created_at;
 
     public String getUuid(){
         return uuid;
@@ -58,7 +57,7 @@ public class PerfumeDetailResult {
         return image_path;
     }
 
-    public Data getCreatedAt() {
+    public Date getCreatedAt() {
         return created_at;
     }
 

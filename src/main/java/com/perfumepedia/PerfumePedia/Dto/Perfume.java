@@ -1,6 +1,6 @@
 package com.perfumepedia.PerfumePedia.Dto;
 
-import lombok.Data;
+import java.util.Date;
 
 public class Perfume {
 
@@ -8,7 +8,7 @@ public class Perfume {
     private String brand_name;
     private String perfume_name;
     private String image_path;
-    private Data created_at;
+    private Date created_at;
 
     public String getUuid() {
         return uuid;
@@ -26,7 +26,7 @@ public class Perfume {
         return image_path;
     }
 
-    public Data getCreatedAt() {
+    public Date getCreatedAt() {
         return created_at;
     }
 }
