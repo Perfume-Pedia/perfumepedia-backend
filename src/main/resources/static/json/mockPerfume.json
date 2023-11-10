@@ -34,7 +34,7 @@
          "uuid":400,
          "perfume_name":"캐스틸",
          "brand_name":"펜할리곤스",
-         "image_path":"http://49.50.162.194:3000/img/penhaligons3.png"
+         "image_path":"http://49.50.162.194:3000/img/penhaligons3.jpg"
       },
       {
          "uuid":757,
@@ -58,7 +58,7 @@
          "uuid":2146,
          "perfume_name":"오퍼스 1870",
          "brand_name":"펜할리곤스",
-         "image_path":"http://49.50.162.194:3000/img/penhaligons3.png"
+         "image_path":"http://49.50.162.194:3000/img/penhaligons3.jpg"
       },
       {
          "uuid":379,
