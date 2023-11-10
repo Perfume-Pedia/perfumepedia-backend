@@ -31,6 +31,14 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	runtimeOnly("com.mysql:mysql-connector-j")
+
+	//JUnit4 추가
+	testImplementation("org.junit.vintage:junit-vintage-engine") {
+		exclude("org.hamcrest", "hamcrest-core")
+
+	}
 }
 
 tasks.withType<Test> {
