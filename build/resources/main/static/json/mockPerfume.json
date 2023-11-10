@@ -1,94 +1,199 @@
 {
-   "mockPerfumes": [
+   "mockPerfumes":[
       {
-         "uuid":123,
-         "perfume_name":"블렘하임 부케",
+         "uuid":400,
+         "perfume_name":"캐스틸",
          "brand_name":"펜할리곤스",
-         "image_path":"http://49.50.162.194:3000/img/penhaligons1.png"
+         "price":"222,000",
+         "url":"https://brand.naver.com/penhaligons/search?q=%EC%BA%90%EC%8A%A4%ED%8B%B8",
+         "image_path":"http://perfume-pedia.site:3000/img/penhaligons3.png",
+         "top_note":"네롤리, 페티그레인",
+         "middle_note":"베르가못, 장미, 오렌지 블로섬",
+         "base_note":"고귀한 나무, 머스크",
+         "single_note":"",
+         "created_at":20231110
       },
       {
-         "uuid":111,
-         "perfume_name":"오 드 퍼퓸 필로시코스",
-         "brand_name":"딥디크",
-         "image_path":"http://49.50.162.194:3000/img/deptyque1.png"
+         "uuid":123,
+         "perfume_name":"블렌하임 부케",
+         "brand_name":"펜할리곤스",
+         "price":"222,000",
+         "url":"https://brand.naver.com/penhaligons/products/7939108972",
+         "image_path":"http://perfume-pedia.site:3000/img/penhaligons1.png",
+         "top_note":"레몬, 라임, 라벤더",
+         "middle_note":"",
+         "base_note":"흑후추, 소나무, 머스크",
+         "single_note":"",
+         "created_at":20231110
       },
       {
          "uuid":500,
          "perfume_name":"쿼커스",
          "brand_name":"펜할리곤스",
-         "image_path":"http://49.50.162.194:3000/img/penhaligons2.png"
-      },
-      {
-         "uuid":700,
-         "perfume_name":"오 드 퍼퓸 오 로즈",
-         "brand_name":"딥디크",
-         "image_path":"http://49.50.162.194:3000/img/deptyque3.png"
-      },
-      {
-         "uuid":878,
-         "perfume_name":"오 드 퍼퓸 오 드 민떼",
-         "brand_name":"딥디크",
-         "image_path":"http://49.50.162.194:3000/img/deptyque1.png"
-      },
-      {
-         "uuid":400,
-         "perfume_name":"캐스틸",
-         "brand_name":"펜할리곤스",
-         "image_path":"http://49.50.162.194:3000/img/penhaligons3.jpg"
-      },
-      {
-         "uuid":757,
-         "perfume_name":"오 드 퍼퓸 템포",
-         "brand_name":"딥디크",
-         "image_path":"http://49.50.162.194:3000/img/deptyque2.png"
-      },
-      {
-         "uuid":977,
-         "perfume_name":"오 드 퍼퓸 탐 다오",
-         "brand_name":"딥디크",
-         "image_path":"http://49.50.162.194:3000/img/deptyque2.png"
-      },
-      {
-         "uuid":325,
-         "perfume_name":"쥬니퍼 슬링",
-         "brand_name":"펜할리곤스",
-         "image_path":"http://49.50.162.194:3000/img/penhaligons2.png"
-      },
-      {
-         "uuid":2146,
-         "perfume_name":"오퍼스 1870",
-         "brand_name":"펜할리곤스",
-         "image_path":"http://49.50.162.194:3000/img/penhaligons3.jpg"
-      },
-      {
-         "uuid":379,
-         "perfume_name":"오 드 퍼퓸 오 카피탈",
-         "brand_name":"딥디크",
-         "image_path":"http://49.50.162.194:3000/img/deptyque2.png"
-      },
-      {
-         "uuid":450,
-         "perfume_name":"오 드 퍼퓸 베티베리오",
-         "brand_name":"딥디크",
-         "image_path":"http://49.50.162.194:3000/img/deptyque1.png"
-      },
-      {
-         "uuid":197,
-         "perfume_name":"오 드 퍼퓸 도손",
-         "brand_name":"딥디크",
-         "image_path":"http://49.50.162.194:3000/img/deptyque3.png"
+         "price":"222,000",
+         "url":"https://brand.naver.com/penhaligons/products/7977552899",
+         "image_path":"http://perfume-pedia.site:3000/img/penhaligons2.png",
+         "top_note":"레몬, 라임, 만다린, 베르가못",
+         "middle_note":"재스민, 은방울꽃, 카다몸, 바질",
+         "base_note":"오크모스, 샌들우드, 엠버, 갈바넘, 머스크, 파츌리",
+         "single_note":"",
+         "created_at":20231110
       },
       {
          "uuid":234,
          "perfume_name":"앤드미온",
          "brand_name":"펜할리곤스",
-         "image_path":"http://49.50.162.194:3000/img/penhaligons1.png"
+         "price":"222,000",
+         "url":"https://brand.naver.com/penhaligons/products/7939398030",
+         "image_path":"http://perfume-pedia.site:3000/img/penhaligons1.png",
+         "top_note":"만다린, 라벤더, 베르가못, 세이지",
+         "middle_note":"제라늄, 커피 추출물",
+         "base_note":"베티버, 너트맥, 유향, 흑후추, 카다몸, 물약, 머스크, 가죽, 샌들우드",
+         "single_note":"",
+         "created_at":20231110
       },
       {
          "uuid":654,
          "perfume_name":"사토리얼",
          "brand_name":"펜할리곤스",
-         "image_path":"http://49.50.162.194:3000/img/penhaligons1.png"
+         "price":"222,000",
+         "url":"https://brand.naver.com/penhaligons/products/7977553199",
+         "image_path":"http://perfume-pedia.site:3000/img/penhaligons1.png",
+         "top_note":"알데히드, 오조닉 향, 금속적인 향, 제비꽃 잎 ",
+         "middle_note":"비즈왁스, 시클라멘, 라벤더, 가죽, 린덴, 블로섬, 사이클라멘",
+         "base_note":"패출리, 시더우드, 통카 콩, 떡갈나무 이끼",
+         "single_note":"",
+         "created_at":20231110
+      },
+      {
+         "uuid":325,
+         "perfume_name":"쥬니퍼 슬링",
+         "brand_name":"펜할리곤스",
+         "price":"286,000",
+         "url":"https://brand.naver.com/penhaligons/products/7939102527",
+         "image_path":"http://perfume-pedia.site:3000/img/penhaligons2.png",
+         "top_note":"오렌지 블랜디, 시나몬, 안젤리카, 주니퍼베리",
+         "middle_note":"카다몸, 가죽, 흑후추, 흰 붓 나무",
+         "base_note":"흑설탕, 블랙체리, 베티버, 암브록스",
+         "single_note":"",
+         "created_at":20231110
+      },
+      {
+         "uuid":2146,
+         "perfume_name":"오퍼스 1870",
+         "brand_name":"펜할리곤스",
+         "price":"222,000",
+         "url":"https://brand.naver.com/penhaligons/products/7977551018",
+         "image_path":"http://perfume-pedia.site:3000/img/penhaligons3.png",
+         "top_note":"흑후추, 유자, 고수",
+         "middle_note":"클로브, 장미, 시나몬, 유향",
+         "base_note":"시더우드, 샌들우드, 가이악우드, 머스크",
+         "single_note":"",
+         "created_at":20231110
+      },
+      {
+         "uuid":111,
+         "perfume_name":"오 드 퍼퓸 필로시코스",
+         "brand_name":"딥디크",
+         "price":"255,550",
+         "url":"https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=2303713545&sale_shop_divi_cd=13&tr_yn=&conts_form_cd=100&rel_no=2303713545&rel_divi_cd=10&disp_ctg_no=",
+         "image_path":"http://perfume-pedia.site:3000/img/deptyque1.png",
+         "top_note":"",
+         "middle_note":"",
+         "base_note":"",
+         "single_note":"무화과 잎, 무화과 유, 무화과 나무, 블랙 페퍼",
+         "created_at":20231110
+      },
+      {
+         "uuid":700,
+         "perfume_name":"오 드 퍼퓸 오 로즈",
+         "brand_name":"딥디크",
+         "price":"255,550",
+         "url":"https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=2202465346&sale_shop_divi_cd=13&tr_yn=&conts_form_cd=100&rel_no=2202465346&rel_divi_cd=10&disp_ctg_no=",
+         "image_path":"http://perfume-pedia.site:3000/img/deptyque3.png",
+         "top_note":"",
+         "middle_note":"",
+         "base_note":"",
+         "single_note":"다마스크 로즈, 센티폴리아 로즈, 캐모마일, 리치, 아티초크",
+         "created_at":20231110
+      },
+      {
+         "uuid":878,
+         "perfume_name":"오 드 퍼퓸 오 드 민떼",
+         "brand_name":"딥디크",
+         "price":"255,550",
+         "url":"https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=1904182258&sale_shop_divi_cd=13&tr_yn=&conts_form_cd=100&rel_no=1904182258&rel_divi_cd=10&disp_ctg_no=",
+         "image_path":"http://perfume-pedia.site:3000/img/deptyque1.png",
+         "top_note":"",
+         "middle_note":"",
+         "base_note":"",
+         "single_note":"민트, 제라늄, 파출리, 로즈 옥사이드",
+         "created_at":20231110
+      },
+      {
+         "uuid":757,
+         "perfume_name":"오 드 퍼퓸 템포",
+         "brand_name":"딥디크",
+         "price":"255,550",
+         "url":"https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=2303713544&sale_shop_divi_cd=13&tr_yn=&conts_form_cd=100&rel_no=2303713544&rel_divi_cd=10&disp_ctg_no=",
+         "image_path":"http://perfume-pedia.site:3000/img/deptyque2.png",
+         "top_note":"",
+         "middle_note":"",
+         "base_note":"",
+         "single_note":"료파출리, 클라리세이지, 마테, 바이올렛 잎",
+         "created_at":20231110
+      },
+      {
+         "uuid":977,
+         "perfume_name":"오 드 퍼퓸 탐 다오",
+         "brand_name":"딥디크",
+         "price":"255,550",
+         "url":"https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=2303694362&sale_shop_divi_cd=13&tr_yn=&conts_form_cd=100&rel_no=2303694362&rel_divi_cd=10&disp_ctg_no=",
+         "image_path":"http://perfume-pedia.site:3000/img/deptyque2.png",
+         "top_note":"",
+         "middle_note":"",
+         "base_note":"",
+         "single_note":"마이조르 샌들우드, 백향목, 사이프러스, 머틀",
+         "created_at":20231110
+      },
+      {
+         "uuid":379,
+         "perfume_name":"오 드 퍼퓸 오 카피탈",
+         "brand_name":"딥디크",
+         "price":"255,550",
+         "url":"https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=2309900056&sale_shop_divi_cd=13&tr_yn=&conts_form_cd=100&rel_no=2309900056&rel_divi_cd=10&disp_ctg_no=",
+         "image_path":"http://perfume-pedia.site:3000/img/deptyque2.png",
+         "top_note":"",
+         "middle_note":"",
+         "base_note":"",
+         "single_note":"로즈, 베르가못, 파출리 하트, 핑크 페퍼콘",
+         "created_at":20231110
+      },
+      {
+         "uuid":450,
+         "perfume_name":"오 드 퍼퓸 베티베리오",
+         "brand_name":"딥디크",
+         "price":"255,550",
+         "url":"https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=2310912143&sale_shop_divi_cd=13&tr_yn=&conts_form_cd=100&rel_no=2310912143&rel_divi_cd=10&disp_ctg_no=",
+         "image_path":"http://perfume-pedia.site:3000/img/deptyque1.png",
+         "top_note":"",
+         "middle_note":"",
+         "base_note":"",
+         "single_note":"하이티산 베티버, 자바산 베티버, 그레이프 프룻, 장미",
+         "created_at":20231110
+      },
+      {
+         "uuid":197,
+         "perfume_name":"오 드 퍼퓸 도손",
+         "brand_name":"딥디크",
+         "price":"255,550",
+         "url":"https://www.sivillage.com/goods/initDetailGoods.siv?goods_no=2301627338&sale_shop_divi_cd=13&tr_yn=&conts_form_cd=100&rel_no=2301627338&rel_divi_cd=10&disp_ctg_no=",
+         "image_path":"http://perfume-pedia.site:3000/img/deptyque3.png",
+         "top_note":"",
+         "middle_note":"",
+         "base_note":"",
+         "single_note":"튜베로즈, 자스민, 오렌지 블러썸, 마린어코드",
+         "created_at":20231110
       }
    ]
 }
