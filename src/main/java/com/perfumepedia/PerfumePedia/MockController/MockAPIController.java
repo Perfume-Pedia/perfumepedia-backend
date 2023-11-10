@@ -1,6 +1,8 @@
 package com.perfumepedia.PerfumePedia.MockController;
 
-import com.perfumepedia.PerfumePedia.MockService.MockPerfumeService;
+import com.perfumepedia.PerfumePedia.MockDto.MockAdvanceSearchDto;
+import com.perfumepedia.PerfumePedia.MockService.MockAdvenceSearchService;
+import com.perfumepedia.PerfumePedia.MockService.MockSearchService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -32,15 +34,26 @@ public class MockAPIController {
             @Parameter(name = "keyword", description = "검색어", example = "딥디크")
     })
     @GetMapping("/search")
-    public MockPerfumeService search (
+    public MockSearchService search (
             @RequestParam(name = "lastid") String lastId,
             @RequestParam(name = "size") Integer size,
             @RequestParam(name = "keyword") String keyword) throws Exception{
-        MockPerfumeService mockPerfumeService = new MockPerfumeService(lastId, size, keyword);
-        System.out.println(mockPerfumeService.getData());
 
-        return mockPerfumeService;
+        MockSearchService mockSearchService = new MockSearchService(lastId, size, keyword);
+        System.out.println(mockSearchService.getData());
+
+        return mockSearchService;
     }
 
+    @Tag(name = "검색 결과", description = "검색 결과를 반환하는 API")
+    @Parameter(name = "uuid", description = "향수 id값", example = "123")
+    @GetMapping("/search/advanced")
+    public MockAdvanceSearchDto searchAdvanced (@RequestParam(name = "uuid") String uuid) throws Exception{
 
+        MockAdvenceSearchService mockAdvenceSearchService = new MockAdvenceSearchService(uuid);
+        MockAdvanceSearchDto mockAdvanceSearchDto  = mockAdvenceSearchService.getData();
+        System.out.println(mockAdvanceSearchDto);
+
+        return mockAdvanceSearchDto;
+    }
 }
