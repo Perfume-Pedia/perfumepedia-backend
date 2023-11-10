@@ -29,12 +29,14 @@ public class MockAPIController {
     @Parameters({
             @Parameter(name = "lastid", description = "마지막 id값", example = "0"),
             @Parameter(name = "size", description = "향수 개수", example = "6"),
+            @Parameter(name = "keyword", description = "검색어", example = "딥디크")
     })
     @GetMapping("/search")
     public MockPerfumeService search (
             @RequestParam(name = "lastid") String lastId,
-            @RequestParam(name = "size") Integer size) throws Exception{
-        MockPerfumeService mockPerfumeService = new MockPerfumeService(lastId, size);
+            @RequestParam(name = "size") Integer size,
+            @RequestParam(name = "keyword") String keyword) throws Exception{
+        MockPerfumeService mockPerfumeService = new MockPerfumeService(lastId, size, keyword);
         System.out.println(mockPerfumeService.getData());
 
         return mockPerfumeService;

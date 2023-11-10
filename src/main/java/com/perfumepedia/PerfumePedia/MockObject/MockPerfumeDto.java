@@ -11,10 +11,12 @@ public class MockPerfumeDto {
     private List<MockPerfume> items;
     private String last_item_id = "123";
     private int size;
+    private String keyword;
 
-    public MockPerfumeDto(String last_item_id, int size) throws Exception{
+    public MockPerfumeDto(String last_item_id, int size, String keyword) throws Exception{
         this.last_item_id = last_item_id;
         this.size = size;
+        this.keyword = keyword;
         items = new ArrayList<>();
 
         setItems();
@@ -46,9 +48,10 @@ public class MockPerfumeDto {
                         continue;
                     }
 
-                    if (whenFindLastUuid) {
+                    String brandName = perfumeNode.get("brand_name").asText();
+
+                    if (whenFindLastUuid && brandName.equals(keyword)) {
                         String perfumeName = perfumeNode.get("perfume_name").asText();
-                        String brandName = perfumeNode.get("brand_name").asText();
                         String imagePath = perfumeNode.get("image_path").asText();
 
                         MockPerfume mockPerfume = new MockPerfume();
