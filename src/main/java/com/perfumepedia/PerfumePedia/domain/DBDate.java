@@ -10,23 +10,34 @@ import java.sql.Date;
 @Embeddable
 @Access(AccessType.FIELD)
 public class DBDate {
-    private Date created_at;
-    private Date updated_at;
+    final private Date createdAt;
+    private Date updatedAt;
 
     public DBDate(){
-        created_at = makeSqlDate();
-        updated_at = makeSqlDate();
+        createdAt = makeSqlDate();
+        updatedAt = makeSqlDate();
     }
 
+    /**
+     * Java.util.Date를 이용해 현재 시간으로 SQL DATE 생성
+     * @return a {@code java.sql.Date} object representing the given date
+     */
     private Date makeSqlDate(){
         return new Date(new java.util.Date().getTime());
     }
 
-    public Date getCreated_at(){
-        return created_at;
+    // get
+    public Date getCreatedAt(){
+        return createdAt;
     }
 
-    public Date getUpdated_at(){
-        return updated_at;
+    // get
+    public Date getUpdatedAt(){
+        return updatedAt;
+    }
+
+    // set
+    public void setUpdatedAt() {
+        this.updatedAt = makeSqlDate();
     }
 }
