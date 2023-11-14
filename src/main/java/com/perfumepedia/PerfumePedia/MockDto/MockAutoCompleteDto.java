@@ -33,8 +33,8 @@ public class MockAutoCompleteDto {
         for(String key: keywords){
             int length = key.length();
 
-            for(int i=0; i<length-1; i++){
-                for(int j=i+1; j<length; j++){
+            for(int i=0; i<length; i++){
+                for(int j=i+1; j<length+1; j++){
                     String subKey = key.substring(i, j);
                     if(keywordMap.containsKey(subKey)){
                         keywordMap.get(subKey).add(key);
