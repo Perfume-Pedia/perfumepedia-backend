@@ -1,11 +1,9 @@
 package com.perfumepedia.PerfumePedia.MockDto;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.perfumepedia.PerfumePedia.MockObject.MockJsonReadFile;
 import com.perfumepedia.PerfumePedia.MockObject.MockSearch;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
