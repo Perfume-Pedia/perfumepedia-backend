@@ -2,6 +2,7 @@ package com.perfumepedia.PerfumePedia.MockController;
 
 import com.perfumepedia.PerfumePedia.MockDto.MockAdvanceSearchDto;
 import com.perfumepedia.PerfumePedia.MockService.MockAdvenceSearchService;
+import com.perfumepedia.PerfumePedia.MockService.MockAutoCompleteService;
 import com.perfumepedia.PerfumePedia.MockService.MockSearchService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,5 +56,16 @@ public class MockAPIController {
         System.out.println(mockAdvanceSearchDto);
 
         return mockAdvanceSearchDto;
+    }
+
+    @Tag(name = "자동 완성", description = "키워드에 따른 자동완성 결과를 반환하는 API")
+    @Parameter(name = "keyword", description = "키워드 값", example = "딥")
+    @GetMapping("/autocomplete")
+    public MockAutoCompleteService autoComplete(@RequestParam(name = "keyword") String keyword) throws Exception{
+
+        MockAutoCompleteService mockAutoCompleteService = new MockAutoCompleteService(keyword);
+        System.out.println(mockAutoCompleteService.getData());
+
+        return mockAutoCompleteService;
     }
 }
