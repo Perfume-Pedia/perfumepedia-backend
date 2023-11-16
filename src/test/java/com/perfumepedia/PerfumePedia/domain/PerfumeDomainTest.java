@@ -1,7 +1,6 @@
-package com.perfumepedia.PerfumePedia.Domain;
+package com.perfumepedia.PerfumePedia.domain;
 
 
-import com.perfumepedia.PerfumePedia.domain.*;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -21,12 +20,19 @@ import static org.junit.Assert.*;
 public class PerfumeDomainTest {
 
     @Test
-    @DisplayName("기본 생성자 호출 오류 테스트")
+    @DisplayName("매개 변수로 빈 값을 전달했을 경우 테스트")
     public void 기본생성자_제한() throws Exception{
-        // When & Then
-        assertThrows(IllegalAccessException.class, () -> {
-            Perfume.class.getDeclaredConstructor().newInstance();
-        });
+        //given
+        String perfumeNameIdEmpty = "";
+        String perfumeNameIsNull = null;
+
+        // When
+        Throwable exceptionByEmpty = assertThrows(IllegalArgumentException.class, () -> new Perfume(perfumeNameIdEmpty));
+        Throwable exceptionByNull = assertThrows(IllegalArgumentException.class, () -> new Perfume(perfumeNameIsNull));
+
+        // Then
+        assertEquals("name 은 null 이거나 빈 값일 수 없습니다.", exceptionByEmpty.getMessage());
+        assertEquals("name 은 null 이거나 빈 값일 수 없습니다.", exceptionByNull.getMessage());
     }
 
     @Test
@@ -41,23 +47,6 @@ public class PerfumeDomainTest {
         //then
         assertNotNull(perfume);
         assertEquals(name, perfume.getName());
-    }
-
-    @Test
-    @DisplayName("매개 변수로 빈 값을 전달했을 경우 테스트")
-    public void 매개변수가_빈값인_생성자_오류() throws Exception{
-        //given
-        String perfumeNameIdEmpty = "";
-        String perfumeNameIsNull = null;
-
-        //when & then
-        assertThrows(IllegalArgumentException.class, () ->{
-            new Perfume(perfumeNameIdEmpty);
-        });
-
-        assertThrows(IllegalArgumentException.class, () ->{
-            new Perfume(perfumeNameIsNull);
-        });
     }
 
     @Test

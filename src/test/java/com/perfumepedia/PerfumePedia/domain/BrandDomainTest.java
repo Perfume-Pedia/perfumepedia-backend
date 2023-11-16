@@ -1,7 +1,5 @@
-package com.perfumepedia.PerfumePedia.Domain;
+package com.perfumepedia.PerfumePedia.domain;
 
-import com.perfumepedia.PerfumePedia.domain.Brand;
-import com.perfumepedia.PerfumePedia.domain.DBDate;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -19,12 +17,19 @@ import static org.junit.Assert.*;
 public class BrandDomainTest {
 
     @Test
-    @DisplayName("Brand 객체: 기본 생성자 호출 오류 테스트")
-    public void 기본생성자_오류() throws Exception{
-        // When & Then
-        assertThrows(IllegalAccessException.class, () -> {
-            Brand.class.getDeclaredConstructor().newInstance();
-        });
+    @DisplayName("Brand 객체: 매개변수로 빈값을 전달했을 경우 테스트")
+    public void 기본생성자_제한() throws Exception{
+        //given
+        String brandNameIsEmpty = "";
+        String brandNameIsNull = null;
+
+        //when
+        Throwable exceptionByEmpty = assertThrows(IllegalArgumentException.class, () -> new Brand(brandNameIsEmpty));
+        Throwable exceptionByNull = assertThrows(IllegalArgumentException.class, () -> new Brand(brandNameIsNull));
+
+        //then
+        assertEquals("name 은 null 이거나 빈 값일 수 없습니다.", exceptionByEmpty.getMessage());
+        assertEquals("name 은 null 이거나 빈 값일 수 없습니다.", exceptionByNull.getMessage());
     }
 
     @Test
@@ -45,20 +50,13 @@ public class BrandDomainTest {
     }
 
     @Test
-    @DisplayName("Brand 객체: 매개변수로 빈값을 전달했을 경우 테스트")
     public void 매개변수가_빈값인_생성자_오류() throws Exception{
-        //given
-        String brandNameIsEmpty = "";
-        String brandNameIsNull = null;
+
 
         //when &then
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Brand(brandNameIsEmpty);
-        });
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            new Brand(brandNameIsNull);
-        });
+
+
     }
 
     @Test
