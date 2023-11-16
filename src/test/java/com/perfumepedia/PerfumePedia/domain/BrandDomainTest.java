@@ -50,6 +50,16 @@ public class BrandDomainTest {
     }
 
     @Test
+    public void 매개변수가_빈값인_생성자_오류() throws Exception{
+
+
+        //when &then
+
+
+
+    }
+
+    @Test
     @DisplayName("Brand 객체: url, dbDate set 메소드 테스트")
     public void url_dbDate_초기화() throws Exception{
         //given
