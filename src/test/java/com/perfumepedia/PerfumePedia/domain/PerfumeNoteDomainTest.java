@@ -52,8 +52,8 @@ public class PerfumeNoteDomainTest {
     }
 
     @Test
-    @DisplayName("perfume, note Set 메소드 테스트")
-    public void perfume_note_초기화() throws Exception{
+    @DisplayName("perfume, note 관계형 메소드 테스트")
+    public void perfume_note_관계_설정() throws Exception{
         //given
         Perfume perfume = new Perfume("test perfume name");
         Note note = new Note("test note name");

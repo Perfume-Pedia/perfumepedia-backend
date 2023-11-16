@@ -47,21 +47,11 @@ public class PerfumeDomainTest {
         //then
         assertNotNull(perfume);
         assertEquals(name, perfume.getName());
-    }
-
-    @Test
-    public void ID_자동생성_확인() throws Exception{
-        //given
-        String name = "향수이름";
-
-        //when
-        Perfume perfume = new Perfume(name);
-
-        //then
         assertNull("id는 자동 생성됩니다.", perfume.getId());
     }
     
     @Test
+    @DisplayName("price, url Set 메소드 테스트")
     public void Price_Url_초기화() throws Exception{
         //given
         String name = "perfume name";
@@ -82,6 +72,7 @@ public class PerfumeDomainTest {
     }
 
     @Test
+    @DisplayName("image, dbDate, discontinue Set 메소드 테스트")
     public void Image_DBDate_Discontinue_초기화() throws Exception{
         //given
         String perfumeName = "perfume name";
@@ -108,6 +99,7 @@ public class PerfumeDomainTest {
     }
 
     @Test
+    @DisplayName("Brand 관계형 메소드 테스트")
     public void Brand_관계_설정() throws Exception{
         //given
         Brand brand = new Brand("test brand name");

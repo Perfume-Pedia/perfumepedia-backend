@@ -14,7 +14,7 @@ public class Note {
     @Column(name = "NOTE_ID")
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @Embedded

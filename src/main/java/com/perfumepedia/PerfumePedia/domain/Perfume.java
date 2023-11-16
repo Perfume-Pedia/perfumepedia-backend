@@ -51,7 +51,7 @@ public class Perfume {
 
     /**
      * Set 메소드<p>
-     * price, url, brand, image, dbDate, discontinue
+     * price, url, image, dbDate, discontinue
      */
     public void setPrice(int price){
         this.price = price;
@@ -59,10 +59,6 @@ public class Perfume {
 
     public void setUrl(String url){
         this.url = url;
-    }
-
-    public void setBrand(Brand brand) {
-        this.brand = brand;
     }
 
     public void setImage(String name, String path){
@@ -77,6 +73,16 @@ public class Perfume {
     public void setDiscontinue(){
         this.discontinue = Discontinue.DISCONTINUE;
     }
+
+
+    /**
+     * 관계형 메소드 brand 객체와 단방향 연결
+     * @param brand
+     */
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
 
     /**
      * Get 메소드<p>
