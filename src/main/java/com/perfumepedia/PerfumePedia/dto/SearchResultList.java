@@ -1,11 +1,10 @@
-package com.perfumepedia.PerfumePedia.Dto;
+package com.perfumepedia.PerfumePedia.dto;
 
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SearchResultList {//검색 결과
+public class SearchResultList {//검색 결과 && 선호 향수
     private List<Perfume> perfumeList;
     private String last_item_id;
 
