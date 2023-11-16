@@ -50,7 +50,7 @@ public class NoteDomainTest {
     }
 
     @Test
-    @DisplayName("")
+    @DisplayName("dbDate set 메소드 테스트")
     public void dbDate_초기화() throws Exception{
         //given
         String noteName = "test note name";

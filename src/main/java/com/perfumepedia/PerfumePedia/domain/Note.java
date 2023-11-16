@@ -14,8 +14,12 @@ public class Note {
     @Column(name = "NOTE_ID")
     private Long id;
 
+    @Column(name = "NAME")
     private String name;
 
+    @Embedded
+    @AttributeOverride(name = "createdAt", column = @Column(name = "CREATED_AT"))
+    @AttributeOverride(name = "updatedAt", column = @Column(name = "UPDATED_AT"))
     private DBDate dbDate;
 
     public Note(String name){
