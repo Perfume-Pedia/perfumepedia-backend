@@ -4,26 +4,29 @@ package com.perfumepedia.PerfumePedia.domain;
 import jakarta.persistence.Access;
 import jakarta.persistence.AccessType;
 import jakarta.persistence.Embeddable;
+import lombok.NoArgsConstructor;
+
 
 import java.sql.Date;
 
 @Embeddable
 @Access(AccessType.FIELD)
+@NoArgsConstructor(force = true)
 public class DBDate {
     final private Date createdAt;
     private Date updatedAt;
 
-    public DBDate(){
-        createdAt = makeSqlDate();
-        updatedAt = makeSqlDate();
+    public DBDate(String yearMonthDay){
+        createdAt = makeSqlDate(yearMonthDay);
+        updatedAt = makeSqlDate(yearMonthDay);
     }
 
     /**
-     * Java.util.Date를 이용해 현재 시간으로 SQL DATE 생성
+     * YYYY-MM-DD를 이용해 SQL DATE 생성
      * @return a {@code java.sql.Date} object representing the given date
      */
-    private Date makeSqlDate(){
-        return new Date(new java.util.Date().getTime());
+    private Date makeSqlDate(String yearMonthDay){
+        return Date.valueOf(yearMonthDay);
     }
 
     // get
@@ -37,7 +40,7 @@ public class DBDate {
     }
 
     // set
-    public void setUpdatedAt() {
-        this.updatedAt = makeSqlDate();
+    public void setUpdatedAt(Date date) {
+        this.updatedAt = date;
     }
 }

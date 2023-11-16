@@ -1,6 +1,8 @@
 package com.perfumepedia.PerfumePedia.Domain;
 
 
+import com.perfumepedia.PerfumePedia.domain.Brand;
+import com.perfumepedia.PerfumePedia.domain.Image;
 import com.perfumepedia.PerfumePedia.domain.Perfume;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
@@ -46,8 +48,54 @@ public class PerfumeDomainTest {
         //when
         Perfume perfume = new Perfume(name);
 
+        //then
+        assertNull("id는 자동 생성됩니다.", perfume.getId());
+    }
+    
+    @Test
+    public void Price_Url_초기화() throws Exception{
+        //given
+        String name = "향수이름";
+        int price = 123456;
+        String url = "test.url.com";
+
+        //when
+        Perfume perfume = new Perfume(name);
+        perfume.setPrice(price);
+        perfume.setUrl(url);
 
         //then
-        assertNull(perfume.getId());
+        assertNotNull(perfume.getPrice());
+        assertNotNull(perfume.getUrl());
+
+        assertEquals(price, perfume.getPrice());
+        assertEquals(url, perfume.getUrl());
     }
+
+    @Test
+    public void Image_DBDate_Discontinue_초기화() throws Exception{
+        //given
+        Image image = new Image("image name", "image path");
+
+        //when
+
+
+        //then
+
+    }
+
+    @Test
+    public void Brand_관계_설정() throws Exception{
+        //given
+        Brand brand = new Brand("test brand name");
+        Perfume perfume = new Perfume("test perfume name");
+
+        //when
+        perfume.setBrand(brand);
+
+        //then
+        assertNotNull(perfume.getBrand());
+        assertEquals(perfume.getBrand(), brand);
+    }
+
 }

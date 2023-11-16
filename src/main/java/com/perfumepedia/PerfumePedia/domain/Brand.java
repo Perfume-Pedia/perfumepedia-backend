@@ -12,7 +12,7 @@ public class Brand {
     @Column(name = "BRAND_ID")
     private Long id;
 
-    @Column(name = "NAME")
+    @Column(name = "NAME", nullable = false)
     private String name;
 
     @Column(name = "URL")
@@ -24,13 +24,22 @@ public class Brand {
     private DBDate dbDate;
 
     public Brand(String name){
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("name 은 null 이거나 빈 값일 수 없습니다.");
+        }
         this.name = name;
-        this.dbDate = new DBDate();
     }
 
-    // set
+    /**
+     * Set 메소드:<p>
+     * url, dbDate
+     */
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public void setDbDate(String yearMonthDay){
+        this.dbDate = new DBDate(yearMonthDay);
     }
 
     /**
