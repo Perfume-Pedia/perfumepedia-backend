@@ -18,6 +18,23 @@ public class CollectionForm {
     private List<String> mid_nt;
     private List<String> base_nt;
     private List<String> single_nt;
+    private String update_at;
 
 
+    @Override
+    public String toString() {
+        return "CollectionForm{" +
+                "brand='" + brand + '\'' +
+                ", brand_url='" + brand_url + '\'' +
+                ", name='" + name + '\'' +
+                ", perfume_url='" + perfume_url + '\'' +
+                ", image='" + image + '\'' +
+                ", price='" + price + '\'' +
+                ", top_nt=" + top_nt +
+                ", mid_nt=" + mid_nt +
+                ", base_nt=" + base_nt +
+                ", single_nt=" + single_nt +
+                ", data=" + update_at +
+                '}';
+    }
 }
