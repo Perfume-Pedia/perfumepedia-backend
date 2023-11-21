@@ -3,7 +3,7 @@ package com.perfumepedia.PerfumePedia.dto;
 import java.util.Date;
 import java.util.List;
 
-public class PerfumeDetailResultDto {//검색 결과 상세 && 선호 향수 상세
+public class PerfumeDetailDto {//검색 결과 상세 && 선호 향수 상세
 
     private String uuid;
     private String brand_name;

@@ -4,7 +4,7 @@ package com.perfumepedia.PerfumePedia.dto;
 import java.util.Date;
 import java.util.List;
 
-public class SearchResultListDto {//검색 결과 && 선호 향수
+public class SearchResultDto {//검색 결과 && 선호 향수
     private List<PerfumeResult> perfumeList;
     private String last_item_id;
 
