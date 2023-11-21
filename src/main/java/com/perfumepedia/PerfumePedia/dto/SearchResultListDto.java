@@ -4,11 +4,11 @@ package com.perfumepedia.PerfumePedia.dto;
 import java.util.Date;
 import java.util.List;
 
-public class SearchResultList {//검색 결과 && 선호 향수
-    private List<Perfume> perfumeList;
+public class SearchResultListDto {//검색 결과 && 선호 향수
+    private List<PerfumeResult> perfumeList;
     private String last_item_id;
 
-    public List<Perfume> getPerfumeList() {
+    public List<PerfumeResult> getPerfumeList() {
         return perfumeList;
     }
 
@@ -16,7 +16,7 @@ public class SearchResultList {//검색 결과 && 선호 향수
         return last_item_id;
     }
 
-    public class Perfume {
+    public class PerfumeResult {
 
         private String uuid;
         private String brand_name;

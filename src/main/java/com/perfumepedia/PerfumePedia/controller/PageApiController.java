@@ -16,28 +16,32 @@ import java.util.List;
 public class PageApiController {
 
     @GetMapping
-    public String homePage(){
+    public String homePage(){//메인 페이지
         return "home";
     }
 
     @GetMapping("note")
-    public String notePage(){
+    public String notePage(){//노트 페이지 (정적 컨텐츠)
         return "note";
     }
 
     @GetMapping("brand")
-    public String brandPage(){
+    public String brandPage(){//브랜드 페이지 (정적 컨텐츠)
         return "brand";
     }
 
     @GetMapping("search")
-    public String searchPage(
+    public String searchPage(//검색 결과 페이지 (api)
             @RequestParam(required = true) String keyword,
             @RequestParam(defaultValue = "10") int limit,
             @RequestParam(defaultValue = "1") int page){
 
-
         return "search"; // view 이름수정할 수도 있음
+    }
+
+    @GetMapping("my")
+    public String myPage(){//마이 페이지_북마크 출력
+        return "search";
     }
 
 }
