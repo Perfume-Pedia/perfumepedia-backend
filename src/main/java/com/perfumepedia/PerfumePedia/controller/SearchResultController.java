@@ -3,6 +3,7 @@ package com.perfumepedia.PerfumePedia.controller;
 import com.perfumepedia.PerfumePedia.dto.PerfumeDetailDto;
 import com.perfumepedia.PerfumePedia.dto.SearchResultDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,9 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class SearchResultController {
 
 
-    //WordService WordService;
-    //
-    // new WordServise();
+//    private fianl WordService WordService;
+//
+//    @Autowired
+//    public SearchResultController(WordService wordService){
+//        this.wordService=wordService;
+//    }
 
     SearchResultDto searchResultDto ;
     PerfumeDetailDto perfumeDetailDto ;

@@ -3,12 +3,20 @@ package com.perfumepedia.PerfumePedia.controller;
 import com.perfumepedia.PerfumePedia.dto.AutoCompleteWordDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/api/autocomplete")
 public class AutoCompleteController {
+
+//    private fianl WordService WordService;
+//
+//    @Autowired
+//    public SearchResultController(WordService wordService){
+//        this.wordService=wordService;
+//    }
 
     AutoCompleteWordDto autoCompleteWordDto;
 
@@ -21,9 +29,6 @@ public class AutoCompleteController {
 
         return autoCompleteWordDto;
     }
-
-//    @Autowired
-    //WordService WordService=new WordServise();
 
 
 
