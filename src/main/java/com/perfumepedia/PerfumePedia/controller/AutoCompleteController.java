@@ -2,6 +2,7 @@ package com.perfumepedia.PerfumePedia.controller;
 
 import com.perfumepedia.PerfumePedia.dto.AutoCompleteWordDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,6 +22,7 @@ public class AutoCompleteController {
         return autoCompleteWordDto;
     }
 
+//    @Autowired
     //WordService WordService=new WordServise();
 
 

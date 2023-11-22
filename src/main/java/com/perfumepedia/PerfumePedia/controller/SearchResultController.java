@@ -12,7 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/")
 public class SearchResultController {
 
-    //WordService WordService=new WordServise();
+
+    //WordService WordService;
+    //
+    // new WordServise();
 
     SearchResultDto searchResultDto ;
     PerfumeDetailDto perfumeDetailDto ;
