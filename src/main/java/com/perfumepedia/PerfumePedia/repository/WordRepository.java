@@ -34,6 +34,7 @@ public class WordRepository{
         return em.createQuery("select w from Word w where w.alias = :alias " +
                         "order by w.weight desc", Word.class)
                 .setParameter("alias", alias)
+                .setMaxResults(5)
                 .getResultList();
     }
 
