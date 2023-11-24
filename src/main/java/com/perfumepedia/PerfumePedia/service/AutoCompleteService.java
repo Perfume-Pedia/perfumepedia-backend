@@ -2,6 +2,7 @@ package com.perfumepedia.PerfumePedia.service;
 
 import com.perfumepedia.PerfumePedia.domain.Word;
 import com.perfumepedia.PerfumePedia.dto.AutoCompleteWordDto;
+import com.perfumepedia.PerfumePedia.dto.ResponseData;
 import com.perfumepedia.PerfumePedia.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,15 +23,21 @@ public class AutoCompleteService {
      * @param keyword 사용자가 입력한 keyword입니다. 예) 조말론
      * @return AutoCompleteWordDto 객체를 반환합니다.
      */
-    public AutoCompleteWordDto findKeywords(String keyword){
+    public ResponseData findKeywords(String keyword){
         AutoCompleteWordDto autoCompleteWordDto = new AutoCompleteWordDto();
 
         // WordRepository #findByAlias 사용
+        // #findByAlias에 의해 Word 객체 List 반횐됨
+        // 자동으로 5개 이하의 결과가 반환되며, desc sort 돼 있음
         List<Word> words = wordRepository.findByAlias(keyword);
 
         // AutoCompleteWordDto #set 메소드들을 활용해 초기화 진행
 
-        // 객체화한 autoCompleteWordDto 반환
-        return autoCompleteWordDto;
+
+        // ResponseData 객체화
+        ResponseData data = new ResponseData(autoCompleteWordDto);
+
+        // 객체화한 ResponseData 반환
+        return data;
     }
 }
