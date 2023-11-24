@@ -31,8 +31,10 @@ public class WordRepository{
     }
 
     public List<Word> findByAlias(String alias){
-        return em.createQuery("select w from Word w where w.alias = :alias", Word.class)
+        return em.createQuery("select w from Word w where w.alias = :alias " +
+                        "order by w.weight desc", Word.class)
                 .setParameter("alias", alias)
+                .setMaxResults(5)
                 .getResultList();
     }
 
