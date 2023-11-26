@@ -34,5 +34,14 @@ public class PerfumeNoteRepository{
                 .getResultList();
     }
 
-
+    public Optional<PerfumeNote> findByPerfumeAndNote(Perfume perfume, Note note){
+        return em.createQuery("select pn from PerfumeNote pn " +
+                "where pn.perfume = :perfumeId " +
+                "and pn.note = :noteId", PerfumeNote.class)
+                .setParameter("perfumeId", perfume.getId())
+                .setParameter("noteId", note.getId())
+                .getResultList()
+                .stream()
+                .findAny();
+    }
 }
