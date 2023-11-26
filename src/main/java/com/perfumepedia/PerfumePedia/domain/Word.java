@@ -129,7 +129,7 @@ public class Word {
     /**
      * 가중치 증가함수
      */
-    public void increaseWord(){
+    public void increaseWeight(){
         this.weight++;
     }
 
