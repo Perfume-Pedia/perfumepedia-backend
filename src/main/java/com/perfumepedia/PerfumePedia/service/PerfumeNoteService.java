@@ -2,6 +2,8 @@ package com.perfumepedia.PerfumePedia.service;
 
 
 import com.perfumepedia.PerfumePedia.domain.Brand;
+import com.perfumepedia.PerfumePedia.domain.Note;
+import com.perfumepedia.PerfumePedia.domain.Perfume;
 import com.perfumepedia.PerfumePedia.domain.PerfumeNote;
 import com.perfumepedia.PerfumePedia.repository.PerfumeNoteRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +26,25 @@ public class PerfumeNoteService {
      */
     @Transactional(readOnly = false)
     public Long savePerfumeNote(PerfumeNote perfumeNote) {
+        try {
+            validateDuplicatePerfumeNote(perfumeNote);
+        } catch (IllegalStateException e) {
+            // 데이터베이스에 값이 존재하는 경우
+            // 처리하지 않음
+        }
         // 데이터베이스에 값이 존재하지 않는 경우
         // PerfumeNoteRepository #save 이용 저장
+        perfumeNoteRepository.save(perfumeNote);  // 중복이 없을 경우에만 저장
+        return perfumeNote.getId();  // 저장한 경우 perfumeNote의 id return
 
-        // 데이터베이스에 값이 존재하는 경우
-        // 처리하지 않음
 
-        // 저장한 경우 perfumeNote의 id return
-        return null;
     }
+
+
+
+
+    private void validateDuplicatePerfumeNote(PerfumeNote perfumeNote) {
+
+    }
+
 }
