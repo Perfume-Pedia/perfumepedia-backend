@@ -19,8 +19,6 @@ public class SearchResultService {
     private final WordRepository wordRepository;
     private final PerfumeRepository perfumeRepository;
     private final BrandRepository brandRepository;
-    private final PerfumeNoteRepository perfumeNoteRepository;
-    private final NoteRepository noteRepository;
 
     public ResponseData searchByKeyword(String keyword){
         // WordRepository #findByAlias 이용

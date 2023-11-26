@@ -127,6 +127,13 @@ public class Word {
     }
 
     /**
+     * 가중치 증가함수
+     */
+    public void increaseWeight(){
+        this.weight++;
+    }
+
+    /**
      * Get 메소드 <p>
      * id, alias, name, weight, type, brand, perfume, note, dbDate
      */
