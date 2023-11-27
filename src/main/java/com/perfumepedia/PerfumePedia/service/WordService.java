@@ -36,7 +36,7 @@ public class WordService {
 
     private void validateDuplicateWord(Word word) {
         wordRepository.findByAliasAndName(word.getAlias(), word.getName())
-                .ifPresent(b->{
+                .ifPresent(w->{
                     throw new IllegalStateException("이미 존재하는 단어(별칭)입니다.");
                 });
     }

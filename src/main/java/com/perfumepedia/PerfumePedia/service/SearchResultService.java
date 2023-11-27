@@ -43,7 +43,7 @@ public class SearchResultService {
         for(Word word: words){
             // word와 연관된 word 객체들의 가중치 증가
             increaseWeight(word);
-            
+
             // word의 wordType에 따라 처리
             switch (word.getWordType()) {
                 case BRAND -> addPerfumeByBrand(word, perfumeResults);

@@ -90,6 +90,9 @@ public class PerfumeService {
 
         existingPerfume.setDiscontinue();
     }
+
+
+
     private void validateNonExistentPerfume(Perfume perfume) {
         perfumeRepository.findByName(perfume.getName())
                 .orElseThrow(() -> new IllegalStateException("존재하지 않는 향수입니다."));
