@@ -44,7 +44,10 @@ public class PerfumeNoteService {
 
 
     private void validateDuplicatePerfumeNote(PerfumeNote perfumeNote) {
-
+        perfumeNoteRepository.findByPerfumeAndNote(perfumeNote.getPerfume(), perfumeNote.getNote())
+                .ifPresent(pn->{
+                    throw new IllegalStateException("이미 존재하는 향수노트입니다.");
+                });
     }
 
 }

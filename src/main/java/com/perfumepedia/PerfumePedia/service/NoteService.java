@@ -39,7 +39,7 @@ public class NoteService {
 
     private void validateDuplicateNote(Note note) {
         noteRepository.findByName(note.getName())
-                .ifPresent(b->{
+                .ifPresent(n->{
                     throw new IllegalStateException("이미 존재하는 노트입니다.");
                 });
     }
