@@ -6,8 +6,6 @@ import java.util.List;
 public class AutoCompleteWordDto {
     int item_count;
     List<AutoCompleteWord> items = new ArrayList<>();
-
-
     /**
      * Get item_count
      * @return 5이하의 int 반환
@@ -42,17 +40,4 @@ public class AutoCompleteWordDto {
     public void setItems(List<AutoCompleteWord> items){
         this.items = items;
     }
-
-    /**
-     * String keyword 를 위한 Class
-     */
-    class AutoCompleteWord{
-        String keyword;
-
-        public String getKeyword() {
-            return keyword;
-        }
-
-    }
-
 }
