@@ -1,5 +1,7 @@
 package com.perfumepedia.PerfumePedia.service;
 
+import com.perfumepedia.PerfumePedia.domain.Perfume;
+import com.perfumepedia.PerfumePedia.domain.PerfumeNote;
 import com.perfumepedia.PerfumePedia.domain.Word;
 import com.perfumepedia.PerfumePedia.dto.PerfumeResult;
 import com.perfumepedia.PerfumePedia.dto.ResponseData;
@@ -9,9 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -21,7 +21,11 @@ public class SearchResultService {
     private final WordRepository wordRepository;
     private final PerfumeRepository perfumeRepository;
     private final BrandRepository brandRepository;
+    private final NoteRepository noteRepository;
+    private final PerfumeNoteRepository perfumeNoteRepository;
     private final WordService wordService;
+
+
 
     /**
      * 향수 검색 api에 사용됨
@@ -81,6 +85,7 @@ public class SearchResultService {
         }
     }
 
+
     /**
      * word의 타입이 Brand 경우 호출
      * <p> perfumeResults에 perfumeResult 객체들 추가
@@ -88,6 +93,27 @@ public class SearchResultService {
      * @param perfumeResults
      */
     private void addPerfumeByBrand(Word word, List<PerfumeResult> perfumeResults) {
+
+        List<Perfume> perfumes = perfumeRepository.findByBrand(word.getBrand());
+
+        for(Perfume perfume: perfumes){
+            PerfumeResult perfumeResult = new PerfumeResult();
+
+            // set uuid
+            perfumeResult.setUuid(perfume.getId().toString());
+            // set brand name
+            perfumeResult.setBrand_name(perfume.getBrand().getName());
+            // set perfume name
+            perfumeResult.setPerfume_name(perfume.getName());
+            // set image paht
+            perfumeResult.setImage_path(perfume.getImage().toString());
+            // set created at
+            perfumeResult.setCreated_at(perfume.getDbDate().getCreatedAt());
+
+
+            // perfumeResults #add perfumeResult
+            perfumeResults.add(perfumeResult);
+        }
 
     }
 
@@ -98,6 +124,27 @@ public class SearchResultService {
      * @param perfumeResults
      */
     private void addPerfumeByPerfume(Word word, List<PerfumeResult> perfumeResults) {
+
+
+        Optional<Perfume> perfume = perfumeRepository.findById(word.getTypeId());
+
+
+        if (perfume.isPresent()) {
+            PerfumeResult perfumeResult = new PerfumeResult();
+
+            // set uuid
+            perfumeResult.setUuid(perfume.get().getId().toString());
+            // set brand name
+            perfumeResult.setBrand_name(perfume.get().getBrand().getName());
+            // set perfume name
+            perfumeResult.setPerfume_name(perfume.get().getName());
+            // set image paht
+            perfumeResult.setImage_path(perfume.get().getImage().toString());
+            // set created at
+            perfumeResult.setCreated_at(perfume.get().getDbDate().getCreatedAt());
+
+        }
+
     }
 
     /**
@@ -108,8 +155,32 @@ public class SearchResultService {
      */
     private void addPerfumeByNote(Word word, List<PerfumeResult> perfumeResults) {
 
-    }
 
+        List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByNote(word.getNote());
+
+
+        for(PerfumeNote perfumeNote: perfumeNotes){
+            // perfumeNote로 부터 Perfume 객체 생성
+            Optional<Perfume> perfume = perfumeRepository.findById(perfumeNote.getPerfume().getId());
+
+            PerfumeResult perfumeResult = new PerfumeResult();
+
+            // set uuid
+            perfumeResult.setUuid(perfume.get().getId().toString());
+            // set brand name
+            perfumeResult.setBrand_name(perfume.get().getBrand().getName());
+            // set perfume name
+            perfumeResult.setPerfume_name(perfume.get().getName());
+            // set image paht
+            perfumeResult.setImage_path(perfume.get().getImage().toString());
+            // set created at
+            perfumeResult.setCreated_at(perfume.get().getDbDate().getCreatedAt());
+
+            perfumeResults.add(perfumeResult);
+
+        }
+
+    }
 
     /**
      * 선호 향수 api에 사용됨
