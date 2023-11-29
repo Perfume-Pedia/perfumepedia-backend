@@ -4,15 +4,17 @@ import com.perfumepedia.PerfumePedia.domain.Note;
 import com.perfumepedia.PerfumePedia.domain.Perfume;
 import com.perfumepedia.PerfumePedia.domain.PerfumeNote;
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class PerfumeNoteRepository{
 
-    private EntityManager em;
+    private final EntityManager em;
 
     public void save(PerfumeNote perfumeNote){
         em.persist(perfumeNote);

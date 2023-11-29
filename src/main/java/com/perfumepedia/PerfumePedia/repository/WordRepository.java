@@ -3,15 +3,17 @@ package com.perfumepedia.PerfumePedia.repository;
 import com.perfumepedia.PerfumePedia.domain.Word;
 import com.perfumepedia.PerfumePedia.domain.WordType;
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class WordRepository{
 
-    private EntityManager em;
+    private final EntityManager em;
 
     public void save(Word word){
         em.persist(word);
