@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
+import java.util.Optional;
+
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Word {
@@ -127,6 +129,13 @@ public class Word {
     }
 
     /**
+     * 가중치 증가함수
+     */
+    public void increaseWeight(){
+        this.weight++;
+    }
+
+    /**
      * Get 메소드 <p>
      * id, alias, name, weight, type, brand, perfume, note, dbDate
      */
@@ -164,5 +173,12 @@ public class Word {
 
     public DBDate getDbDate() {
         return dbDate;
+    }
+
+    public Long getTypeId(){
+        return Optional.ofNullable(brand).map(Brand::getId)
+                .or(() -> Optional.ofNullable(perfume).map(Perfume::getId))
+                .or(() -> Optional.ofNullable(note).map(Note::getId))
+                .orElse(0L);
     }
 }

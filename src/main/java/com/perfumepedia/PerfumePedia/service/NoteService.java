@@ -22,14 +22,25 @@ public class NoteService {
      */
     @Transactional(readOnly = false)
     public Long saveNote(Note note){
+        try {
+            validateDuplicateNote(note);
+        } catch (IllegalStateException e) {
+            // 데이터베이스에 값이 존재하는 경우
+            // 처리하지 않음
+            return noteRepository.findByName(note.getName()).get().getId();
+        }
         // 데이터베이스에 값이 존재하지 않는 경우
         // NoteRepository #save 이용 저장
+        noteRepository.save(note);  // 중복이 없을 경우에만 저장
+        return note.getId();  // 저장한 경우 note의 id return
 
-        // 데이터베이스에 값이 존재하는 경우
-        // 처리하지 않음
+    }
 
-        // 저장한 경우 note의 id return
-        return null;
+    private void validateDuplicateNote(Note note) {
+        noteRepository.findByName(note.getName())
+                .ifPresent(n->{
+                    throw new IllegalStateException("이미 존재하는 노트입니다.");
+                });
     }
 
 }

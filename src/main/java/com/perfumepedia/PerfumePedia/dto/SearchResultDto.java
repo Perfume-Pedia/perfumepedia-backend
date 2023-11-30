@@ -49,18 +49,6 @@ public class SearchResultDto {
         this.items = items;
     }
 
-    /**
-     * 하나의 향수 정보를 위한 Class
-     */
-    @Getter @Setter
-    @NoArgsConstructor
-    static public class PerfumeResult {
-
-        private String uuid;
-        private String brand_name;
-        private String perfume_name;
-        private String image_path;
-        private Date created_at;
-    }
 
 }
+

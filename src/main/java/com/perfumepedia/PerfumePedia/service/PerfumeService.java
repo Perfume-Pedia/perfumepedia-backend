@@ -6,10 +6,12 @@ import com.perfumepedia.PerfumePedia.repository.BrandRepository;
 import com.perfumepedia.PerfumePedia.repository.PerfumeNoteRepository;
 import com.perfumepedia.PerfumePedia.repository.PerfumeRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PerfumeService {
@@ -28,19 +30,26 @@ public class PerfumeService {
      */
     @Transactional(readOnly = false)
     public Long savePerfume(Perfume perfume){
-        // 데이터베이스에 값이 존재하지 않는 경우
+        try {
+            validateDuplicatePerfume(perfume);// 중복 검사
+
+        } catch (IllegalStateException e) {
+            // 데이터베이스에 값이 존재하고, 변경 사항이 있는 경우
+            // updatePerfume 호출
+            return updatePerfume(perfume); // 업데이트 한 경우 기존 perfume의 id return
+        }
+
         // PerfumeRepository #save 이용 저장
+        perfumeRepository.save(perfume);
+        return perfume.getId();   // 저장한 경우 perfume의 id return
 
-        // 데이터베이스에 값이 존재하고, 변경 사항이 있는 경우
-        // updatePerfume 호출
+    }
 
-        // 데이터베이스에 값이 존재하고, 변경 사항이 없는 경우
-        // 처리하지 않음
-
-        // 저장한 경우 perfume의 id return
-        // 업데이트 한 경우 기존 perfume의 id return
-        // nothing 인 경우 기존 perfume의 id return
-        return null;
+    private void validateDuplicatePerfume(Perfume perfume) {
+        perfumeRepository.findByName(perfume.getName())
+                .ifPresent(p->{
+                    throw new IllegalStateException("이미 존재하는 향수입니다.");
+                });
     }
 
     /**
@@ -51,10 +60,20 @@ public class PerfumeService {
      */
     @Transactional(readOnly = false)
     public Long updatePerfume(Perfume perfume){
+
+        Perfume existingPerfume = perfumeRepository.findByName(perfume.getName())
+                .orElseThrow(NullPointerException::new);
+
         // Domain #set 이용 변경사항 수정
         // price, url, discontinue, updatedAt만 수정 가능
+        existingPerfume.setPrice(perfume.getPrice());
+        existingPerfume.setUrl(perfume.getUrl());
+        existingPerfume.getDbDate().setUpdatedAt(perfume.getDbDate().getUpdatedAt());
+        if(existingPerfume.getDiscontinue() != perfume.getDiscontinue()){
+            existingPerfume.setDiscontinue();
+        }
 
         // update한 객체 id 반환
-        return null;
+        return existingPerfume.getId();
     }
 }
