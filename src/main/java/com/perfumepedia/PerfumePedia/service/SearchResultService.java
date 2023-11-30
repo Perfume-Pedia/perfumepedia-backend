@@ -58,14 +58,34 @@ public class SearchResultService {
 
         // SearchResultDto객체 생성 및 초기화
         SearchResultDto searchResultDto = new SearchResultDto();
+        // size 개의 향수 정보를 담기 위한 sizeOfPerfumes
+        List<PerfumeResult> items= new ArrayList<>();
+        String last_item_id = "";
 
-        // #setsetItems: lastId와 size에 맞게 리스트 조작 후 set
-        // 여기서 perfumeResults 조작
-        searchResultDto.setItems(perfumeResults);
+        // lastId 값에 따라 인덱싱기 위해 사용44
+        boolean isFindUuid = lastId==0? true: false;
 
-        // #setLast_item_id: items 마지막 객체의 id값으로 초기화
-        String LastItemId = ""; // 여기서 값 초기화
-        searchResultDto.setLast_item_id(LastItemId);
+        for (PerfumeResult perfumeResult : perfumeResults) {
+            if(size == 0)
+                break;
+
+            String uuid = perfumeResult.getUuid();
+            if(isFindUuid){
+                items.add(perfumeResult);
+                size--;
+                last_item_id = uuid;
+                continue;
+            }
+
+            // lastId 에 해당하는 uuid 값을 찾은 경우
+            if(uuid.equals(lastId.toString())){
+                // lastId 를 찾았으므로, 다음 perfumeResult부터 add하기 위해 넘김
+                isFindUuid = true;
+            }
+        }
+
+        searchResultDto.setItems(items);
+        searchResultDto.setLast_item_id(last_item_id);
 
         // ResponseData 객체화
         ResponseData data = new ResponseData(searchResultDto);
@@ -73,6 +93,7 @@ public class SearchResultService {
         // ResponseData 반환
         return data;
     }
+
 
     private void increaseWeight(Word baseWord) {
         // WordRepository #findByTypeAndTypeId 이용
