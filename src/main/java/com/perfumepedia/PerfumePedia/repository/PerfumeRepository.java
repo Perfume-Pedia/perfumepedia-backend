@@ -33,7 +33,7 @@ public class PerfumeRepository{
 
     public List<Perfume> findByBrand(Brand brand){
         return em.createQuery("select p from Perfume p where p.brand = :id", Perfume.class)
-                .setParameter("id", brand.getId())
+                .setParameter("id", brand)
                 .getResultList();
     }
 

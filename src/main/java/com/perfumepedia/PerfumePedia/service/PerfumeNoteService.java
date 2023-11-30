@@ -31,6 +31,9 @@ public class PerfumeNoteService {
         } catch (IllegalStateException e) {
             // 데이터베이스에 값이 존재하는 경우
             // 처리하지 않음
+            return perfumeNoteRepository
+                    .findByPerfumeAndNote(perfumeNote.getPerfume(), perfumeNote.getNote())
+                    .get().getId();
         }
         // 데이터베이스에 값이 존재하지 않는 경우
         // PerfumeNoteRepository #save 이용 저장
