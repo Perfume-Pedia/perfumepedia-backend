@@ -26,7 +26,6 @@ public class SearchResultService {
     private final WordService wordService;
 
 
-
     /**
      * 향수 검색 api에 사용됨
      * <p>키워드로 향수 목록을 검색할 때 사용하는 메소드
@@ -85,7 +84,6 @@ public class SearchResultService {
         }
     }
 
-
     /**
      * word의 타입이 Brand 경우 호출
      * <p> perfumeResults에 perfumeResult 객체들 추가
@@ -96,25 +94,11 @@ public class SearchResultService {
 
         List<Perfume> perfumes = perfumeRepository.findByBrand(word.getBrand());
 
-        for(Perfume perfume: perfumes){
-            PerfumeResult perfumeResult = new PerfumeResult();
-
-            // set uuid
-            perfumeResult.setUuid(perfume.getId().toString());
-            // set brand name
-            perfumeResult.setBrand_name(perfume.getBrand().getName());
-            // set perfume name
-            perfumeResult.setPerfume_name(perfume.getName());
-            // set image paht
-            perfumeResult.setImage_path(perfume.getImage().toString());
-            // set created at
-            perfumeResult.setCreated_at(perfume.getDbDate().getCreatedAt());
-
-
-            // perfumeResults #add perfumeResult
+        // createPerfumeResult 메서드 이용해서 저장
+        for (Perfume perfume : perfumes) {
+            PerfumeResult perfumeResult = savePerfumeResult(perfume);
             perfumeResults.add(perfumeResult);
         }
-
     }
 
     /**
@@ -125,62 +109,37 @@ public class SearchResultService {
      */
     private void addPerfumeByPerfume(Word word, List<PerfumeResult> perfumeResults) {
 
+        Optional<Perfume> optionalPerfume = perfumeRepository.findById(word.getTypeId());
 
-        Optional<Perfume> perfume = perfumeRepository.findById(word.getTypeId());
-
-
-        if (perfume.isPresent()) {
-            PerfumeResult perfumeResult = new PerfumeResult();
-
-            // set uuid
-            perfumeResult.setUuid(perfume.get().getId().toString());
-            // set brand name
-            perfumeResult.setBrand_name(perfume.get().getBrand().getName());
-            // set perfume name
-            perfumeResult.setPerfume_name(perfume.get().getName());
-            // set image paht
-            perfumeResult.setImage_path(perfume.get().getImage().toString());
-            // set created at
-            perfumeResult.setCreated_at(perfume.get().getDbDate().getCreatedAt());
-
-        }
-
+        // createPerfumeResult 메서드 이용해서 저장
+        optionalPerfume.ifPresent(perfume -> {
+            PerfumeResult perfumeResult = savePerfumeResult(perfume);
+            perfumeResults.add(perfumeResult);
+        });
     }
 
     /**
      * word의 타입이 Note인 경우 호출
      * <p> perfumeResults에 perfumeResult 객체들 추가
+     * <p>#createPerfumeResult 메서드로 리팩토링
      * @param word
      * @param perfumeResults
      */
     private void addPerfumeByNote(Word word, List<PerfumeResult> perfumeResults) {
 
-
         List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByNote(word.getNote());
 
+        for (PerfumeNote perfumeNote : perfumeNotes) {
+            Optional<Perfume> optionalPerfume = perfumeRepository.findById(perfumeNote.getPerfume().getId());
 
-        for(PerfumeNote perfumeNote: perfumeNotes){
-            // perfumeNote로 부터 Perfume 객체 생성
-            Optional<Perfume> perfume = perfumeRepository.findById(perfumeNote.getPerfume().getId());
-
-            PerfumeResult perfumeResult = new PerfumeResult();
-
-            // set uuid
-            perfumeResult.setUuid(perfume.get().getId().toString());
-            // set brand name
-            perfumeResult.setBrand_name(perfume.get().getBrand().getName());
-            // set perfume name
-            perfumeResult.setPerfume_name(perfume.get().getName());
-            // set image paht
-            perfumeResult.setImage_path(perfume.get().getImage().toString());
-            // set created at
-            perfumeResult.setCreated_at(perfume.get().getDbDate().getCreatedAt());
-
-            perfumeResults.add(perfumeResult);
-
+            // createPerfumeResult 메서드 이용해서 저장
+            if (optionalPerfume.isPresent()) {
+                PerfumeResult perfumeResult = savePerfumeResult(optionalPerfume.get());
+                perfumeResults.add(perfumeResult);
+            }
+        }
         }
 
-    }
 
     /**
      * 선호 향수 api에 사용됨
@@ -190,16 +149,51 @@ public class SearchResultService {
      * @return 향수 목록 반환
      */
     public ResponseData searchByPerfumeId(Long ...ids){
-        //
+        // 값을 담을 perfumeResults 리스트 생성
+        List<PerfumeResult> perfumeResults = new ArrayList<>();
 
+        for (Long id : ids) {
+            Optional<Perfume> optionalPerfume = perfumeRepository.findById(id);
 
-        //
+            // createPerfumeResult 메서드 이용해서 저장
+            optionalPerfume.ifPresent(perfume -> {
+                PerfumeResult perfumeResult = savePerfumeResult(perfume);
+                perfumeResults.add(perfumeResult);
+            });
+        }
+
         SearchResultDto searchResultDto = new SearchResultDto();
+        searchResultDto.setItems(perfumeResults);
+        searchResultDto.setLast_item_id(perfumeResults.get(perfumeResults.size()-1).getUuid());
 
-        //
+
         ResponseData data = new ResponseData(searchResultDto);
 
-        //
         return data;
+
     }
+
+
+    // SearchResultDto 값 저장 메소드
+
+    private PerfumeResult savePerfumeResult(Perfume perfume) {
+        PerfumeResult perfumeResult = new PerfumeResult();
+
+        if (perfume != null) {
+            // set uuid
+            perfumeResult.setUuid(perfume.getId().toString());
+            // set brand name
+            perfumeResult.setBrand_name(perfume.getBrand().getName());
+            // set perfume name
+            perfumeResult.setPerfume_name(perfume.getName());
+            // set image path
+            perfumeResult.setImage_path(perfume.getImage().toString());
+            // set created at
+            perfumeResult.setCreated_at(perfume.getDbDate().getCreatedAt());
+        }
+
+        return perfumeResult;
+    }
+
+
 }
