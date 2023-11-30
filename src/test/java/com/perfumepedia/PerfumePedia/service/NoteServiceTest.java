@@ -3,6 +3,7 @@ package com.perfumepedia.PerfumePedia.service;
 import com.perfumepedia.PerfumePedia.domain.DBDate;
 import com.perfumepedia.PerfumePedia.domain.Note;
 import com.perfumepedia.PerfumePedia.repository.NoteRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -22,10 +23,10 @@ public class NoteServiceTest {
 
     @Autowired NoteService noteService;
     @Autowired NoteRepository noteRepository;
+    @Autowired EntityManager em;
 
     @Test
-    @DisplayName("Save 메소드 호출 테스트")
-    public void save_호출() throws Exception{
+    public void 노트_추가() throws Exception{
         //given
         Note note = new Note("test note name");
 
@@ -33,6 +34,7 @@ public class NoteServiceTest {
         Long savedId = noteService.saveNote(note);
 
         //then
+        em.flush();
         assertNotNull(note.getId());
         assertNotNull(note.getName());
         assertNull(note.getDbDate());
@@ -43,8 +45,7 @@ public class NoteServiceTest {
     }
 
     @Test
-    @DisplayName("중복 검사 테스트")
-    public void 중복_검사() throws Exception{
+    public void 노트_중복_검사() throws Exception{
         //given
         Note note1 = new Note("same note name");
         Note note2 = new Note("same note name");
@@ -60,6 +61,7 @@ public class NoteServiceTest {
         Note noteByNote2 = noteRepository.findById(saveIdByNote2).get();
 
         //then
+        em.flush();
         assertNotNull(note1.getId());
         assertNull(note2.getId());
         assertEquals(saveIdByNote1, saveIdByNote2);

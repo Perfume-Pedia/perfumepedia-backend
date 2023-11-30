@@ -9,11 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-//import static org.apache.catalina.authenticator.jaspic.PersistentProviderRegistrations.log;
 
 @Service
 
-@Slf4j
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PerfumeService {
@@ -30,7 +28,6 @@ public class PerfumeService {
      * @param perfume Perfume 엔티티
      * @return 저장한(save or update or nothing) perfume id
      */
-    //@Slf4j //log
     @Transactional(readOnly = false)
     public Long savePerfume(Perfume perfume){
         try {
@@ -39,7 +36,6 @@ public class PerfumeService {
         } catch (IllegalStateException e) {
             // 데이터베이스에 값이 존재하고, 변경 사항이 있는 경우
             // updatePerfume 호출
-            log.info(e.getMessage());
             return updatePerfume(perfume); // 업데이트 한 경우 기존 perfume의 id return
         }
 
@@ -73,30 +69,11 @@ public class PerfumeService {
         existingPerfume.setPrice(perfume.getPrice());
         existingPerfume.setUrl(perfume.getUrl());
         existingPerfume.getDbDate().setUpdatedAt(perfume.getDbDate().getUpdatedAt());
+        if(existingPerfume.getDiscontinue() != perfume.getDiscontinue()){
+            existingPerfume.setDiscontinue();
+        }
 
         // update한 객체 id 반환
         return existingPerfume.getId();
     }
-
-    //@Slf4j //log
-    @Transactional(readOnly = false)
-    public void updateDiscontinue(Perfume perfume){
-        try {
-            validateNonExistentPerfume(perfume);//중복검사
-        } catch (IllegalStateException e) {//해당 함수가 존재하지 않을 경우
-        }
-        Perfume existingPerfume = perfumeRepository.findByName(perfume.getName())
-                .orElseThrow(NullPointerException::new);
-
-        existingPerfume.setDiscontinue();
-    }
-
-
-
-    private void validateNonExistentPerfume(Perfume perfume) {
-        perfumeRepository.findByName(perfume.getName())
-                .orElseThrow(() -> new IllegalStateException("존재하지 않는 향수입니다."));
-    }
-
-
 }

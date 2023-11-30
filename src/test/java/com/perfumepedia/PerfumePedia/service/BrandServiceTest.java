@@ -4,6 +4,7 @@ package com.perfumepedia.PerfumePedia.service;
 import com.perfumepedia.PerfumePedia.domain.Brand;
 import com.perfumepedia.PerfumePedia.domain.DBDate;
 import com.perfumepedia.PerfumePedia.repository.BrandRepository;
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -22,12 +23,11 @@ import static org.junit.Assert.*;
 public class BrandServiceTest {
 
     @Autowired BrandService brandService;
-    @Autowired
-    BrandRepository brandRepository;
+    @Autowired BrandRepository brandRepository;
+    @Autowired EntityManager em;
     
     @Test
-    @DisplayName("Save 메소드 호출 테스트")
-    public void save_호출() throws Exception{
+    public void 브랜드_추가() throws Exception{
         //given
         Brand brand = new Brand("test brand name");
         brand.setUrl("www.test.url");
@@ -37,12 +37,12 @@ public class BrandServiceTest {
         Long savedId = brandService.saveBrand(brand);
         
         //then
+        em.flush();
         assertEquals(brand.getId(), savedId);
     }
 
     @Test
-    @DisplayName("Update 메소드 호출")
-    public void update_호출() throws Exception{
+    public void 브랜드_업데이트() throws Exception{
         //given
         Brand brand1 = new Brand("same brand name");
         brand1.setUrl("www.first.url");
@@ -57,6 +57,7 @@ public class BrandServiceTest {
         Long saveIdByBrand2 = brandService.saveBrand(brand2);
 
         //then
+        em.flush();
         assertNotNull(brand1.getId());
         assertNull(brand2.getId());
 
