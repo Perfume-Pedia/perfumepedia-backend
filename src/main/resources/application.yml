@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://15.164.129.164:3306/PerfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
     username: PERFUME
-    password: perfume1!
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jackson:

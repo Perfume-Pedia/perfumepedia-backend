@@ -1,17 +1,17 @@
-spring:
-  datasource:
-    url: jdbc:mysql://15.164.129.164:3306/PerfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
-    username: PERFUME
-    password: rnjswodn1!
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-# for test
 #spring:
 #  datasource:
-#    url: jdbc:h2:mem:test
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
+#    url: jdbc:mysql://15.164.129.164:3306/PerfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
+#    username: PERFUME
+#    password: rnjswodn1!
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
+# for test
+spring:
+  datasource:
+    url: jdbc:h2:mem:test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
 
 
 jackson:
