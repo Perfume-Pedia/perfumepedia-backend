@@ -43,9 +43,36 @@ public class PerfumeNoteServiceTest {
         Note note = new Note(noteName);
 
         PerfumeNote topPerfumeNote = new PerfumeNote(topNote);
+
+        topPerfumeNote.setPerfume(perfume);
+        topPerfumeNote.setNote(note);
+
+
+        //when
+        Long savedBrandId = brandService.saveBrand(brand);
+        Long savedPerfumeId = perfumeService.savePerfume(perfume);
+        Long savedNoteId = noteService.saveNote(note);
+        Long savedTopPerfumeNoteId = perfumeNoteService.savePerfumeNote(topPerfumeNote);
+
+        //then
+        em.flush();
+        assertNotNull(topPerfumeNote.getId());
+        assertEquals(savedTopPerfumeNoteId, topPerfumeNote.getId());
+        assertEquals(savedPerfumeId, topPerfumeNote.getPerfume().getId());
+        assertEquals(savedNoteId, topPerfumeNote.getNote().getId());
+
+    }
+
+    @Test
+    public void 향수노트_중복_검사() throws Exception{
+        //given
+        Brand brand = new Brand(brandName);
+        Perfume perfume = new Perfume(perfumeName);
+        perfume.setBrand(brand);
+        Note note = new Note(noteName);
+
+        PerfumeNote topPerfumeNote = new PerfumeNote(topNote);
         PerfumeNote middlePerfumeNote = new PerfumeNote(middleNote);
-        PerfumeNote basePerfumeNote = new PerfumeNote(baseNote);
-        PerfumeNote singlePerfumeNote = new PerfumeNote(singleNote);
 
         topPerfumeNote.setPerfume(perfume);
         topPerfumeNote.setNote(note);
@@ -53,42 +80,18 @@ public class PerfumeNoteServiceTest {
         middlePerfumeNote.setPerfume(perfume);
         middlePerfumeNote.setNote(note);
 
-        basePerfumeNote.setPerfume(perfume);
-        basePerfumeNote.setNote(note);
-
-        singlePerfumeNote.setPerfume(perfume);
-        singlePerfumeNote.setNote(note);
-
         //when
         Long savedBrandId = brandService.saveBrand(brand);
         Long savedPerfumeId = perfumeService.savePerfume(perfume);
         Long savedNoteId = noteService.saveNote(note);
-
         Long savedTopPerfumeNoteId = perfumeNoteService.savePerfumeNote(topPerfumeNote);
         Long savedMiddlePerfumeNoteId = perfumeNoteService.savePerfumeNote(middlePerfumeNote);
-        Long savedBasePerfumeNoteId = perfumeNoteService.savePerfumeNote(basePerfumeNote);
-        Long savedSinglePerfumeNoteId = perfumeNoteService.savePerfumeNote(singlePerfumeNote);
 
         //then
         em.flush();
         assertNotNull(topPerfumeNote.getId());
-//        assertNotNull(middlePerfumeNote.getId());
-//        assertNotNull(basePerfumeNote.getId());
-//        assertNotNull(singlePerfumeNote.getId());
+        assertNull(middlePerfumeNote.getId());
 
-        assertEquals(savedTopPerfumeNoteId, topPerfumeNote.getId());
-//        assertEquals(savedMiddlePerfumeNoteId, middlePerfumeNote.getId());
-//        assertEquals(savedBasePerfumeNoteId, basePerfumeNote.getId());
-//        assertEquals(savedSinglePerfumeNoteId, singlePerfumeNote.getId());
-
-        assertEquals(savedPerfumeId, topPerfumeNote.getPerfume().getId());
-//        assertEquals(savedPerfumeId, middlePerfumeNote.getPerfume().getId());
-//        assertEquals(savedPerfumeId, basePerfumeNote.getPerfume().getId());
-//        assertEquals(savedPerfumeId, singlePerfumeNote.getPerfume().getId());
-
-        assertEquals(savedNoteId, topPerfumeNote.getNote().getId());
-//        assertEquals(savedNoteId, middlePerfumeNote.getNote().getId());
-//        assertEquals(savedNoteId, basePerfumeNote.getNote().getId());
-//        assertEquals(savedNoteId, singlePerfumeNote.getNote().getId());
+        assertEquals(savedMiddlePerfumeNoteId, savedTopPerfumeNoteId);
     }
 }
