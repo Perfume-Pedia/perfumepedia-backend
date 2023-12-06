@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,12 +41,56 @@ public class WordRepository{
                 .getResultList();
     }
 
-    public List<Word> findByTypeAndTypeId(Long typeId, WordType wordType){
-        String jpql = "select w from Word w where w.wordType = :wordType" +
-                " AND (w.brand = :id OR w.note = :id OR w.perfume = :id)";
+    //
+    public List<Word> findByTypeAndTypeId(Long typeId, WordType wordType) {
+        String jpql = "select w from Word w where " + "w." +
+                wordType.name().toLowerCase() +
+                ".id = :id";
+
         return em.createQuery(jpql, Word.class)
                 .setParameter("id", typeId)
-                .setParameter("type", wordType)
                 .getResultList();
     }
+
+    // findByTypeAndTypeId의 여러가지 버전 중 위의 방법을 택함
+
+//    // Join 사용
+//    public List<Word> findByTypeAndTypeId(Long typeId, WordType wordType){
+//        String jpql = "SELECT w FROM Word w " +
+//                "LEFT JOIN w.brand b " +
+//                "LEFT JOIN w.note n " +
+//                "LEFT JOIN w.perfume p " +
+//                "WHERE w.wordType = :wordType " +
+//                "AND (b.id = :id OR n.id = :id OR p.id = :id)";
+//
+//        return em.createQuery(jpql, Word.class)
+//                .setParameter("wordType", wordType)
+//                .setParameter("id", typeId)
+//                .getResultList();
+//    }
+
+//    // 쿼리 분리
+//    public List<Word> findByTypeAndTypeId(Long typeId, WordType wordType) {
+//        List<Word> result = new ArrayList<>();
+//
+//        if (wordType == WordType.BRAND) {
+//            result = em.createQuery("SELECT w FROM Word w WHERE w.wordType = :wordType AND w.brand.id = :id", Word.class)
+//                    .setParameter("wordType", wordType)
+//                    .setParameter("id", typeId)
+//                    .getResultList();
+//        } else if (wordType == WordType.NOTE) {
+//            result = em.createQuery("SELECT w FROM Word w WHERE w.wordType = :wordType AND w.note.id = :id", Word.class)
+//                    .setParameter("wordType", wordType)
+//                    .setParameter("id", typeId)
+//                    .getResultList();
+//        } else if (wordType == WordType.PERFUME) {
+//            result = em.createQuery("SELECT w FROM Word w WHERE w.wordType = :wordType AND w.perfume.id = :id", Word.class)
+//                    .setParameter("wordType", wordType)
+//                    .setParameter("id", typeId)
+//                    .getResultList();
+//        }
+//
+//        return result;
+//    }
+
 }

@@ -3,9 +3,11 @@ package com.perfumepedia.PerfumePedia.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@DynamicUpdate
 public class Brand {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
