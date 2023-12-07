@@ -40,7 +40,7 @@ public class AutoCompleteService {
         // AutoCompleteWordDto #set 메소드들을 활용해 초기화 진행
         for(Word word : words) {
             AutoCompleteWord autoCompleteWord = new AutoCompleteWord();
-            autoCompleteWord.setKeyword(word.getAlias());
+            autoCompleteWord.setKeyword(word.getName());
 
             autoCompleteWords.add(autoCompleteWord);
         }
