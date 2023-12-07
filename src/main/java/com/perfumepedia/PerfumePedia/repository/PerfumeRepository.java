@@ -3,15 +3,17 @@ package com.perfumepedia.PerfumePedia.repository;
 import com.perfumepedia.PerfumePedia.domain.Brand;
 import com.perfumepedia.PerfumePedia.domain.Perfume;
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class PerfumeRepository{
 
-    private EntityManager em;
+    private final EntityManager em;
 
     public void save(Perfume perfume){
         em.persist(perfume);
@@ -31,7 +33,7 @@ public class PerfumeRepository{
 
     public List<Perfume> findByBrand(Brand brand){
         return em.createQuery("select p from Perfume p where p.brand = :id", Perfume.class)
-                .setParameter("id", brand.getId())
+                .setParameter("id", brand)
                 .getResultList();
     }
 

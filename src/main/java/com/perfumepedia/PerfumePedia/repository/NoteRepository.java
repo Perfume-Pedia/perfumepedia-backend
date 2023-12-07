@@ -2,14 +2,16 @@ package com.perfumepedia.PerfumePedia.repository;
 
 import com.perfumepedia.PerfumePedia.domain.Note;
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class NoteRepository {
 
-    private EntityManager em;
+    private final EntityManager em;
 
     public void save(Note note){
         em.persist(note);

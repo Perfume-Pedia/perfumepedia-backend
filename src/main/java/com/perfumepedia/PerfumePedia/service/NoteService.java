@@ -1,10 +1,8 @@
 package com.perfumepedia.PerfumePedia.service;
 
-import com.perfumepedia.PerfumePedia.domain.Brand;
 import com.perfumepedia.PerfumePedia.domain.Note;
 import com.perfumepedia.PerfumePedia.repository.NoteRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +27,7 @@ public class NoteService {
         } catch (IllegalStateException e) {
             // 데이터베이스에 값이 존재하는 경우
             // 처리하지 않음
+            return noteRepository.findByName(note.getName()).get().getId();
         }
         // 데이터베이스에 값이 존재하지 않는 경우
         // NoteRepository #save 이용 저장
@@ -39,7 +38,7 @@ public class NoteService {
 
     private void validateDuplicateNote(Note note) {
         noteRepository.findByName(note.getName())
-                .ifPresent(b->{
+                .ifPresent(n->{
                     throw new IllegalStateException("이미 존재하는 노트입니다.");
                 });
     }

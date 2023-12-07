@@ -4,9 +4,13 @@ package com.perfumepedia.PerfumePedia.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
+
+import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@DynamicUpdate
 public class Word {
 
     @Id
@@ -171,5 +175,12 @@ public class Word {
 
     public DBDate getDbDate() {
         return dbDate;
+    }
+
+    public Long getTypeId(){
+        return Optional.ofNullable(brand).map(Brand::getId)
+                .or(() -> Optional.ofNullable(perfume).map(Perfume::getId))
+                .or(() -> Optional.ofNullable(note).map(Note::getId))
+                .orElse(0L);
     }
 }
