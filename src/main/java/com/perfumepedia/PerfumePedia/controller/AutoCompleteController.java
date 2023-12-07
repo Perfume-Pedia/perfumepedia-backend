@@ -25,8 +25,7 @@ public class AutoCompleteController {
 //    검색어 자동완성 컨트롤
     @GetMapping
     public ResponseData getContainKeyword(
-            @RequestParam(value="keyword",required = true) String keyword,
-            @RequestParam(defaultValue = "5") int limit){
+            @RequestParam(value="keyword",required = true) String keyword){
 
         return autoCompleteService.findKeywords(keyword);
     }

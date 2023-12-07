@@ -166,10 +166,11 @@ public class SearchResultService {
      * 선호 향수 api에 사용됨
      * <p>향수 id들로 향수 목록을 검색할 때 사용하는 메소드
      * <p> ids의 길이만큼(개수만큼) 반환한다.
+     *
      * @param ids id 배열 -> size가 0이어도 됨
      * @return 향수 목록 반환
      */
-    public ResponseData searchByPerfumeId(Long ...ids){
+    public ResponseData searchByPerfumeId(List<Long> ids){
         // 값을 담을 perfumeResults 리스트 생성
         List<PerfumeResult> perfumeResults = new ArrayList<>();
 
