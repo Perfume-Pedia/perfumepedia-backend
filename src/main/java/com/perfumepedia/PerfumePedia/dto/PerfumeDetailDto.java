@@ -21,27 +21,27 @@ public class PerfumeDetailDto {//검색 결과 상세 && 선호 향수 상세
         return uuid;
     }
 
-    public String getBrandName(){
+    public String getBrand_name(){
         return brand_name;
     }
 
-    public String getPerfumeName(){
+    public String getPerfume_name(){
         return perfume_name;
     }
 
-    public List<String> getTopNoteNames(){
+    public List<String> getTop_note_names(){
         return top_note_names;
     }
 
-    public List<String> getMiddleNoteNames(){
+    public List<String> getMiddle_note_names(){
         return middle_note_names;
     }
 
-    public List<String> getBaseNoteNames(){
+    public List<String> getBase_note_names(){
         return base_note_names;
     }
 
-    public List<String> getSingleNoteNames(){
+    public List<String> getSingle_note_names(){
         return single_note_names;
     }
 
@@ -53,11 +53,11 @@ public class PerfumeDetailDto {//검색 결과 상세 && 선호 향수 상세
         return url;
     }
 
-    public String getImagePath() {
+    public String getImage_path() {
         return image_path;
     }
 
-    public Date getCreatedAt() {
+    public Date getCreated_at() {
         return created_at;
     }
 
