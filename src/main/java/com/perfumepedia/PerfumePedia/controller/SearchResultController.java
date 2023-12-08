@@ -31,7 +31,7 @@ public class SearchResultController {
 
     //향수 검색시 실행하는 함수
     @GetMapping("search")
-    public ResponseData getSearchResultDto(
+    public ResponseData getSearchResult(
             @RequestParam(value = "lastId",required = true) Long lastId,
             @RequestParam(value = "size",required = true) int size,
             @RequestParam(value = "keyword",required = true) String keyword
@@ -41,26 +41,26 @@ public class SearchResultController {
 
     //검색한 향수에서 향수 상세 정보 출력하는 함수
     @GetMapping("search/advanced")
-    public ResponseData getPerfumeDetailDto(
-            @RequestParam(value = "perfumeId",required = true) Long perfumeId
+    public ResponseData getPerfumeDetail(
+            @RequestParam(value = "uuid",required = true) Long uuid
     ){
-        return perfumeDetailService.searchPerfumeWithDetail(perfumeId);
+        return perfumeDetailService.searchPerfumeWithDetail(uuid);
     }
 
     //선호 향수(마이페이지) 출력 함수
     @GetMapping("favperfume")
-    public ResponseData getFavPerfumeResultDto(
-            @RequestParam(name = "uuids") List<Long> uuids
+    public ResponseData getFavPerfumeResult(
+            @RequestParam(name = "uuids",required = true) List<Long> uuids
     ){
         return searchResultService.searchByPerfumeId(uuids);
     }
 
     //선호 향수에서 향수 상세 정보 출력하는 함수
     @GetMapping("favperfume/advanced")
-    public ResponseData getFavPerfumeDetailDto(
-            @RequestParam(value = "perfumeId",required = true) Long perfumeId
+    public ResponseData getFavPerfumeDetail(
+            @RequestParam(value = "uuid",required = true) Long uuid
     ){
-        return perfumeDetailService.searchPerfumeWithDetail(perfumeId);
+        return perfumeDetailService.searchPerfumeWithDetail(uuid);
     }
 
 
