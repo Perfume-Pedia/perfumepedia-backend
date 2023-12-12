@@ -6,15 +6,29 @@ import com.perfumepedia.PerfumePedia.domain.WordType;
 import com.perfumepedia.PerfumePedia.repository.NoteRepository;
 import com.perfumepedia.PerfumePedia.service.NoteService;
 import com.perfumepedia.PerfumePedia.service.WordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoteData {
+@Service
+public class NoteDataForNote {
 
-    private NoteRepository noteRepository;
-    private NoteService noteService;
-    private WordService wordService;
+    private final NoteService noteService;
+    private final NoteRepository noteRepository;
+    private final WordService wordService;
+
+    @Autowired
+    public NoteDataForNote(NoteService noteService, NoteRepository noteRepository, WordService wordService) {
+        this.noteService = noteService;
+        this.noteRepository = noteRepository;
+        this.wordService = wordService;
+    }
+
+    // Add your methods related to NoteData here
+
+
 
     public void insertNoteAndWordData(CollectionForm collect) {
 
@@ -23,8 +37,8 @@ public class NoteData {
         WordSplit wordSplit = new WordSplit();
 
         for (Note note : notes) {
-            // note를 쪼개기 위해 noteId 생성
             Long noteId = noteService.saveNote(note);
+            // note를 쪼개기 위해 noteId 생성
 
             // 저장되어 있는 노트의 id으로 note를 불러옴
             Note savedNote = noteRepository.findById(noteId).orElse(null);
@@ -35,7 +49,7 @@ public class NoteData {
 
                 for (String alias : noteNameParts) {
                     // word 객체 생성, 저장
-                    Word word = new Word(alias, collect.getName(), WordType.NOTE);
+                    Word word = new Word(alias, savedNote.getName() , WordType.NOTE);
                     word.setEntity(savedNote);
                     word.setDbDate(collect.getUpdate_at());
 
@@ -59,18 +73,17 @@ public class NoteData {
         return notes;
     }
 
-    List<Note> TopNotes = new ArrayList<>();
-    List<Note> midNotes = new ArrayList<>();
-    List<Note> BaseNotes = new ArrayList<>();
-    List<Note> singleNotes = new ArrayList<>();
-
     // top_nt 데이터를 Note 객체로 변환하여 리스트에 추가
     public List<Note> collectDataToTopNote(CollectionForm collect) {
+    List<Note> TopNotes = new ArrayList<>();
 
         for (String top_nt : collect.getTop_nt()) {
-            Note note = new Note(top_nt);
-            note.setDbDate(collect.getUpdate_at());
+            if (isValidString(top_nt)) {
+                Note note = new Note(top_nt);
+                note.setDbDate(collect.getUpdate_at());
+                TopNotes.add(note);
 
+            }
         }
         return TopNotes;
     }
@@ -78,10 +91,14 @@ public class NoteData {
 
     // Mid_nt 데이터를 Note 객체로 변환하여 리스트에 추가
     public List<Note> collectDataToMidNote(CollectionForm collect) {
+    List<Note> midNotes = new ArrayList<>();
 
         for (String mid_nt : collect.getMid_nt()) {
-            Note note = new Note(mid_nt);
-            note.setDbDate(collect.getUpdate_at());
+            if (isValidString(mid_nt)) {
+                Note note = new Note(mid_nt);
+                note.setDbDate(collect.getUpdate_at());
+                midNotes.add(note);
+            }
         }
         return midNotes;
     }
@@ -89,10 +106,14 @@ public class NoteData {
 
     // Base_nt 데이터를 Note 객체로 변환하여 리스트에 추가
     public List<Note> collectDataToBaseNote(CollectionForm collect) {
+    List<Note> BaseNotes = new ArrayList<>();
 
         for (String base_nt : collect.getBase_nt()) {
-            Note note = new Note(base_nt);
-            note.setDbDate(collect.getUpdate_at());
+            if (isValidString(base_nt)) {
+                Note note = new Note(base_nt);
+                note.setDbDate(collect.getUpdate_at());
+                BaseNotes.add(note);
+            }
         }
         return BaseNotes;
     }
@@ -100,13 +121,23 @@ public class NoteData {
     // Single_nt 데이터를 Note 객체로 변환하여 리스트에 추가
     public List<Note> collectDataToSingleNote(CollectionForm collect) {
 
+    List<Note> singleNotes = new ArrayList<>();
+
         for (String single_nt : collect.getSingle_nt()) {
-            Note note = new Note(single_nt);
-            note.setDbDate(collect.getUpdate_at());
+            if (isValidString(single_nt)) {
+                Note note = new Note(single_nt);
+                note.setDbDate(collect.getUpdate_at());
+                singleNotes.add(note);
+            }
         }
 
         return singleNotes;
+    }
 
+
+
+    private boolean isValidString(String value) {
+        return value != null && !value.trim().isEmpty();
     }
 
 }

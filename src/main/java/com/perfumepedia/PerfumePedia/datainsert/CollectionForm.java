@@ -1,5 +1,6 @@
 package com.perfumepedia.PerfumePedia.datainsert;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +15,7 @@ public class CollectionForm {
     private String perfume_url;
     private String image;
     private String price;
+    private String discontinue;
     private List<String> top_nt;
     private List<String> mid_nt;
     private List<String> base_nt;
@@ -30,6 +32,7 @@ public class CollectionForm {
                 ", perfume_url='" + perfume_url + '\'' +
                 ", image='" + image + '\'' +
                 ", price='" + price + '\'' +
+                ", Discontinue='" + discontinue + '\'' +
                 ", top_nt=" + top_nt +
                 ", mid_nt=" + mid_nt +
                 ", base_nt=" + base_nt +

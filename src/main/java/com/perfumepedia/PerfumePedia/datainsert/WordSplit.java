@@ -11,7 +11,11 @@ public class WordSplit {
 
         for (int i = 0; i < word.length(); i++) {
             for (int j = i + 1; j <= word.length(); j++) {
-                result.add(word.substring(i, j));
+                String subString = word.substring(i, j).trim();
+
+                if(!subString.isEmpty()) {
+                    result.add(subString);
+                }
             }
         }
 
@@ -20,3 +24,9 @@ public class WordSplit {
 
 
 }
+
+/**
+ * 당근 인턴 --> 당근 인턴
+ * 당근인턴  --> 당근 인턴
+ *
+* */
