@@ -1,6 +1,6 @@
 //package com.perfumepedia.PerfumePedia.ReadJsonFileTest;
 //
-//import com.perfumepedia.PerfumePedia.datainsert.CollectionForm;
+//import com.perfumepedia.PerfumePedia.dataForm.CollectionForm;
 //import com.perfumepedia.PerfumePedia.datainsert.ReadJsonFile;
 //import org.junit.jupiter.api.Test;
 //
@@ -81,7 +81,7 @@
 //
 //        System.out.println(firstdate);//package com.perfumepedia.PerfumePedia.ReadJsonFileTest;
 ////
-////import com.perfumepedia.PerfumePedia.datainsert.CollectionForm;
+////import com.perfumepedia.PerfumePedia.dataForm.CollectionForm;
 ////import com.perfumepedia.PerfumePedia.datainsert.ReadJsonFile;
 ////import org.junit.jupiter.api.Test;
 ////

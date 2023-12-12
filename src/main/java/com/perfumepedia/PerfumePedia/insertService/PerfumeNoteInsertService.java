@@ -1,5 +1,6 @@
-package com.perfumepedia.PerfumePedia.datainsert;
+package com.perfumepedia.PerfumePedia.insertService;
 
+import com.perfumepedia.PerfumePedia.dataForm.CollectionForm;
 import com.perfumepedia.PerfumePedia.domain.Note;
 import com.perfumepedia.PerfumePedia.domain.NoteType;
 import com.perfumepedia.PerfumePedia.domain.Perfume;
@@ -12,18 +13,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class PerfumeNoteData {
+public class PerfumeNoteInsertService {
 
     private final PerfumeNoteService perfumeNoteService;
-    private final PerfumeData perfumeData;
-    private final NoteDataForPerfumeNote noteDataForPerfumeNote;
+    private final PerfumeInsertService perfumeInsertService;
+    private final NoteForPerfumeNote noteForPerfumeNote;
     private final PerfumeRepository perfumeRepository;
 
     @Autowired
-    public PerfumeNoteData(PerfumeNoteService perfumeNoteService, PerfumeData perfumeData,  NoteDataForPerfumeNote noteDataForPerfumeNote, PerfumeRepository perfumeRepository) {
+    public PerfumeNoteInsertService(PerfumeNoteService perfumeNoteService, PerfumeInsertService perfumeInsertService, NoteForPerfumeNote noteForPerfumeNote, PerfumeRepository perfumeRepository) {
         this.perfumeNoteService = perfumeNoteService;
-        this.perfumeData = perfumeData;
-        this.noteDataForPerfumeNote = noteDataForPerfumeNote;
+        this.perfumeInsertService = perfumeInsertService;
+        this.noteForPerfumeNote = noteForPerfumeNote;
         this.perfumeRepository =perfumeRepository;
     }
 
@@ -31,11 +32,10 @@ public class PerfumeNoteData {
     public void insertPerfumeNoteData(CollectionForm collect) {
         Perfume perfume = perfumeRepository.findByName(collect.getName()).get();
 
-
-        List<Note> topNote = noteDataForPerfumeNote.insertTopNoteForPerfumeNote(collect);
-        List<Note> midNote = noteDataForPerfumeNote.insertMidNoteForPerfumeNote(collect);
-        List<Note> baseNote = noteDataForPerfumeNote.insertBaseNoteForPerfumeNote(collect);
-        List<Note> singleNote = noteDataForPerfumeNote.insertSingleNoteForPerfumeNote(collect);
+        List<Note> topNote = noteForPerfumeNote.insertTopNoteForPerfumeNote(collect);
+        List<Note> midNote = noteForPerfumeNote.insertMidNoteForPerfumeNote(collect);
+        List<Note> baseNote = noteForPerfumeNote.insertBaseNoteForPerfumeNote(collect);
+        List<Note> singleNote = noteForPerfumeNote.insertSingleNoteForPerfumeNote(collect);
 
         for (Note topNotes : topNote) {
             PerfumeNote perfumeNote = new PerfumeNote(NoteType.TOP);
@@ -69,6 +69,7 @@ public class PerfumeNoteData {
             // PerfumeNote 객체 저장
             perfumeNoteService.savePerfumeNote(perfumeNote);
         }
+
         for (Note singleNotes : singleNote) {
             PerfumeNote perfumeNote = new PerfumeNote(NoteType.SINGLE);
 
@@ -79,7 +80,6 @@ public class PerfumeNoteData {
             // PerfumeNote 객체 저장
             perfumeNoteService.savePerfumeNote(perfumeNote);
         }
-
     }
 }
 

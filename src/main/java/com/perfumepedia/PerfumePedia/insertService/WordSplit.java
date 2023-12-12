@@ -1,4 +1,4 @@
-package com.perfumepedia.PerfumePedia.datainsert;
+package com.perfumepedia.PerfumePedia.insertService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,3 @@ public class WordSplit {
 
 
 }
-
-/**
- * 당근 인턴 --> 당근 인턴
- * 당근인턴  --> 당근 인턴
- *
-* */

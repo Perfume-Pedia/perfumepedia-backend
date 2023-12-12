@@ -2,7 +2,7 @@ package com.perfumepedia.PerfumePedia.readJsonFile;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.perfumepedia.PerfumePedia.datainsert.AliasForm;
+import com.perfumepedia.PerfumePedia.dataForm.AliasForm;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,4 +30,5 @@ public class ReadAliasJsonFile {
             return null;
         }
     }
+
 }

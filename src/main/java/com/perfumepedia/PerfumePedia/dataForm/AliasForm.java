@@ -1,4 +1,4 @@
-package com.perfumepedia.PerfumePedia.datainsert;
+package com.perfumepedia.PerfumePedia.dataForm;
 
 import lombok.Getter;
 import lombok.Setter;

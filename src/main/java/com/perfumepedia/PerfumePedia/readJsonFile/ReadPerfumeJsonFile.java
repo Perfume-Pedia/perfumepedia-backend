@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.perfumepedia.PerfumePedia.datainsert.CollectionForm;
+import com.perfumepedia.PerfumePedia.dataForm.CollectionForm;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,4 +31,5 @@ public class ReadPerfumeJsonFile {
             return null;
         }
     }
+
 }

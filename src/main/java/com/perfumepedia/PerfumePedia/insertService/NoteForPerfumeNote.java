@@ -1,8 +1,8 @@
-package com.perfumepedia.PerfumePedia.datainsert;
+package com.perfumepedia.PerfumePedia.insertService;
 
+import com.perfumepedia.PerfumePedia.dataForm.CollectionForm;
 import com.perfumepedia.PerfumePedia.domain.Note;
 import com.perfumepedia.PerfumePedia.repository.NoteRepository;
-import com.perfumepedia.PerfumePedia.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,16 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class NoteDataForPerfumeNote {
+public class NoteForPerfumeNote {
 
     private final NoteRepository noteRepository;
 
-
     @Autowired
-    public NoteDataForPerfumeNote(NoteRepository noteRepository) {
+    public NoteForPerfumeNote(NoteRepository noteRepository) {
         this.noteRepository = noteRepository;
-
     }
+
+
     // 퍼퓸 노트를 위한 탑노트 리스트
     public List<Note> insertTopNoteForPerfumeNote(CollectionForm collect) {
         List<Note> topNotes = new ArrayList<>();
@@ -28,13 +28,10 @@ public class NoteDataForPerfumeNote {
             if (isValidString(top_nt)) {
                 Note note = noteRepository.findByName(top_nt).get();
                 topNotes.add(note);
-
             }
         }
         return topNotes;
     }
-
-
 
 
     // 퍼퓸 노트를 위한 미들노트 리스트
@@ -47,15 +44,11 @@ public class NoteDataForPerfumeNote {
                 midNotes.add(note);
             }
         }
-
         return midNotes;
     }
 
 
-
-
     // 퍼퓸 노트를 위한 베이스노트 리스트
-
     public List<Note> insertBaseNoteForPerfumeNote(CollectionForm collect) {
         List<Note> baseNotes = new ArrayList<>();
 
@@ -69,7 +62,6 @@ public class NoteDataForPerfumeNote {
     }
 
 
-
     //  퍼퓸 노트를 위한 싱글노트 리스트
     public List<Note> insertSingleNoteForPerfumeNote(CollectionForm collect) {
         List<Note> singleNotes = new ArrayList<>();
@@ -80,11 +72,8 @@ public class NoteDataForPerfumeNote {
                 singleNotes.add(note);
             }
         }
-
         return singleNotes;
     }
-
-
 
 
     // 유효성 검사

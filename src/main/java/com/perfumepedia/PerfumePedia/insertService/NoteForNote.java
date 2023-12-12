@@ -1,5 +1,6 @@
-package com.perfumepedia.PerfumePedia.datainsert;
+package com.perfumepedia.PerfumePedia.insertService;
 
+import com.perfumepedia.PerfumePedia.dataForm.CollectionForm;
 import com.perfumepedia.PerfumePedia.domain.Note;
 import com.perfumepedia.PerfumePedia.domain.Word;
 import com.perfumepedia.PerfumePedia.domain.WordType;
@@ -13,14 +14,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class NoteDataForNote {
+public class NoteForNote {
 
     private final NoteService noteService;
     private final NoteRepository noteRepository;
     private final WordService wordService;
 
     @Autowired
-    public NoteDataForNote(NoteService noteService, NoteRepository noteRepository, WordService wordService) {
+    public NoteForNote(NoteService noteService, NoteRepository noteRepository, WordService wordService) {
         this.noteService = noteService;
         this.noteRepository = noteRepository;
         this.wordService = wordService;
@@ -118,6 +119,7 @@ public class NoteDataForNote {
         return BaseNotes;
     }
 
+
     // Single_nt 데이터를 Note 객체로 변환하여 리스트에 추가
     public List<Note> collectDataToSingleNote(CollectionForm collect) {
 
@@ -130,10 +132,8 @@ public class NoteDataForNote {
                 singleNotes.add(note);
             }
         }
-
         return singleNotes;
     }
-
 
 
     private boolean isValidString(String value) {
