@@ -1,5 +1,6 @@
 package com.perfumepedia.PerfumePedia.service;
 
+import com.perfumepedia.PerfumePedia.domain.Brand;
 import com.perfumepedia.PerfumePedia.domain.Word;
 import com.perfumepedia.PerfumePedia.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,16 +23,24 @@ public class WordService {
      */
     @Transactional(readOnly = false)
     public Long saveWord(Word word){
-        // 데이터베이스에 값이 존재하지 않는 경우
-        // WordRepository #save 이용 저장
+        try {
+            validateDuplicateWord(word);
+        } catch (IllegalStateException e) {
+            // 데이터베이스에 값이 존재하는 경우
+            // 처리하지 않음
+        }
+        wordRepository.save(word);  // WordRepository #save 이용 저장
+        return word.getId();  // 저장한 경우 note의 id return
 
-        // 데이터베이스에 값이 존재하는 경우
-        // 처리하지 않음
-
-        // 저장한 경우 note의 id return
-
-        return null;
     }
+
+    private void validateDuplicateWord(Word word) {
+        wordRepository.findByAliasAndName(word.getAlias(), word.getName())
+                .ifPresent(w->{
+                    throw new IllegalStateException("이미 존재하는 단어(별칭)입니다.");
+                });
+    }
+
 
     /**
      * Update
@@ -41,11 +50,16 @@ public class WordService {
      */
     @Transactional(readOnly = false)
     public Long increaseWeight(Word word){
+
+        Word existingWord = wordRepository.findByAliasAndName(word.getAlias(), word.getName())
+                .orElseThrow(NullPointerException::new);
         // Domain #set 이용 변경사항 수정
         // weight, updatedAt만 수정 가능
         // weight +1 증가
+        existingWord.increaseWeight();
+        existingWord.getDbDate().setUpdatedAt(word.getDbDate().getUpdatedAt());
 
         // update한 객체 id 반환
-        return null;
+        return existingWord.getId();
     }
 }

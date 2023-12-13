@@ -24,20 +24,29 @@ public class BrandService {
      */
     @Transactional(readOnly = false)
     public Long saveBrand(Brand brand) {
-        // 데이터베이스에 값이 존재하지 않는 경우
+        try {
+            validateDuplicateBrand(brand);  // 중복 검사
+        } catch (IllegalStateException e) {
+
+            // 데이터베이스에 값이 존재하고, 변경 사항이 있는 경우
+            // updateBrand 호출
+            return updateBrand(brand); // 업데이트 한 경우 기존 brand의 id return
+        }
+
         // BrandRepository #save 이용 저장
-
-        // 데이터베이스에 값이 존재하고, 변경 사항이 있는 경우
-        // updateBrand 호출
-
-        // 데이터베이스에 값이 존재하고, 변경 사항이 없는 경우
-        // 처리하지 않음
-
-        // 저장한 경우 brand의 id return
-        // 업데이트 한 경우 기존 brand의 id return
-        // nothing 인 경우 기존 brand의 id return
-        return null;
+        brandRepository.save(brand);  // 중복이 없을 경우에만 저장
+        return brand.getId();  // 저장한 경우 brand의 id return
     }
+
+
+    // 중복 검사
+    private void validateDuplicateBrand(Brand brand) {
+        brandRepository.findByName(brand.getName())
+                .ifPresent(b->{
+                    throw new IllegalStateException("이미 존재하는 브랜드입니다.");
+                });
+    }
+
 
     /**
      * Update
@@ -47,10 +56,16 @@ public class BrandService {
      */
     @Transactional(readOnly = false)
     public Long updateBrand(Brand brand){
-        // Domain #set 이용 변경사항 수정
-        // url과 updatedAt만 수정 가능
 
-        // update한 객체 id 반환
-        return null;
+        Brand existingBrand = brandRepository.findByName(brand.getName())
+                .orElseThrow(NullPointerException::new);
+        // url과 updatedAt만 수정 가능
+        // Domain #set 이용 변경사항 수정
+        existingBrand.setUrl(brand.getUrl());
+        existingBrand.getDBDate().setUpdatedAt(brand.getDBDate().getUpdatedAt());
+
+        return existingBrand.getId(); // update한 객체 id 반환
+
     }
 }
+
