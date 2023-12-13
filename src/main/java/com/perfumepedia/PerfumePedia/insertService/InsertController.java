@@ -19,9 +19,6 @@ public class InsertController {
     String JsonFileName = "static/json/perfume_json.json";
     String aliasFileName = "static/json/perfume_alias.json";
 
-    ReadPerfumeJsonFile jsonReader = new ReadPerfumeJsonFile();
-    ReadAliasJsonFile readAliasJsonFile = new ReadAliasJsonFile();
-
     List<CollectionForm> perfumes;
     List<AliasForm> alias;
 
@@ -29,16 +26,12 @@ public class InsertController {
     private final PerfumeInsertService perfumeInsertService;
     private final NoteForNote noteData;
     private final PerfumeNoteInsertService perfumeNoteInsertService;
-    private final NoteService noteService;
-    private final WordService wordService;
     private final WordInsertService wordInsertService;
 
     @Autowired
     public InsertController(
             ReadPerfumeJsonFile jsonReader,
             ReadAliasJsonFile readAliasJsonFile,
-            NoteService noteService,
-            WordService wordService,
             BrandInsertService brandInsertService,
             PerfumeInsertService perfumeInsertService,
             NoteForNote noteData,
@@ -48,10 +41,6 @@ public class InsertController {
     ) {
         this.perfumes = jsonReader.readJsonFile(JsonFileName);
         this.alias = readAliasJsonFile.readAliasFile(aliasFileName);
-        this.jsonReader = jsonReader;
-        this.readAliasJsonFile = readAliasJsonFile;
-        this.noteService = noteService;
-        this.wordService = wordService;
         this.brandInsertService = brandInsertService;
         this.perfumeInsertService = perfumeInsertService;
         this.noteData = noteData;

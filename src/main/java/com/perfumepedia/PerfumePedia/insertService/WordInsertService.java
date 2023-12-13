@@ -15,8 +15,6 @@ import java.util.List;
 
 @Service
 public class WordInsertService {
-
-    private final NoteService noteService;
     private final NoteRepository noteRepository;
     private final WordService wordService;
     private final ReadAliasJsonFile readAliasJsonFile;
@@ -24,12 +22,10 @@ public class WordInsertService {
 
     @Autowired
     public WordInsertService(
-            NoteService noteService,
             NoteRepository noteRepository,
             WordService wordService,
             ReadAliasJsonFile readAliasJsonFile)
     {
-        this.noteService = noteService;
         this.noteRepository = noteRepository;
         this.wordService = wordService;
         this.readAliasJsonFile = readAliasJsonFile;

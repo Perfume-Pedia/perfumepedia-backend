@@ -16,14 +16,12 @@ import java.util.List;
 public class PerfumeNoteInsertService {
 
     private final PerfumeNoteService perfumeNoteService;
-    private final PerfumeInsertService perfumeInsertService;
     private final NoteForPerfumeNote noteForPerfumeNote;
     private final PerfumeRepository perfumeRepository;
 
     @Autowired
-    public PerfumeNoteInsertService(PerfumeNoteService perfumeNoteService, PerfumeInsertService perfumeInsertService, NoteForPerfumeNote noteForPerfumeNote, PerfumeRepository perfumeRepository) {
+    public PerfumeNoteInsertService(PerfumeNoteService perfumeNoteService, NoteForPerfumeNote noteForPerfumeNote, PerfumeRepository perfumeRepository) {
         this.perfumeNoteService = perfumeNoteService;
-        this.perfumeInsertService = perfumeInsertService;
         this.noteForPerfumeNote = noteForPerfumeNote;
         this.perfumeRepository =perfumeRepository;
     }

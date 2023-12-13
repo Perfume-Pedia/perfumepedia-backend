@@ -20,7 +20,7 @@ public class ReadAliasJsonFile {
             InputStream inputStream = ReadAliasJsonFile.class.getClassLoader().getResourceAsStream(jsonFileName);
 
             if (inputStream != null) {
-                return mapper.readValue(inputStream, new TypeReference<List<AliasForm>>() {});
+                return mapper.readValue(inputStream, new TypeReference<>() {});
             } else {
                 System.out.println("JSON file not found!");
                 return null;

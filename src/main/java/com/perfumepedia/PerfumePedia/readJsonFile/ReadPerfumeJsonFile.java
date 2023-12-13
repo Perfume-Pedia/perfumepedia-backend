@@ -21,7 +21,7 @@ public class ReadPerfumeJsonFile {
             InputStream inputStream = ReadPerfumeJsonFile.class.getClassLoader().getResourceAsStream(jsonFileName);
 
             if (inputStream != null) {
-                return mapper.readValue(inputStream, new TypeReference<List<CollectionForm>>() {});
+                return mapper.readValue(inputStream, new TypeReference<>() {});
             } else {
                 System.out.println("JSON file not found!");
                 return null;
