@@ -43,7 +43,7 @@ public class SearchResultService {
         // words 목록을 이용해 각 별칭에 맞는 향수 목록 저장
         for(Word word: words){
             // word와 연관된 word 객체들의 가중치 증가 -> lastId가 0인 경우만(첫 검색시)
-            if(lastId!=0)
+            if(lastId==0)
                 increaseWeight(word);
 
             // word의 wordType에 따라 처리
