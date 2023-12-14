@@ -1,4 +1,4 @@
-package com.perfumepedia.PerfumePedia.datainsert;
+package com.perfumepedia.PerfumePedia.insertService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,11 @@ public class WordSplit {
 
         for (int i = 0; i < word.length(); i++) {
             for (int j = i + 1; j <= word.length(); j++) {
-                result.add(word.substring(i, j));
+                String subString = word.substring(i, j).trim();
+
+                if(!subString.isEmpty()) {
+                    result.add(subString);
+                }
             }
         }
 

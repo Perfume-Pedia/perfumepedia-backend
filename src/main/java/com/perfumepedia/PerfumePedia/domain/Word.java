@@ -4,11 +4,13 @@ package com.perfumepedia.PerfumePedia.domain;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.Optional;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@DynamicUpdate
 public class Word {
 
     @Id

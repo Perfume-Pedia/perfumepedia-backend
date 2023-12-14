@@ -1,19 +1,30 @@
-package com.perfumepedia.PerfumePedia.datainsert;
+package com.perfumepedia.PerfumePedia.insertService;
 
+
+import com.perfumepedia.PerfumePedia.dataForm.CollectionForm;
 import com.perfumepedia.PerfumePedia.domain.Brand;
 import com.perfumepedia.PerfumePedia.domain.Word;
 import com.perfumepedia.PerfumePedia.domain.WordType;
 import com.perfumepedia.PerfumePedia.repository.BrandRepository;
 import com.perfumepedia.PerfumePedia.service.BrandService;
 import com.perfumepedia.PerfumePedia.service.WordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Service
+public class BrandInsertService {
 
-public class BrandData {
+    private final BrandService brandService;
+    private final BrandRepository brandRepository;
+    private final WordService wordService;
 
-    private BrandService brandService;
-    private BrandRepository brandRepository;
-    private WordService wordService;
+    @Autowired
+    public BrandInsertService(BrandService brandService, BrandRepository brandRepository, WordService wordService) {
+        this.brandService = brandService;
+        this.brandRepository = brandRepository;
+        this.wordService = wordService;
+    }
 
 
     public void insertBrandAndWordData(CollectionForm collect) {

@@ -1,25 +1,38 @@
-package com.perfumepedia.PerfumePedia.datainsert;
+package com.perfumepedia.PerfumePedia.insertService;
 
-import com.perfumepedia.PerfumePedia.domain.Brand;
-import com.perfumepedia.PerfumePedia.domain.Perfume;
-import com.perfumepedia.PerfumePedia.domain.Word;
-import com.perfumepedia.PerfumePedia.domain.WordType;
+import com.perfumepedia.PerfumePedia.domain.*;
 import com.perfumepedia.PerfumePedia.repository.BrandRepository;
 import com.perfumepedia.PerfumePedia.repository.PerfumeRepository;
-import com.perfumepedia.PerfumePedia.service.BrandService;
 import com.perfumepedia.PerfumePedia.service.PerfumeService;
 import com.perfumepedia.PerfumePedia.service.WordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.perfumepedia.PerfumePedia.dataForm.CollectionForm;
+
 
 import java.util.List;
 import java.util.Optional;
 
-public class PerfumeData {
+@Service
+public class PerfumeInsertService {
 
-    private PerfumeService perfumeService;
-    private PerfumeRepository perfumeRepository;
-    private WordService wordService;
-    private BrandRepository brandRepository;
 
+    private final PerfumeService perfumeService;
+    private final PerfumeRepository perfumeRepository;
+    private final WordService wordService;
+    private final BrandRepository brandRepository;
+
+    @Autowired
+    public PerfumeInsertService(
+            PerfumeService perfumeService,
+            PerfumeRepository perfumeRepository,
+            WordService wordService,
+            BrandRepository brandRepository) {
+        this.perfumeService = perfumeService;
+        this.perfumeRepository = perfumeRepository;
+        this.wordService = wordService;
+        this.brandRepository = brandRepository;
+    }
 
 
     public void insertPerfumeAndWordData(CollectionForm collect) {
@@ -52,11 +65,29 @@ public class PerfumeData {
         Perfume perfume = new Perfume(collect.getName());
 
         // CollectionForm의 데이터를 Perfume 객체에 set
-        perfume.setPrice(Integer.parseInt(collect.getPrice()));
+        try {
+            String priceString = collect.getPrice();
+            if (priceString != null && !priceString.isEmpty()) {
+                perfume.setPrice(Integer.parseInt(priceString));
+            } else {
+                // priceString이 null이거나 비어있는 경우에 대한 처리
+                // 예: 0 또는 다른 기본 값으로 설정
+                perfume.setPrice(0);
+            }
+        } catch (NumberFormatException e) {
+            // 숫자로 변환할 수 없는 경우에 대한 예외 처리
+            // 예: 기본 값으로 설정
+            perfume.setPrice(0);
+        }
         perfume.setUrl(collect.getPerfume_url());
         perfume.setImage(collect.getName(), collect.getImage());
         perfume.setDbDate(collect.getUpdate_at());
-        perfume.setDiscontinue();
+
+        // 엑셀 데이터의 DISCONTINUE 상태가 변화했을 경우
+        // setDiscontinue 호출
+        if(collect.getDiscontinue().equals("DISCONTINUE")) {
+            perfume.setDiscontinue();
+        }
 
         // CollectionForm의 Brand를 가져와 brandName에 저장
         String brandName = collect.getBrand();
@@ -66,7 +97,6 @@ public class PerfumeData {
         optionalBrand.ifPresent(perfume::setBrand);
 
         return perfume;
-
     }
 
 }

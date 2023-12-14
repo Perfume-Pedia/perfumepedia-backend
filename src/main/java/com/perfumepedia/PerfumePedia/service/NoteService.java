@@ -35,7 +35,6 @@ public class NoteService {
         return note.getId();  // 저장한 경우 note의 id return
 
     }
-
     private void validateDuplicateNote(Note note) {
         noteRepository.findByName(note.getName())
                 .ifPresent(n->{
