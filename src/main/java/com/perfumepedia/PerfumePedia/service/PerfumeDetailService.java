@@ -73,9 +73,9 @@ public class PerfumeDetailService {
 
             }
             perfumeDetailDto.setTop_note_names(topNoteNames);
-            perfumeDetailDto.setTop_note_names(middleNoteNames);
-            perfumeDetailDto.setTop_note_names(baseNoteNames);
-            perfumeDetailDto.setTop_note_names(singleNoteNames);
+            perfumeDetailDto.setMiddle_note_names(middleNoteNames);
+            perfumeDetailDto.setBase_note_names(baseNoteNames);
+            perfumeDetailDto.setSingle_note_names(singleNoteNames);
 
         }
 
