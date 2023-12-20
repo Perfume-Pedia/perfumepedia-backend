@@ -80,10 +80,46 @@ public class ReadPerfumeJsonFileTest {
         CollectionForm firstPerfume = perfumes.get(0);
         String firstdate = "2023-11-16";
 
-        System.out.println(firstdate);
-        System.out.println(firstPerfume.getUpdate_at());
-
         assertEquals(firstdate, firstPerfume.getUpdate_at());
 
+    }
+
+    @Test
+    public void 수집_향수_개수_확인() {
+        List<CollectionForm> perfumes = readPerfumeJsonFile.readJsonFile(jsonFileName);
+        long colletPerfume = 306;
+        long perfumesSize = perfumes.size();
+        assertEquals(colletPerfume, perfumesSize);
+    }
+
+    @Test
+    public void 유효성_확인() {
+        List<CollectionForm> perfumes = readPerfumeJsonFile.readJsonFile(jsonFileName);
+
+        for(int i = 0; i < perfumes.size(); i++) {
+            CollectionForm collect = perfumes.get(i);
+
+            // brand가  null 또는 빈 문자열인지 확인
+            assertNotNull(collect.getBrand());
+            assertNotEquals(" ", collect.getBrand().trim());
+
+
+            // brand_url, perfume_url, price, image 는 현재 null값 임
+
+
+            // perfume(name) 이 null 또는 빈 문자열인지 확인
+            assertNotNull(collect.getName());
+            assertNotEquals(" ", collect.getName().trim());
+
+
+
+//            // image 이 null 또는 빈 문자열인지 확인
+//            assertNotNull(collect.getImage());
+//            assertNotEquals(" ", collect.getImage().trim());
+
+
+
+
+        }
     }
 }
