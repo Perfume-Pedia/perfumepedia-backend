@@ -103,22 +103,12 @@ public class ReadPerfumeJsonFileTest {
             assertNotNull(collect.getBrand());
             assertNotEquals(" ", collect.getBrand().trim());
 
-
-            // brand_url, perfume_url, price, image 는 현재 null값 임
-
-
             // perfume(name) 이 null 또는 빈 문자열인지 확인
             assertNotNull(collect.getName());
             assertNotEquals(" ", collect.getName().trim());
 
 
-
-//            // image 이 null 또는 빈 문자열인지 확인
-//            assertNotNull(collect.getImage());
-//            assertNotEquals(" ", collect.getImage().trim());
-
-
-
+            // brand_url, perfume_url, price, image 는 현재 null값 임
 
         }
     }
