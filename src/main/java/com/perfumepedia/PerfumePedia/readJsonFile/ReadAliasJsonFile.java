@@ -17,10 +17,12 @@ public class ReadAliasJsonFile {
 
         try {
             // JSON 파일을 PerfumeAlias 객체의 List로 읽어옴
-            InputStream inputStream = ReadAliasJsonFile.class.getClassLoader().getResourceAsStream(jsonFileName);
+//            InputStream inputStream = ReadAliasJsonFile.class.getClassLoader().getResourceAsStream(jsonFileName);
+//            InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(jsonFileName);
+            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(jsonFileName);
 
             if (inputStream != null) {
-                return mapper.readValue(inputStream, new TypeReference<>() {});
+                return mapper.readValue(inputStream, new TypeReference<List<AliasForm>>() {});
             } else {
                 System.out.println("JSON file not found!");
                 return null;
@@ -29,6 +31,6 @@ public class ReadAliasJsonFile {
             e.printStackTrace();
             return null;
         }
-    }
 
+    }
 }
