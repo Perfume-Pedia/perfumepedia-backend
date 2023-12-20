@@ -53,7 +53,7 @@ public class BrandInsertService {
     }
 
 
-    private Brand collectDataToBrand(CollectionForm collect) {
+    public Brand collectDataToBrand(CollectionForm collect) {
         Brand brand = new Brand(collect.getBrand());
 
         // CollectionForm의 데이터를 Brand 객체에 set
