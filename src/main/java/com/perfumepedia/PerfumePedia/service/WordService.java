@@ -28,6 +28,7 @@ public class WordService {
         } catch (IllegalStateException e) {
             // 데이터베이스에 값이 존재하는 경우
             // 처리하지 않음
+            return wordRepository.findByAliasAndName(word.getAlias(), word.getName()).get().getId();
         }
         wordRepository.save(word);  // WordRepository #save 이용 저장
         return word.getId();  // 저장한 경우 note의 id return
