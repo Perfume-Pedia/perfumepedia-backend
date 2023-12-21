@@ -17,10 +17,10 @@ import java.util.List;
 @RequestMapping("/")
 public class PageApiController {
 
-    @GetMapping
-    public String homePage(){//메인 페이지
-        return "index";
-    }
+//    @GetMapping()
+//    public String homePage(){//메인 페이지
+//        return "";
+//    }
 
 }
 
