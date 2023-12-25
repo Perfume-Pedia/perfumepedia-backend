@@ -57,7 +57,7 @@ public class SearchResultController {
 
     //선호 향수(마이페이지) 출력 함수
     @Tag(name = "선호 향수", description = "입력한 uuids에 따라 선호 향수 목록을 반환하는 API")
-    @Parameter(name = "uuids", description = "향수 id들의 값", example = "123,700,400")
+    @Parameter(name = "uuids", description = "향수 id들의 값", example = "123,20,100")
     @GetMapping("favperfume")
     public ResponseData getFavPerfumeResult(
             @RequestParam(name = "uuids",required = true) List<Long> uuids
