@@ -59,7 +59,7 @@ public class PerfumeServiceTest {
         assertEquals(savedId, perfume.getId());
 
         assertNotNull(brand.getId());
-        assertEquals(savedId, perfume.getBrand().getId());
+        assertEquals(savedBrandId, perfume.getBrand().getId());
 
         assertEquals(perfumeUrl, perfume.getUrl());
         assertEquals(perfumeName, perfume.getName());
