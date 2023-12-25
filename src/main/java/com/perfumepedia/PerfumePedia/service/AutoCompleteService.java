@@ -1,13 +1,17 @@
 package com.perfumepedia.PerfumePedia.service;
 
 import com.perfumepedia.PerfumePedia.domain.Word;
+import com.perfumepedia.PerfumePedia.dto.AutoCompleteWord;
 import com.perfumepedia.PerfumePedia.dto.AutoCompleteWordDto;
 import com.perfumepedia.PerfumePedia.dto.ResponseData;
 import com.perfumepedia.PerfumePedia.repository.WordRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.perfumepedia.PerfumePedia.dto.AutoCompleteWordDto;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,15 +28,26 @@ public class AutoCompleteService {
      * @return AutoCompleteWordDto 객체를 반환합니다.
      */
     public ResponseData findKeywords(String keyword){
-        AutoCompleteWordDto autoCompleteWordDto = new AutoCompleteWordDto();
-
-        // WordRepository #findByAlias 사용
-        // #findByAlias에 의해 Word 객체 List 반횐됨
-        // 자동으로 5개 이하의 결과가 반환되며, desc sort 돼 있음
+        // keyword를 기반으로 레포지토리에서 단어들을 가져옴 (5개)
         List<Word> words = wordRepository.findByAlias(keyword);
 
-        // AutoCompleteWordDto #set 메소드들을 활용해 초기화 진행
+        // AutoCompleteWordDto 객체 생성
+        AutoCompleteWordDto autoCompleteWordDto = new AutoCompleteWordDto();
 
+        // AutoCompleteWords 생성
+        List<AutoCompleteWord> autoCompleteWords = new ArrayList<>();
+
+        // AutoCompleteWordDto #set 메소드들을 활용해 초기화 진행
+        for(Word word : words) {
+            AutoCompleteWord autoCompleteWord = new AutoCompleteWord();
+            autoCompleteWord.setKeyword(word.getName());
+
+            autoCompleteWords.add(autoCompleteWord);
+        }
+
+        // AutoCompleteWordDto #setItems 이용
+        autoCompleteWordDto.setItems(autoCompleteWords);
+        autoCompleteWordDto.setItem_count(words.size());
 
         // ResponseData 객체화
         ResponseData data = new ResponseData(autoCompleteWordDto);
@@ -40,4 +55,6 @@ public class AutoCompleteService {
         // 객체화한 ResponseData 반환
         return data;
     }
+
+
 }

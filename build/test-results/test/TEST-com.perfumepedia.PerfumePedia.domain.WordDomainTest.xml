@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.perfumepedia.PerfumePedia.domain.WordDomainTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2023-12-14T04:56:58" hostname="gimgyeong-eun-ui-MacBookAir.local" time="0.007">
+  <properties/>
+  <testcase name="dbDate_초기화" classname="com.perfumepedia.PerfumePedia.domain.WordDomainTest" time="0.001"/>
+  <testcase name="관계형_메소드_note_연결" classname="com.perfumepedia.PerfumePedia.domain.WordDomainTest" time="0.0"/>
+  <testcase name="기본생성자_제한" classname="com.perfumepedia.PerfumePedia.domain.WordDomainTest" time="0.001"/>
+  <testcase name="관계형_메소드_perfume_연결" classname="com.perfumepedia.PerfumePedia.domain.WordDomainTest" time="0.001"/>
+  <testcase name="관계형_메소드_brand_연결" classname="com.perfumepedia.PerfumePedia.domain.WordDomainTest" time="0.001"/>
+  <testcase name="매개변수가_있는_생성자_정상" classname="com.perfumepedia.PerfumePedia.domain.WordDomainTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

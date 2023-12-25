@@ -5,6 +5,7 @@ spring:
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
+
   jackson:
     serialization:
       FAIL_ON_EMPTY_BEANS: false
@@ -21,3 +22,13 @@ logging:
   level:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+springdoc:
+  packages-to-scan: com.perfumepedia.PerfumePedia
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /swagger
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha
