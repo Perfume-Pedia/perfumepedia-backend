@@ -29,7 +29,7 @@ public class PerfumeResult {
             // set perfume name
             setPerfume_name(perfume.getName());
             // set image path
-            setImage_path(perfume.getImage().toString());
+            setImage_path(perfume.getImage().getPath());
             // set created at
             setCreated_at(perfume.getDbDate().getCreatedAt());
         }

@@ -122,7 +122,7 @@ public class PerfumeResultServiceTest {
     }
 
     @Test
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void 향수이름으로_검색() throws Exception{
         //given
         Long lastId = 0l;
@@ -143,7 +143,7 @@ public class PerfumeResultServiceTest {
     }
 
     @Test
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void 없는_키워드_검색() throws Exception{
         //given
         Long lastId = 0l;
@@ -166,8 +166,12 @@ public class PerfumeResultServiceTest {
 
 
     @Test
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void 향수검색_가중치_정렬_확인() throws Exception{
+        Long startId = perfumeRepository.findByName("perfumeName1").orElseThrow(
+                () -> new IllegalArgumentException("perfumeName1 은 없는 향수 이름 입니다.")
+        ).getId();
+
         //given
         Long lastId = 0l;
         int size = 6;
@@ -207,34 +211,30 @@ public class PerfumeResultServiceTest {
         assertNotNull(perfumeResults);
 
         assertEquals(5, perfumeResults.size());
-        boolean keywordId1IsExists = perfumeResults.stream()
-                .anyMatch(perfumeResult -> keywordId1.toString().equals(perfumeResult.getUuid()));
-        assertTrue("The UUID '" + keywordId1 + "' should exist in the list", keywordId1IsExists);
 
-        boolean keywordId2IsExists = perfumeResults.stream()
-                .anyMatch(perfumeResult -> keywordId2.toString().equals(perfumeResult.getUuid()));
-        assertTrue("The UUID '" + keywordId2 + "' should exist in the list", keywordId2IsExists);
+        for(Long id: ids){
+            Long finalId = id + startId -1;
 
-        boolean keywordId3IsExists = perfumeResults.stream()
-                .anyMatch(perfumeResult -> keywordId3.toString().equals(perfumeResult.getUuid()));
-        assertTrue("The UUID '" + keywordId3 + "' should exist in the list", keywordId3IsExists);
+            boolean keywordId1IsExists = perfumeResults.stream()
+                    .anyMatch(perfumeResult -> finalId.toString().equals(perfumeResult.getUuid()));
+            assertTrue("The UUID '" + finalId + "' should exist in the list", keywordId1IsExists);
 
-        boolean keywordId4IsExists = perfumeResults.stream()
-                .anyMatch(perfumeResult -> keywordId4.toString().equals(perfumeResult.getUuid()));
-        assertTrue("The UUID '" + keywordId4 + "' should exist in the list", keywordId4IsExists);
+        }
 
-        boolean keywordId5IsExists = perfumeResults.stream()
-                .anyMatch(perfumeResult -> keywordId5.toString().equals(perfumeResult.getUuid()));
-        assertTrue("The UUID '" + keywordId5 + "' should exist in the list", keywordId5IsExists);
+
     }
 
 
     @Test
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void 선호향수_검색() throws Exception{
+        Long startId = perfumeRepository.findByName("perfumeName1").orElseThrow(
+                () -> new IllegalArgumentException("perfumeName1 은 없는 향수 이름 입니다.")
+        ).getId();
+
         //given
         List<Long> ids = new ArrayList<>();
-        for(Long i=1l; i<=40; i++){
+        for(Long i=startId; i<startId+40; i++){
             ids.add(i);
         }
 
@@ -249,6 +249,6 @@ public class PerfumeResultServiceTest {
         assertNotNull(perfumeResults);
 
         assertEquals(40, perfumeResults.size());
-        assertEquals("40", searchResultDto.getLast_item_id());
+        assertEquals(startId+39+"", searchResultDto.getLast_item_id());
     }
 }

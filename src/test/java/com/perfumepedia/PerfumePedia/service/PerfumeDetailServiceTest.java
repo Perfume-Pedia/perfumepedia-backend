@@ -114,20 +114,24 @@ public class PerfumeDetailServiceTest {
     }
 
     @Test
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void 향수상세검색_ID가존재하는경우() throws Exception{
         //given
-        Long id = 20l;
-        String uuid = id.toString();
-        String perfumeName = "perfumeName"+uuid;
-        String brandName = "brandName"+uuid;
+        Long nameNumber = 20l;
+        String perfumeName = "perfumeName"+nameNumber;
+        String brandName = "brandName"+nameNumber;
         String url = "test.perfume.url.com";
         String imagePath = "test/image/path";
         String price = "10000";
-        String topNote = "topNoteName"+uuid;
-        String middleNote = "middleNoteName"+uuid;
-        String baseNote = "baseNoteName"+uuid;
-        String singleNote = "singleNoteName"+uuid;
+        String topNote = "topNoteName"+nameNumber;
+        String middleNote = "middleNoteName"+nameNumber;
+        String baseNote = "baseNoteName"+nameNumber;
+        String singleNote = "singleNoteName"+nameNumber;
+
+        Long id = perfumeRepository.findByName(perfumeName).orElseThrow(
+                () -> new IllegalArgumentException(perfumeName+" 는 없는 향수 이름입니다.")
+        ).getId();
+        String uuid = id.toString();
 
         //when
         ResponseData responseData = perfumeDetailService.searchPerfumeWithDetail(id);
@@ -171,10 +175,14 @@ public class PerfumeDetailServiceTest {
     }
 
     @Test
-    @Rollback(value = false)
+//    @Rollback(value = false)
     public void 향수상세검색_ID가없는경우() throws Exception{
+        Long startId = perfumeRepository.findByName("perfumeName1").orElseThrow(
+                () -> new IllegalArgumentException("perfumeName1 은 없는 향수 이름 입니다.")
+        ).getId();
+
         //given
-        Long id = 100l;
+        Long id = startId + 50l;
         String uuid = id.toString();
         String perfumeName = "perfumeName"+uuid;
         String brandName = "brandName"+uuid;

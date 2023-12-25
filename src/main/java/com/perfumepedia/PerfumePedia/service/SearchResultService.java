@@ -33,6 +33,7 @@ public class SearchResultService {
      * @param keyword 사용자가 입력한 검색어
      * @return 향수 목록
      */
+    @Transactional(readOnly = false)
     public ResponseData searchByKeyword(Long lastId, int size, String keyword){
         // WordRepository #findByAlias 이용(최대 크기5의 리스트)
         List<Word> words = wordRepository.findByAlias(keyword);
@@ -93,8 +94,8 @@ public class SearchResultService {
         return data;
     }
 
-
-    private void increaseWeight(Word baseWord) {
+    @Transactional(readOnly = false)
+    public void increaseWeight(Word baseWord) {
         // WordRepository #findByTypeAndTypeId 이용
         List<Word> words = wordRepository.findByTypeAndTypeId(baseWord.getTypeId(), baseWord.getWordType());
 
