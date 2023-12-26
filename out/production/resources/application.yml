@@ -1,32 +1,34 @@
-#spring:
-#  datasource:
-#    url:
-#    username:
-#    password:
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+spring:
+  datasource:
+    url: jdbc:mysql://15.164.129.164:3306/PerfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
+    username: PERFUME
+    password: perfume1!
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-# for test
-#spring:
-#  datasource:
-#    url: jdbc:h2:mem:test
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
 
-jackson:
-  serialization:
-    FAIL_ON_EMPTY_BEANS: false
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
 
   jpa:
     hibernate:
       ddl-auto: create
+    show-sql: true
     properties:
       hibernate:
-        show_sql: true
         format_sql: true
-
 
 logging:
   level:
-    org.hibernate.SQL: debug
-    org.hibernate.orm.jdbc.bind: trace
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+springdoc:
+  packages-to-scan: com.perfumepedia.PerfumePedia
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    path: /swagger
+    disable-swagger-default-url: true
+    display-request-duration: true
+    operations-sorter: alpha
