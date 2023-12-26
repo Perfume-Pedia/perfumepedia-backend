@@ -17,9 +17,10 @@ public class ReadAliasJsonFile {
 
         try {
             // JSON 파일을 PerfumeAlias 객체의 List로 읽어옴
-//            InputStream inputStream = ReadAliasJsonFile.class.getClassLoader().getResourceAsStream(jsonFileName);
-//            InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(jsonFileName);
-            InputStream inputStream = getClass().getClassLoader().getResourceAsStream(jsonFileName);
+            // 로컬 환경
+            //InputStream inputStream = ClassLoader.getSystemClassLoader().getResourceAsStream(jsonFileName);
+            // JAR 환경
+            InputStream inputStream = ReadPerfumeJsonFile.class.getClassLoader().getResourceAsStream(jsonFileName);
 
             if (inputStream != null) {
                 return mapper.readValue(inputStream, new TypeReference<List<AliasForm>>() {});
