@@ -12,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/autocomplete")
+@CrossOrigin(origins = "*")
 public class AutoCompleteController {
 
 
     private AutoCompleteService autoCompleteService;
-
     @Autowired
     public AutoCompleteController(AutoCompleteService autoCompleteService){
         this.autoCompleteService=autoCompleteService;
