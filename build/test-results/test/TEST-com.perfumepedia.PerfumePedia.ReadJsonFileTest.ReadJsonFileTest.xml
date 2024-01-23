@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.perfumepedia.PerfumePedia.ReadJsonFileTest.ReadJsonFileTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2023-11-16T06:48:04" hostname="gwonjaeuui-MacBookPro.local" time="0.116">
-  <properties/>
-  <testcase name="ReadJson_날짜_확인()" classname="com.perfumepedia.PerfumePedia.ReadJsonFileTest.ReadJsonFileTest" time="0.116"/>
-  <system-out><![CDATA[2023-11-16
-2023-11-16
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

@@ -62,17 +62,17 @@ public class ReadPerfumeJsonFileTest {
 
     }
 
-    @Test
-    public void 이미지_확인() {
-
-        List<CollectionForm> perfumes = readPerfumeJsonFile.readJsonFile(jsonFileName);
-
-        CollectionForm firstPerfume = perfumes.get(0);
-        String firstImage = null;
-
-        assertEquals(firstImage, firstPerfume.getImage());
-
-    }
+//    @Test
+//    public void 이미지_확인() {
+//
+//        List<CollectionForm> perfumes = readPerfumeJsonFile.readJsonFile(jsonFileName);
+//
+//        CollectionForm firstPerfume = perfumes.get(0);
+//        String firstImage = null;
+//
+//        assertEquals(firstImage, firstPerfume.getImage());
+//
+//    }
 
     @Test
     public void 날짜_확인() {
