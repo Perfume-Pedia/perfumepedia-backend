@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.perfumepedia.PerfumePedia.domain.NoteDomainTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2023-12-14T04:56:58" hostname="gimgyeong-eun-ui-MacBookAir.local" time="0.005">
-  <properties/>
-  <testcase name="dbDate_초기화" classname="com.perfumepedia.PerfumePedia.domain.NoteDomainTest" time="0.001"/>
-  <testcase name="기본생성자_제한" classname="com.perfumepedia.PerfumePedia.domain.NoteDomainTest" time="0.001"/>
-  <testcase name="매개변수가_있는_생성자_정상" classname="com.perfumepedia.PerfumePedia.domain.NoteDomainTest" time="0.002"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
