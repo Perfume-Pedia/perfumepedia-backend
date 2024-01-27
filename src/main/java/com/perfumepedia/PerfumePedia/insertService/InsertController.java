@@ -5,8 +5,6 @@ import com.perfumepedia.PerfumePedia.dataForm.AliasForm;
 import com.perfumepedia.PerfumePedia.dataForm.CollectionForm;
 import com.perfumepedia.PerfumePedia.readJsonFile.ReadAliasJsonFile;
 import com.perfumepedia.PerfumePedia.readJsonFile.ReadPerfumeJsonFile;
-import com.perfumepedia.PerfumePedia.service.NoteService;
-import com.perfumepedia.PerfumePedia.service.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,14 +48,20 @@ public class InsertController {
 
 
     public void insertDataToDatabase() {
+        System.out.println("===perfume insert start===");
         for (CollectionForm collectionForms : perfumes) {
+            System.out.println("[perfume insert] " + collectionForms.getName());
+
             brandInsertService.insertBrandAndWordData(collectionForms);
             noteData.insertNoteAndWordData(collectionForms);
             perfumeInsertService.insertPerfumeAndWordData(collectionForms);
             perfumeNoteInsertService.insertPerfumeNoteData(collectionForms);
         }
+        System.out.println("---perfume insert end---");
 
+        System.out.println("===alias insert start===");
         wordInsertService.insertAliasData(aliasFileName);
+        System.out.println("---alias insert end---");
     }
 
 }
