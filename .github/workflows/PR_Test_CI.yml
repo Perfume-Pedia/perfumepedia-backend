@@ -1,0 +1,110 @@
+# main branch로 pull-request시에 
+# build 테스트와 test code 테스트를 진행함
+name: PR 테스트
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: JDK 설정
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Gradle 캐시 # Gradle 캐시를 통해 빌드 속도를 줄임
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Gradle 권한 설정
+        run: chmod +x ./gradlew
+
+      - name: 빌드 실행 (테스트 제외)
+        id: build
+        continue-on-error: true # 빌드가 실패해도 워크플로우 계속 진행
+        run: |
+          if ./gradlew build -x test; then
+            echo "BUILD_STATUS=success" >> $GITHUB_ENV
+          else
+            echo "BUILD_STATUS=failure" >> $GITHUB_ENV
+          fi
+      - name: 빌드 실패 시 코멘트
+        if: env.BUILD_STATUS == 'failure'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.KJW_GITHUB_TOKEN }}  # 토큰 설정
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            🔴 빌드에 실패했습니다.😭 코드를 확인해주세요!
+      - name: 빌드 성공 시 코멘트
+        if: env.BUILD_STATUS == 'success'
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.KJW_GITHUB_TOKEN }}  # 토큰 설정
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ✅ 빌드가 성공적으로 완료되었습니다!
+  test:
+    runs-on: ubuntu-latest
+    needs: build  # 빌드가 성공해야만 테스트가 실행
+    steps:
+      - name: 코드 체크아웃
+        uses: actions/checkout@v3
+
+      - name: JDK 설정
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Gradle 캐시
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Gradle 권한 설정
+        run: chmod +x ./gradlew
+
+      - name: 테스트 실행
+        run: ./gradlew test
+
+      - name: 테스트 실패 시 코멘트
+        if: failure()
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.KJW_GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            🔴 테스트가 실패했습니다.😭 코드를 확인해주세요!
+      - name: 테스트 성공 시 코멘트
+        if: success()
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ secrets.KJW_GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ✅ 테스트가 성공적으로 완료되었습니다.
+      - name: PR 실패 시 종료
+        if: failure()
+        uses: peter-evans/close-pull@v3
+        with:
+          token: ${{ secrets.KJW_GITHUB_TOKEN }}
+          pull-request-number: ${{ github.event.pull_request.number }}
+          comment: ❌ 빌드 또는 테스트 실패로 PR이 종료되었습니다.
