@@ -37,10 +37,6 @@ public class Perfume {
     @AttributeOverride(name = "updatedAt", column = @Column(name = "UPDATED_AT"))
     private DBDate dbDate;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "DISCONTINUE")
-    private Discontinue discontinue = Discontinue.CONTINUE;
-
     // 생성자
     public Perfume(String name){
         if (name == null || name.isEmpty()) {
@@ -69,10 +65,6 @@ public class Perfume {
         this.dbDate = new DBDate(yearMonthDay);
     }
 
-    // 단종일 경우만 호출
-    public void setDiscontinue(){
-        this.discontinue = Discontinue.DISCONTINUE;
-    }
 
 
     /**
@@ -117,7 +109,4 @@ public class Perfume {
         return dbDate;
     }
 
-    public Discontinue getDiscontinue(){
-        return discontinue;
-    }
 }
