@@ -7,7 +7,7 @@ import lombok.*;
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Brand extends BaseEntity {
 
@@ -20,9 +20,5 @@ public class Brand extends BaseEntity {
 
     @Column(name = "URL")
     private String url;
-
-    public BrandDto EntityToDto() {
-        return new BrandDto(this.id, this.name,this.url);
-    }
 
 }
