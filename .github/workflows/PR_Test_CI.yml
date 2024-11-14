@@ -46,7 +46,7 @@ jobs:
         if: env.BUILD_STATUS == 'failure'
         uses: peter-evans/create-or-update-comment@v3
         with:
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          token: ${{ secrets.KJW_GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             🔴 빌드에 실패했습니다.😭 코드를 확인해주세요!
@@ -84,7 +84,7 @@ jobs:
         if: failure()
         uses: peter-evans/create-or-update-comment@v3
         with:
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          token: ${{ secrets.KJW_GITHUB_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
           body: |
             🔴 테스트가 실패했습니다.😭 코드를 확인해주세요!
