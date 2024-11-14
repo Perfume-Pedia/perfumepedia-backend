@@ -1,21 +1,18 @@
 spring:
+  application:
+    name: perfumepedia-backend
   datasource:
     url: jdbc:mysql://localhost:3306/PerfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
     username: perfume
     password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
-  jackson:
-    serialization:
-      FAIL_ON_EMPTY_BEANS: false
 
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 server:
   port: 8080
@@ -24,5 +21,8 @@ server:
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.springframework.web: "info"
+    org.hibernate: "info"
+    org:
+      springframework:
+        security: "trace"
