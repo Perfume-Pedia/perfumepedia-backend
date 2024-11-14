@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: perfumepedia-backend
+  datasource:
+    url: jdbc:mysql://localhost:3306/PerfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
+    username: perfume
+    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+logging:
+  level:
+    org.springframework.web: "info"
+    org.hibernate: "info"
+    org:
+      springframework:
+        security: "trace"
