@@ -7,9 +7,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Perfume extends BaseEntity {
 
     @Id
@@ -23,8 +21,15 @@ public class Perfume extends BaseEntity {
     @Column(name = "PRICE")
     private int price;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "BRAND_ID")
     private Brand brand;
 
+    @Builder
+    public Perfume(Long id, String name, int price, Brand brand) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.brand = brand;
+    }
 }
