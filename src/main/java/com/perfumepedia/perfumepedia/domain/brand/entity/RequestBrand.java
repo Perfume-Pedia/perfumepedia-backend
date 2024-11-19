@@ -5,10 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-public class RequestBrand extends BaseEntity{
+public class RequestBrand extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,4 +19,11 @@ public class RequestBrand extends BaseEntity{
 
     @Column(name = "URL")
     private String url;
+
+    @Builder
+    public RequestBrand(Long id, String name, String url) {
+        this.id = id;
+        this.name = name;
+        this.url = url;
+    }
 }
