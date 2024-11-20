@@ -13,7 +13,12 @@ public enum ErrorCode implements ResponseCode {
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "Invalid request."),
     NOT_FOUND(HttpStatus.NOT_FOUND, "Request not found"),
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "HTTP method not allowed."),
-    ACCESS_DENIED(HttpStatus.FORBIDDEN, "Unauthorized request.");
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "Unauthorized request."),
+
+    // 향수 검색 관련 Error Code
+    PERFUME_NOT_FOUND(HttpStatus.NOT_FOUND, "일치하는 향수가 업서용.");
+
+
 
     private final HttpStatus httpStatus;
     private final String message;

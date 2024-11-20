@@ -7,9 +7,7 @@ import lombok.*;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Brand extends BaseEntity {
 
     @Id
@@ -22,5 +20,12 @@ public class Brand extends BaseEntity {
 
     @Column(name = "URL")
     private String url;
+
+    @Builder
+    public Brand(Long id, String name, String url) {
+        this.id = id;
+        this.name = name;
+        this.url = url;
+    }
 
 }
