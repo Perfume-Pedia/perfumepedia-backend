@@ -2,15 +2,19 @@ package com.perfumepedia.perfumepedia.domain.perfume.controller;
 
 import com.perfumepedia.perfumepedia.domain.perfume.dto.PerfumeUpdateReq;
 import com.perfumepedia.perfumepedia.domain.perfume.service.PerfumeService;
+import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
+@Tag(name = "향수 검색", description = "향수 검색 관련 API")
 public class PerfumeController {
 
     private final PerfumeService perfumeService;
@@ -28,6 +32,16 @@ public class PerfumeController {
     @GetMapping("/api/searchs")
     public ResponseEntity<List<PerfumeUpdateReq>> searchPerfumes(@RequestParam String keyword) {
         return ResponseEntity.ok(perfumeService.searchPerfumes(keyword));
+    }
+
+    /**
+     * 향수 세부정보 조회 API (
+     * @param perfumeId 향수 아이디
+     * @return 검색된 향수 세부정보
+     */
+    @GetMapping("/api/search/{id}")
+    public ResponseEntity<PerfumeDetailResponse> getPerfumeDetail(@PathVariable Long perfumeId) {
+        return ResponseEntity.ok(perfumeService.getPerfumeDetail(perfumeId));
     }
 
 

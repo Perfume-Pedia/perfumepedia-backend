@@ -16,7 +16,8 @@ public enum ErrorCode implements ResponseCode {
     ACCESS_DENIED(HttpStatus.FORBIDDEN, "Unauthorized request."),
 
     // 향수 검색 관련 Error Code
-    PERFUME_NOT_FOUND(HttpStatus.NOT_FOUND, "일치하는 향수가 업서용.");
+    PERFUME_NOT_FOUND(HttpStatus.NOT_FOUND, "일치하는 향수가 업서용."),
+    NOTE_NOT_FOUND(HttpStatus.NOT_FOUND, "일치하는 노트가 없습니다.");
 
 
 
