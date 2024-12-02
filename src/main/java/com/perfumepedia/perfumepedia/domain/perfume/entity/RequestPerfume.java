@@ -1,16 +1,15 @@
 package com.perfumepedia.perfumepedia.domain.perfume.entity;
 
-import com.perfumepedia.perfumepedia.domain.brand.entity.Brand;
 import com.perfumepedia.perfumepedia.domain.brand.entity.RequestBrand;
 import com.perfumepedia.perfumepedia.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Getter @Setter
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RequestPerfume extends BaseEntity {
 
@@ -25,7 +24,15 @@ public class RequestPerfume extends BaseEntity {
     @Column(name = "PRICE")
     private int price;
 
-    @ManyToOne()
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "REQUEST_BRAND_ID")
     private RequestBrand requestBrand;
+
+    @Builder
+    public RequestPerfume(Long id, String name, int price, RequestBrand requestBrand) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.requestBrand = requestBrand;
+    }
 }

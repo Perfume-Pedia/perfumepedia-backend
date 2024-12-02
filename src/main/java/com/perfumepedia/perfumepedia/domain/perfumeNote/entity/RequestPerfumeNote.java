@@ -1,18 +1,14 @@
 package com.perfumepedia.perfumepedia.domain.perfumeNote.entity;
 
-import com.perfumepedia.perfumepedia.domain.Note.entity.Note;
-import com.perfumepedia.perfumepedia.domain.Note.entity.NoteType;
-import com.perfumepedia.perfumepedia.domain.Note.entity.RequestNote;
-import com.perfumepedia.perfumepedia.domain.perfume.entity.Perfume;
+import com.perfumepedia.perfumepedia.domain.note.entity.NoteType;
+import com.perfumepedia.perfumepedia.domain.note.entity.RequestNote;
 import com.perfumepedia.perfumepedia.domain.perfume.entity.RequestPerfume;
 import com.perfumepedia.perfumepedia.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RequestPerfumeNote extends BaseEntity {
 
@@ -33,4 +29,11 @@ public class RequestPerfumeNote extends BaseEntity {
     @Column(name = "NOTE_TYPE")
     private NoteType noteType;
 
+    @Builder
+    public RequestPerfumeNote(Long id, RequestPerfume requestPerfume, RequestNote requestNote, NoteType noteType) {
+        this.id = id;
+        this.requestPerfume = requestPerfume;
+        this.requestNote = requestNote;
+        this.noteType = noteType;
+    }
 }
