@@ -3,6 +3,8 @@ package com.perfumepedia.perfumepedia.domain.perfume.controller;
 import com.perfumepedia.perfumepedia.domain.perfume.dto.PerfumeUpdateReq;
 import com.perfumepedia.perfumepedia.domain.perfume.service.PerfumeService;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
+import com.perfumepedia.perfumepedia.global.response.Response;
+import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +32,11 @@ public class PerfumeController {
      * @return 검색된 향수 리스트
      */
     @GetMapping("/api/searchs")
-    public ResponseEntity<List<PerfumeUpdateReq>> searchPerfumes(@RequestParam String keyword) {
-        return ResponseEntity.ok(perfumeService.searchPerfumes(keyword));
+    public ResponseEntity<Response<List<PerfumeUpdateReq>>> searchPerfumes(@RequestParam String keyword) {
+        SuccessResponse<List<PerfumeUpdateReq>> successResponse = perfumeService.searchPerfumes(keyword);
+        return Response.success(successResponse);
     }
+
 
     /**
      * 향수 세부정보 조회 API (
@@ -40,8 +44,9 @@ public class PerfumeController {
      * @return 검색된 향수 세부정보
      */
     @GetMapping("/api/search/{id}")
-    public ResponseEntity<PerfumeDetailResponse> getPerfumeDetail(@PathVariable Long perfumeId) {
-        return ResponseEntity.ok(perfumeService.getPerfumeDetail(perfumeId));
+    public ResponseEntity<Response<PerfumeDetailResponse>> getPerfumeDetail(@PathVariable Long perfumeId) {
+        SuccessResponse<PerfumeDetailResponse> response = perfumeService.getPerfumeDetail(perfumeId);
+        return Response.success(response);
     }
 
 

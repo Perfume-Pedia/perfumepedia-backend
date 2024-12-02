@@ -9,10 +9,15 @@ import com.perfumepedia.perfumepedia.domain.perfumeNote.entity.PerfumeNote;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.repository.PerfumeNoteRepository;
 import com.perfumepedia.perfumepedia.global.enums.ErrorCode;
 import com.perfumepedia.perfumepedia.global.handler.AppException;
+import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.NOTE_NOT_FOUND;
+import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.PERFUME_NOT_FOUND;
+import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.SEARCH_COMPLETED;
 
 @Service
 public class PerfumeService {
@@ -33,7 +38,7 @@ public class PerfumeService {
      * @param keyword 검색어
      * @return 검색된 향수 리스트
      */
-    public List<PerfumeUpdateReq> searchPerfumes(String keyword) {
+    public SuccessResponse<List<PerfumeUpdateReq>> searchPerfumes(String keyword) {
         // 브렌드 이름으로 향수 검색
         List<Perfume> perfumesByBrand = perfumeRepository.findByBrandNameContaining(keyword);
         // 향수 이름으로 향수 검색
@@ -52,7 +57,7 @@ public class PerfumeService {
         }
         // 검색 결과가 없을 경우 예외 처리
         if(resultPerfume.isEmpty()) {
-            throw new AppException(ErrorCode.PERFUME_NOT_FOUND);
+            throw new AppException(PERFUME_NOT_FOUND);
         }
 
         // Perfume -> DTO로 변환
@@ -62,8 +67,10 @@ public class PerfumeService {
             searchResult.add(PerfumeUpdateReq.toDto(perfume));
         }
 
-        return searchResult;
+        return new SuccessResponse<>(SEARCH_COMPLETED, searchResult);
     }
+
+
 
 
     /**
@@ -71,20 +78,19 @@ public class PerfumeService {
      * @param perfumaId 향수 아이디
      * @return 검색된 향수 세부정보
      */
-    public PerfumeDetailResponse getPerfumeDetail(Long perfumaId) {
+    public SuccessResponse<PerfumeDetailResponse> getPerfumeDetail(Long perfumaId) {
 
         // 해당하는 향수가 존재하는지 확인
         Perfume perfume = perfumeRepository.findById(perfumaId)
-                .orElseThrow(() -> new AppException(ErrorCode.PERFUME_NOT_FOUND));
+                .orElseThrow(() -> new AppException(PERFUME_NOT_FOUND));
 
         // 해당하는 향수의 아이디를 가진 노트들을 조회
         List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByPerfumeId(perfumaId);
         if (perfumeNotes.isEmpty()) {
-            throw new AppException((ErrorCode.NOTE_NOT_FOUND));
+            throw new AppException(NOTE_NOT_FOUND);
         }
 
         Map<String, List<String>> notes = new HashMap<>();
-
         for (PerfumeNote perfumeNote : perfumeNotes) {
             String noteType = perfumeNote.getNoteType().name();
 
@@ -93,8 +99,11 @@ public class PerfumeService {
             }
             notes.get(noteType).add(perfumeNote.getNote().getName());
         }
+        PerfumeDetailResponse detailPerfume = PerfumeDetailResponse.toDto(perfume, notes);
 
-        return PerfumeDetailResponse.toDto(perfume, notes);
+
+
+        return new SuccessResponse<>(SEARCH_COMPLETED, detailPerfume);
     }
 
 
