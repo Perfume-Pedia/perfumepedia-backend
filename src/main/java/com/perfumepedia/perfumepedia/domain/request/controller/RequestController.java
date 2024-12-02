@@ -8,25 +8,27 @@ import com.perfumepedia.perfumepedia.global.response.Response;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 public class RequestController {
 
     private final RequestPerfumeService requestPerfumeService;
+    private final RequestService requestService;
 
     @Autowired
-    public RequestController(RequestPerfumeService requestPerfumeService) {
+    public RequestController(RequestPerfumeService requestPerfumeService, RequestService requestService) {
         this.requestPerfumeService = requestPerfumeService;
+        this.requestService = requestService;
+
     }
 
     /**
      * 향수 등록 요청 api
      */
-    @PostMapping("/api/perfume/users")
+    @PostMapping("/api/perfumes/users")
     public ResponseEntity<Response<NoneResponse>> registerPerfumeRequest(
             @RequestBody RequestPerfumeDetailReq reqPerfumeDetailReq,
             @RequestParam Long userId) {
@@ -38,10 +40,10 @@ public class RequestController {
     /**
      * 향수 수정 요청 api
      */
-    @PostMapping("/api/perfume/perfumeId")
+    @PostMapping("/api/perfumes/users/{perfumeId}")
     public ResponseEntity<Response<NoneResponse>> updatePerfumeRequest(
             @RequestBody RequestPerfumeDetailReq reqPerfumeDetailReq,
-            @RequestParam Long perfumeId,
+            @PathVariable Long perfumeId,
             @RequestParam Long userId) {
         SuccessResponse<NoneResponse> response = requestPerfumeService.updatePerfumeRequest(reqPerfumeDetailReq, perfumeId, userId);
         return Response.success(response);
@@ -50,11 +52,20 @@ public class RequestController {
     /**
      * 향수 삭제 요청 api
      */
-    @PostMapping("/api/perfume/perfumeId")
+    @PostMapping("/api/perfumes/users/{perfumeId}")
     public ResponseEntity<Response<NoneResponse>> deletePerfumeRequest(
-            @RequestParam Long perfumeId,
+            @PathVariable Long perfumeId,
             @RequestParam Long userId) {
         SuccessResponse<NoneResponse> response = requestPerfumeService.deletePerfumeRequest(perfumeId, userId);
+        return Response.success(response);
+    }
+
+    /**
+     * 향수 요청 개수 조회 api
+     * */
+    @GetMapping("/api/perfumes/admins/request-counts")
+    public ResponseEntity<Response<Map<String, Long>>> getRequestCounts() {
+        SuccessResponse<Map<String, Long>> response = requestService.getRequestCount();
         return Response.success(response);
     }
 
