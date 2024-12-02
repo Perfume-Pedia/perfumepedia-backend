@@ -35,6 +35,7 @@ public class PerfumeService {
 
     /**
      * 키워드별 향수 검색
+     *
      * @param keyword 검색어
      * @return 검색된 향수 리스트
      */
@@ -56,7 +57,7 @@ public class PerfumeService {
             resultPerfume.add(perfumeNote.getPerfume());
         }
         // 검색 결과가 없을 경우 예외 처리
-        if(resultPerfume.isEmpty()) {
+        if (resultPerfume.isEmpty()) {
             throw new AppException(PERFUME_NOT_FOUND);
         }
 
@@ -71,10 +72,9 @@ public class PerfumeService {
     }
 
 
-
-
     /**
-     *  향수 세부 정보 조회
+     * 향수 세부 정보 조회
+     *
      * @param perfumaId 향수 아이디
      * @return 검색된 향수 세부정보
      */
@@ -102,11 +102,8 @@ public class PerfumeService {
         PerfumeDetailResponse detailPerfume = PerfumeDetailResponse.toDto(perfume, notes);
 
 
-
         return new SuccessResponse<>(SEARCH_COMPLETED, detailPerfume);
     }
-
-
 
 
 }

@@ -28,6 +28,7 @@ public class PerfumeController {
 
     /**
      * 향수 검색 API (브랜드, 향수 이름, 노트 이름으로 검색)
+     *
      * @param keyword 검색어
      * @return 검색된 향수 리스트
      */
@@ -40,6 +41,7 @@ public class PerfumeController {
 
     /**
      * 향수 세부정보 조회 API (
+     *
      * @param perfumeId 향수 아이디
      * @return 검색된 향수 세부정보
      */

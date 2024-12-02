@@ -83,9 +83,10 @@ public class RequestPerfumeService {
 
     /**
      * 향수 수정 요청 api
+     *
      * @param reqPerfumeDetailReq 수정할 향수의 정보
-     * @param perfume 수정할 향수의 ID
-     * @param userId 수정 요청한 유저의 ID
+     * @param perfume             수정할 향수의 ID
+     * @param userId              수정 요청한 유저의 ID
      **/
     public SuccessResponse<NoneResponse> updatePerfumeRequest(RequestPerfumeDetailReq reqPerfumeDetailReq, Long perfume, Long userId) {
         // 기존 향수 조회
@@ -117,8 +118,9 @@ public class RequestPerfumeService {
 
     /**
      * 향수 삭제 요청 api
+     *
      * @param perfumeId 삭제할 향수의 ID
-     * @param userId 삭제 요청한 유저의 ID
+     * @param userId    삭제 요청한 유저의 ID
      **/
     public SuccessResponse<NoneResponse> deletePerfumeRequest(Long perfumeId, Long userId) {
         Perfume perfume = perfumeRepository.findById(perfumeId)
@@ -220,8 +222,6 @@ public class RequestPerfumeService {
 
         return requestPerfumeRepository.save(perfume);
     }
-
-
 
 
 }

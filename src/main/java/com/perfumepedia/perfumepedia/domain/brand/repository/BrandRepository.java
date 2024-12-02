@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Long> {
     List<Brand> findByNameContaining(String keyword);
+
     Optional<Brand> findByName(String name);
 }

@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface PerfumeRepository extends JpaRepository<Perfume, Long> {
     List<Perfume> findByNameContaining(String keyword);
+
     List<Perfume> findByBrandNameContaining(String keyword);
 }
