@@ -2,6 +2,7 @@ package com.perfumepedia.perfumepedia.domain.request.controller;
 
 import com.perfumepedia.perfumepedia.domain.perfume.service.RequestPerfumeService;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.RequestPerfumeDetailReq;
+import com.perfumepedia.perfumepedia.domain.request.dto.RequestListDto;
 import com.perfumepedia.perfumepedia.domain.request.service.RequestService;
 import com.perfumepedia.perfumepedia.global.enums.NoneResponse;
 import com.perfumepedia.perfumepedia.global.response.Response;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -68,6 +70,35 @@ public class RequestController {
         SuccessResponse<Map<String, Long>> response = requestService.getRequestCount();
         return Response.success(response);
     }
+
+    /**
+     * 등록 요청 목록 조회
+     */
+    @GetMapping("/api/perfumes/admins/requests/register")
+    public ResponseEntity<Response<List<RequestListDto>>> getRegisterRequests() {
+        SuccessResponse<List<RequestListDto>> response = requestService.getRegisterRequests();
+        return Response.success(response);
+    }
+
+    /**
+     * 수정 요청 목록 조회
+     */
+    @GetMapping("/api/perfumes/admins/requests/update")
+    public ResponseEntity<Response<List<RequestListDto>>> getUpdateRequests() {
+        SuccessResponse<List<RequestListDto>> response = requestService.getUpdateRequests();
+        return Response.success(response);
+    }
+
+    /**
+     * 삭제 요청 목록 조회
+     */
+    @GetMapping("/api/perfumes/admins/requests/delete")
+    public ResponseEntity<Response<List<RequestListDto>>> getDeleteRequests() {
+        SuccessResponse<List<RequestListDto>> response = requestService.getDeleteRequests();
+        return Response.success(response);
+    }
+
+
 
 
 }
