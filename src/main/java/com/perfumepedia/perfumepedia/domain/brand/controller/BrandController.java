@@ -3,6 +3,7 @@ package com.perfumepedia.perfumepedia.domain.brand.controller;
 import com.perfumepedia.perfumepedia.domain.brand.service.BrandService;
 import com.perfumepedia.perfumepedia.global.response.Response;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @RestController
+@Tag(name = "관리자 대시보드", description = "관리자 대시보드 관련 API")
+
 public class BrandController {
 
     private final BrandService brandService;
