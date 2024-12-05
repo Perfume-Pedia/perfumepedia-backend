@@ -4,7 +4,6 @@ import com.perfumepedia.perfumepedia.domain.brand.service.BrandService;
 import com.perfumepedia.perfumepedia.global.response.Response;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

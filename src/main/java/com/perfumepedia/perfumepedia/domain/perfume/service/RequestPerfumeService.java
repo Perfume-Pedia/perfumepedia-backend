@@ -217,7 +217,7 @@ public class RequestPerfumeService {
         RequestPerfume perfume = RequestPerfume.builder()
                 .name(name)
                 .price(price)
-                .requestBrand(requestBrand) // 요청 브랜드
+                .requestBrand(requestBrand)
                 .build();
 
         return requestPerfumeRepository.save(perfume);

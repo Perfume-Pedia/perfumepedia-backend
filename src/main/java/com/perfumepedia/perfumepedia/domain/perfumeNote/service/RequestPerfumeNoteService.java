@@ -39,49 +39,56 @@ public class RequestPerfumeNoteService {
     /**
      * 등록 요청 / 수정 요청 상세 조회
      */
-    public SuccessResponse<PerfumeDetailResponse> getRegisterRequestDetail(Long perfumeId, String requestType) {
-        RequestType Type = RequestType.valueOf(requestType.toUpperCase());
-        // 향수 id 와 요청 타입으로 요청 조회
-        Request registerRequest = requestRepository.findByIdAndRequestType(perfumeId, Type)
+    public SuccessResponse<PerfumeDetailResponse> getRegisterRequestDetail(Long requestId, String requestType) {
+        RequestType type = RequestType.valueOf(requestType.toUpperCase());
+
+        // 요청 조회
+        Request registerRequest = requestRepository.findById(requestId)
                 .orElseThrow(() -> new AppException(REQUEST_NOT_FOUND));
+
+        if (registerRequest.getRequestType() != type) {
+            throw new AppException(REQUEST_TYPE_MISMATCH);
+        }
 
         // 요청한 향수 정보 (RequestPerfume에서 id 받아옴)
         RequestPerfume requestPerfume = registerRequest.getRequestPerfume();
 
         // 요청한 향수 노트 정보
         List<RequestPerfumeNote> requestPerfumeNotes = requestPerfumeNoteRepository.findByRequestPerfumeId(requestPerfume.getId());
+
         if (requestPerfumeNotes.isEmpty()) {
             throw new AppException(NOTE_NOT_FOUND);
         }
 
         Map<String, List<String>> notes = new HashMap<>();
-
         for (RequestPerfumeNote requestPerfumeNote : requestPerfumeNotes) {
             String noteType = requestPerfumeNote.getNoteType().name();
-
             if (!notes.containsKey(noteType)) {
                 notes.put(noteType, new ArrayList<>());
             }
             notes.get(noteType).add(requestPerfumeNote.getRequestNote().getName());
         }
+
         // entity -> dto
         PerfumeDetailResponse detailPerfume = PerfumeDetailResponse.fromEntity(requestPerfume, notes);
-
         return new SuccessResponse<>(SEARCH_COMPLETED, detailPerfume);
-
     }
 
     /**
      * 삭제 요청 / 수정 요청 상세 조회
      */
-    public SuccessResponse<PerfumeDetailResponse> getDeleteRequestDetail(Long perfumeId, String requestType) {
+    public SuccessResponse<PerfumeDetailResponse> getDeleteRequestDetail(Long requestId, String requestType) {
 
-        RequestType Type = RequestType.valueOf(requestType.toUpperCase());
+        RequestType type = RequestType.valueOf(requestType.toUpperCase());
 
-
-        // 향수 id 와 요청 타입으로 요청 조회
-        Request deleteRequest = requestRepository.findByIdAndRequestType(perfumeId, Type)
+        // 요청 조회
+        Request deleteRequest = requestRepository.findById(requestId)
                 .orElseThrow(() -> new AppException(REQUEST_NOT_FOUND));
+
+        // 요청 타입 검증
+        if (deleteRequest.getRequestType() != type) {
+            throw new AppException(REQUEST_TYPE_MISMATCH);
+        }
 
         // 요청한 향수 정보 (Perfume에서 id 받아옴)
         Perfume perfume = deleteRequest.getPerfume();
@@ -105,6 +112,5 @@ public class RequestPerfumeNoteService {
         PerfumeDetailResponse detailPerfume = PerfumeDetailResponse.toDto(perfume, notes);
 
         return new SuccessResponse<>(SEARCH_COMPLETED, detailPerfume);
-
     }
 }

@@ -49,4 +49,8 @@ public class Request extends BaseEntity {
         this.requestPerfume = requestPerfume;
         this.perfume = perfume;
     }
+
+    public void updateRequestStatus(RequestStatus newStatus) {
+        this.requestStatus = newStatus;
+    }
 }

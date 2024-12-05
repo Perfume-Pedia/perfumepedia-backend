@@ -1,23 +1,36 @@
 package com.perfumepedia.perfumepedia.domain.perfume.service;
 
+import com.perfumepedia.perfumepedia.domain.brand.entity.Brand;
+import com.perfumepedia.perfumepedia.domain.brand.entity.RequestBrand;
+import com.perfumepedia.perfumepedia.domain.brand.repository.BrandRepository;
+import com.perfumepedia.perfumepedia.domain.note.entity.Note;
 import com.perfumepedia.perfumepedia.domain.note.repository.NoteRepository;
 import com.perfumepedia.perfumepedia.domain.perfume.dto.PerfumeUpdateReq;
 import com.perfumepedia.perfumepedia.domain.perfume.entity.Perfume;
+import com.perfumepedia.perfumepedia.domain.perfume.entity.RequestPerfume;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.PerfumeRepository;
+import com.perfumepedia.perfumepedia.domain.perfume.repository.RequestPerfumeRepository;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
+import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.RequestPerfumeDetailReq;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.entity.PerfumeNote;
+import com.perfumepedia.perfumepedia.domain.perfumeNote.entity.RequestPerfumeNote;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.repository.PerfumeNoteRepository;
+import com.perfumepedia.perfumepedia.domain.perfumeNote.repository.RequestPerfumeNoteRepository;
+import com.perfumepedia.perfumepedia.domain.request.entity.Request;
+import com.perfumepedia.perfumepedia.domain.request.entity.RequestStatus;
+import com.perfumepedia.perfumepedia.domain.request.repository.RequestRepository;
 import com.perfumepedia.perfumepedia.global.enums.ErrorCode;
+import com.perfumepedia.perfumepedia.global.enums.NoneResponse;
 import com.perfumepedia.perfumepedia.global.handler.AppException;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.NOTE_NOT_FOUND;
-import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.PERFUME_NOT_FOUND;
-import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.SEARCH_COMPLETED;
+import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.*;
+import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.*;
 
 @Service
 public class PerfumeService {
@@ -25,12 +38,23 @@ public class PerfumeService {
     private PerfumeRepository perfumeRepository;
     private PerfumeNoteRepository perfumeNoteRepository;
     private NoteRepository noteRepository;
+    private BrandRepository brandRepository;
+    private RequestPerfumeNoteRepository requestPerfumeNoteRepository;
+    private RequestPerfumeRepository requestPerfumeRepository;
+    private RequestRepository requestRepository;
+
+
 
     @Autowired
-    public PerfumeService(PerfumeRepository perfumeRepository, PerfumeNoteRepository perfumeNoteRepository, NoteRepository noteRepository) {
-        this.perfumeRepository = perfumeRepository;
+    public PerfumeService(PerfumeRepository perfumeRepository, PerfumeNoteRepository perfumeNoteRepository,
+                          NoteRepository noteRepository, BrandRepository brandRepository, RequestPerfumeNoteRepository requestPerfumeNoteRepository,
+                          RequestPerfumeRepository requestPerfumeRepository, RequestRepository requestRepository) {
         this.perfumeNoteRepository = perfumeNoteRepository;
         this.noteRepository = noteRepository;
+        this.brandRepository = brandRepository;
+        this.requestPerfumeNoteRepository = requestPerfumeNoteRepository;
+        this.requestPerfumeRepository = requestPerfumeRepository;
+        this.requestRepository = requestRepository;
     }
 
     /**
@@ -61,7 +85,7 @@ public class PerfumeService {
             throw new AppException(PERFUME_NOT_FOUND);
         }
 
-        // Perfume -> DTO로 변환
+        // Perfume -> DTO
         List<PerfumeUpdateReq> searchResult = new ArrayList<>();
 
         for (Perfume perfume : resultPerfume) {
@@ -104,6 +128,87 @@ public class PerfumeService {
 
         return new SuccessResponse<>(SEARCH_COMPLETED, detailPerfume);
     }
+
+    /**
+     * 요청 수락
+     */
+    @Transactional
+    public SuccessResponse<NoneResponse> registerPerfumeRequest(Long requestId) {
+        // 요청 정보 조회
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new AppException(REQUEST_NOT_FOUND));
+
+        // 요청한 향수 정보 조회(등록 -> RequestPerfume에서 조회)
+        RequestPerfume reqPerfume = request.getRequestPerfume();
+
+        // 요청한 향수 노트 정보 조회
+        List<RequestPerfumeNote> reqPerfumeNotes = requestPerfumeNoteRepository.findByRequestPerfume(reqPerfume);
+
+        // 요청한 브랜드 정보 조회 없다면 기존 브랜드 매핑
+        Brand brand = brandRepository.findByName(reqPerfume.getRequestBrand().getName())
+                .orElseGet(() -> brandRepository.save(
+                        Brand.builder()
+                                .name(reqPerfume.getRequestBrand().getName())
+                                .url(reqPerfume.getRequestBrand().getUrl())
+                                .build()
+                ));
+
+        // 요청한 향수 정보 저장 또는 기존 향수 매핑
+        Perfume perfume = perfumeRepository.findByName(reqPerfume.getName())
+                .orElseGet(() -> perfumeRepository.save(
+                        Perfume.builder()
+                                .name(reqPerfume.getName())
+                                .price(reqPerfume.getPrice())
+                                .brand(brand)
+                                .build()
+                ));
+
+        // 요청한 노트 정보 저장 또는 기존 노트 매핑 후 PerfumeNote 저장
+        for (RequestPerfumeNote reqPerfumeNote : reqPerfumeNotes) {
+            Note note = noteRepository.findByName(reqPerfumeNote.getRequestNote().getName())
+                    .orElseGet(() -> noteRepository.save(
+                            Note.builder()
+                                    .name(reqPerfumeNote.getRequestNote().getName())
+                                    .build()
+                    ));
+
+            // PerfumeNote 저장
+            perfumeNoteRepository.save(
+                    PerfumeNote.builder()
+                            .perfume(perfume)
+                            .note(note)
+                            .noteType(reqPerfumeNote.getNoteType())
+                            .build()
+            );
+        }
+
+        // 요청 상태를 승인으로 변경
+        request.updateRequestStatus(RequestStatus.APPROVED);
+        requestRepository.save(request);
+
+        return new SuccessResponse<>(REGISTER_COMPLETED, NoneResponse.NONE);
+    }
+
+
+    /**
+     * 요청 거절
+     * */
+    @Transactional
+    public SuccessResponse<NoneResponse> rejectPerfumeRequest(Long requestId) {
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new AppException(REQUEST_NOT_FOUND));
+
+        // 요청 상태를 거절로 변경 후 저장
+        request.updateRequestStatus(RequestStatus.REJECTED);
+        requestRepository.save(request);
+
+        return new SuccessResponse<>(REJECTED_COMPLETED, NoneResponse.NONE);
+    }
+
+
+
+
+
 
 
 }

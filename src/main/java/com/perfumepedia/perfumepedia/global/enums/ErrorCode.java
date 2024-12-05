@@ -21,7 +21,8 @@ public enum ErrorCode implements ResponseCode {
     REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "요청이 존재하지 않습니다."),
 
     // DTO 관련
-    INVALID_REQUEST_TYPE(HttpStatus.BAD_REQUEST, "요청 타입이 잘못되었습니다.");
+    INVALID_REQUEST_TYPE(HttpStatus.BAD_REQUEST, "요청 타입이 잘못되었습니다."),
+    REQUEST_TYPE_MISMATCH(HttpStatus.BAD_REQUEST, "요청 타입이 일치하지 않습니다.");
 
 
 

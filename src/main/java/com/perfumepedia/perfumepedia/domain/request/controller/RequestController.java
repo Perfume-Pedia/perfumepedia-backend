@@ -1,5 +1,6 @@
 package com.perfumepedia.perfumepedia.domain.request.controller;
 
+import com.perfumepedia.perfumepedia.domain.perfume.service.PerfumeService;
 import com.perfumepedia.perfumepedia.domain.perfume.service.RequestPerfumeService;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.RequestPerfumeDetailReq;
@@ -26,12 +27,15 @@ public class RequestController {
     private final RequestPerfumeService requestPerfumeService;
     private final RequestService requestService;
     private final RequestPerfumeNoteService requestPerfumeNoteService;
+    private final PerfumeService perfumeService;
 
     @Autowired
-    public RequestController(RequestPerfumeService requestPerfumeService, RequestService requestService, RequestPerfumeNoteService requestPerfumeNoteService) {
+    public RequestController(RequestPerfumeService requestPerfumeService, RequestService requestService,
+                             RequestPerfumeNoteService requestPerfumeNoteService, PerfumeService perfumeService) {
         this.requestPerfumeService = requestPerfumeService;
         this.requestService = requestService;
         this.requestPerfumeNoteService = requestPerfumeNoteService;
+        this.perfumeService = perfumeService;
 
     }
 
@@ -107,7 +111,7 @@ public class RequestController {
     }
 
     /**
-     *  신규 향수 상세 조회 (등록, 수정)
+     * 신규 향수 상세 조회 (등록, 수정)
      */
     @GetMapping("/api/perfumes/admins/register/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getRegisterRequestDetail(
@@ -127,6 +131,25 @@ public class RequestController {
             @PathVariable Long perfumeId
     ) {
         SuccessResponse<PerfumeDetailResponse> response = requestPerfumeNoteService.getDeleteRequestDetail(perfumeId, requestType);
+        return Response.success(response);
+    }
+
+
+    /**
+     * 요청 수락 API
+     */
+    @PostMapping("/api/perfumes/admins/{requestId}/accept")
+    public ResponseEntity<Response<NoneResponse>> acceptPerfumeRequest(@PathVariable Long requestId) {
+        SuccessResponse<NoneResponse> response = perfumeService.registerPerfumeRequest(requestId);
+        return Response.success(response);
+    }
+
+    /**
+     * 요청 거절 API
+     */
+    @PostMapping("/api/perfumes/admins/{requestId}/reject")
+    public ResponseEntity<Response<NoneResponse>> rejectPerfumeRequest(@PathVariable Long requestId) {
+        SuccessResponse<NoneResponse> response = perfumeService.rejectPerfumeRequest(requestId);
         return Response.success(response);
     }
 

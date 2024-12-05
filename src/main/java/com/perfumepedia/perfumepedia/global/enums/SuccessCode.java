@@ -15,7 +15,11 @@ public enum SuccessCode implements ResponseCode {
     SEARCH_COMPLETED(HttpStatus.OK, "검색이 성공적으로 이루어졌습니다."),
 
     // 요청 관련
-    REQUEST_COMPLETED(HttpStatus.OK, "요청이 성공적으로 이루어졌습니다.");
+    REQUEST_COMPLETED(HttpStatus.OK, "요청이 성공적으로 이루어졌습니다."),
+
+    // 향수 등록 관련
+    REGISTER_COMPLETED(HttpStatus.OK, "향수 등록이 성공적으로 이루어졌습니다."),
+    REJECTED_COMPLETED(HttpStatus.OK, "향수 등록이 거절되었습니다.");
 
 
 
