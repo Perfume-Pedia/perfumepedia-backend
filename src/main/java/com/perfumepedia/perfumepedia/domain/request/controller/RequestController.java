@@ -121,7 +121,7 @@ public class RequestController {
     /**
      * 기존 요청 상세 조회(삭제, 수정)
      */
-    @GetMapping("/api/perfumes/admins/update")
+    @GetMapping("/api/perfumes/admins/update/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getUpdateRequestDetail(
             @RequestParam String requestType,
             @PathVariable Long perfumeId
