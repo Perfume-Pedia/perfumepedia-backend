@@ -24,7 +24,7 @@ public class RequestPerfume extends BaseEntity {
     @Column(name = "PRICE")
     private int price;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "REQUEST_BRAND_ID")
     private RequestBrand requestBrand;
 
