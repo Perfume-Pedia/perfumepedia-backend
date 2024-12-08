@@ -26,7 +26,7 @@ public class BrandController {
     /**
      * 모든 브랜드와 향수 개수 조회 api
      */
-    @GetMapping("/api/perfumes/admins/counts")
+    @GetMapping("/perfumes/admins/counts")
     public ResponseEntity<Response<Map<String, Long>>> getBrandAndPerfumeCount() {
         SuccessResponse<Map<String, Long>> response = brandService.BrandAndPerfumeCount();
         return Response.success(response);

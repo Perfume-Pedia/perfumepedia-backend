@@ -8,10 +8,7 @@ import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,7 +29,7 @@ public class PerfumeController {
      * @param keyword 검색어
      * @return 검색된 향수 리스트
      */
-    @GetMapping("/api/searchs")
+    @GetMapping("/search")
     public ResponseEntity<Response<List<PerfumeUpdateReq>>> searchPerfumes(@RequestParam String keyword) {
         SuccessResponse<List<PerfumeUpdateReq>> successResponse = perfumeService.searchPerfumes(keyword);
         return Response.success(successResponse);
@@ -45,7 +42,7 @@ public class PerfumeController {
      * @param perfumeId 향수 아이디
      * @return 검색된 향수 세부정보
      */
-    @GetMapping("/api/search/{id}")
+    @GetMapping("/search/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getPerfumeDetail(@PathVariable Long perfumeId) {
         SuccessResponse<PerfumeDetailResponse> response = perfumeService.getPerfumeDetail(perfumeId);
         return Response.success(response);

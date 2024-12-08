@@ -42,11 +42,12 @@ public class RequestController {
     /**
      * 향수 등록 요청 api
      */
-    @PostMapping("/api/perfumes/users")
+    @PostMapping("/perfumes/users")
     public ResponseEntity<Response<NoneResponse>> registerPerfumeRequest(
-            @RequestBody RequestPerfumeDetailReq reqPerfumeDetailReq,
-            @AuthenticationPrincipal Long userId) {
-        SuccessResponse<NoneResponse> response = requestPerfumeService.registerPerfumeRequest(reqPerfumeDetailReq, userId);
+            @RequestBody RequestPerfumeDetailReq reqPerfumeDetailReq
+//            @AuthenticationPrincipal Long userId
+    ) {
+        SuccessResponse<NoneResponse> response = requestPerfumeService.registerPerfumeRequest(reqPerfumeDetailReq, 1L);
         return Response.success(response);
     }
 
@@ -54,30 +55,32 @@ public class RequestController {
     /**
      * 향수 수정 요청 api
      */
-    @PostMapping("/api/perfumes/users/{perfumeId}")
+    @PostMapping("/perfumes/users/{perfumeId}/update")
     public ResponseEntity<Response<NoneResponse>> updatePerfumeRequest(
             @RequestBody RequestPerfumeDetailReq reqPerfumeDetailReq,
-            @PathVariable Long perfumeId,
-            @AuthenticationPrincipal Long userId) {
-        SuccessResponse<NoneResponse> response = requestPerfumeService.updatePerfumeRequest(reqPerfumeDetailReq, perfumeId, userId);
+            @PathVariable Long perfumeId
+//            @AuthenticationPrincipal Long userId
+    ) {
+        SuccessResponse<NoneResponse> response = requestPerfumeService.updatePerfumeRequest(reqPerfumeDetailReq, perfumeId, 1L);
         return Response.success(response);
     }
 
     /**
      * 향수 삭제 요청 api
      */
-    @PostMapping("/api/perfumes/users/{perfumeId}")
+    @PostMapping("/perfumes/users/{perfumeId}/delete")
     public ResponseEntity<Response<NoneResponse>> deletePerfumeRequest(
-            @PathVariable Long perfumeId,
-            @AuthenticationPrincipal Long userId) {
-        SuccessResponse<NoneResponse> response = requestPerfumeService.deletePerfumeRequest(perfumeId, userId);
+            @PathVariable Long perfumeId
+//            @AuthenticationPrincipal Long userId
+            ) {
+        SuccessResponse<NoneResponse> response = requestPerfumeService.deletePerfumeRequest(perfumeId, 1L);
         return Response.success(response);
     }
 
     /**
      * 향수 요청 개수 조회 api
      */
-    @GetMapping("/api/perfumes/admins/request-counts")
+    @GetMapping("/perfumes/admins/request-counts")
     public ResponseEntity<Response<Map<String, Long>>> getRequestCounts() {
         SuccessResponse<Map<String, Long>> response = requestService.getRequestCount();
         return Response.success(response);
@@ -86,7 +89,7 @@ public class RequestController {
     /**
      * 등록 요청 목록 조회
      */
-    @GetMapping("/api/perfumes/admins/requests/register")
+    @GetMapping("/perfumes/admins/requests/register")
     public ResponseEntity<Response<List<RequestListDto>>> getRegisterRequests() {
         SuccessResponse<List<RequestListDto>> response = requestService.getRegisterRequests();
         return Response.success(response);
@@ -95,7 +98,7 @@ public class RequestController {
     /**
      * 수정 요청 목록 조회
      */
-    @GetMapping("/api/perfumes/admins/requests/update")
+    @GetMapping("/perfumes/admins/requests/update")
     public ResponseEntity<Response<List<RequestListDto>>> getUpdateRequests() {
         SuccessResponse<List<RequestListDto>> response = requestService.getUpdateRequests();
         return Response.success(response);
@@ -104,7 +107,7 @@ public class RequestController {
     /**
      * 삭제 요청 목록 조회
      */
-    @GetMapping("/api/perfumes/admins/requests/delete")
+    @GetMapping("/perfumes/admins/requests/delete")
     public ResponseEntity<Response<List<RequestListDto>>> getDeleteRequests() {
         SuccessResponse<List<RequestListDto>> response = requestService.getDeleteRequests();
         return Response.success(response);
@@ -113,7 +116,7 @@ public class RequestController {
     /**
      * 신규 향수 상세 조회 (등록, 수정)
      */
-    @GetMapping("/api/perfumes/admins/register/{perfumeId}")
+    @GetMapping("/perfumes/admins/register/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getRegisterRequestDetail(
             @RequestParam String requestType,
             @PathVariable Long perfumeId
@@ -125,7 +128,7 @@ public class RequestController {
     /**
      * 기존 요청 상세 조회(삭제, 수정)
      */
-    @GetMapping("/api/perfumes/admins/update/{perfumeId}")
+    @GetMapping("/perfumes/admins/update/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getUpdateRequestDetail(
             @RequestParam String requestType,
             @PathVariable Long perfumeId
@@ -138,7 +141,7 @@ public class RequestController {
     /**
      * 요청 수락 API
      */
-    @PostMapping("/api/perfumes/admins/{requestId}/accept")
+    @PostMapping("/perfumes/admins/{requestId}/accept")
     public ResponseEntity<Response<NoneResponse>> acceptPerfumeRequest(@PathVariable Long requestId) {
         SuccessResponse<NoneResponse> response = perfumeService.registerPerfumeRequest(requestId);
         return Response.success(response);
@@ -147,7 +150,7 @@ public class RequestController {
     /**
      * 요청 거절 API
      */
-    @PostMapping("/api/perfumes/admins/{requestId}/reject")
+    @PostMapping("/perfumes/admins/{requestId}/reject")
     public ResponseEntity<Response<NoneResponse>> rejectPerfumeRequest(@PathVariable Long requestId) {
         SuccessResponse<NoneResponse> response = perfumeService.rejectPerfumeRequest(requestId);
         return Response.success(response);

@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface PerfumeRepository extends JpaRepository<Perfume, Long> {
     List<Perfume> findByNameContaining(String keyword);
 
-    List<Perfume> findByBrandNameContaining(String keyword);
+    List<Perfume> findByBrand_NameContaining(String keyword);
 
     long count();
 

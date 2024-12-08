@@ -1,7 +1,6 @@
 package com.perfumepedia.perfumepedia.domain.perfume.service;
 
 import com.perfumepedia.perfumepedia.domain.brand.entity.Brand;
-import com.perfumepedia.perfumepedia.domain.brand.entity.RequestBrand;
 import com.perfumepedia.perfumepedia.domain.brand.repository.BrandRepository;
 import com.perfumepedia.perfumepedia.domain.note.entity.Note;
 import com.perfumepedia.perfumepedia.domain.note.repository.NoteRepository;
@@ -11,7 +10,6 @@ import com.perfumepedia.perfumepedia.domain.perfume.entity.RequestPerfume;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.PerfumeRepository;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.RequestPerfumeRepository;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
-import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.RequestPerfumeDetailReq;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.entity.PerfumeNote;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.entity.RequestPerfumeNote;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.repository.PerfumeNoteRepository;
@@ -19,7 +17,6 @@ import com.perfumepedia.perfumepedia.domain.perfumeNote.repository.RequestPerfum
 import com.perfumepedia.perfumepedia.domain.request.entity.Request;
 import com.perfumepedia.perfumepedia.domain.request.entity.RequestStatus;
 import com.perfumepedia.perfumepedia.domain.request.repository.RequestRepository;
-import com.perfumepedia.perfumepedia.global.enums.ErrorCode;
 import com.perfumepedia.perfumepedia.global.enums.NoneResponse;
 import com.perfumepedia.perfumepedia.global.handler.AppException;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
@@ -50,6 +47,7 @@ public class PerfumeService {
                           NoteRepository noteRepository, BrandRepository brandRepository, RequestPerfumeNoteRepository requestPerfumeNoteRepository,
                           RequestPerfumeRepository requestPerfumeRepository, RequestRepository requestRepository) {
         this.perfumeNoteRepository = perfumeNoteRepository;
+        this.perfumeRepository = perfumeRepository;
         this.noteRepository = noteRepository;
         this.brandRepository = brandRepository;
         this.requestPerfumeNoteRepository = requestPerfumeNoteRepository;
@@ -65,11 +63,11 @@ public class PerfumeService {
      */
     public SuccessResponse<List<PerfumeUpdateReq>> searchPerfumes(String keyword) {
         // 브렌드 이름으로 향수 검색
-        List<Perfume> perfumesByBrand = perfumeRepository.findByBrandNameContaining(keyword);
+        List<Perfume> perfumesByBrand = perfumeRepository.findByBrand_NameContaining(keyword);
         // 향수 이름으로 향수 검색
         List<Perfume> perfumesByName = perfumeRepository.findByNameContaining(keyword);
         // 노트 이름으로 향수 검색
-        List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByNoteContaining(keyword);
+        List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByNote_NameContaining(keyword);
 
         // 중복 제거를 위함
         Set<Perfume> resultPerfume = new HashSet<>();
