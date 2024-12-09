@@ -41,7 +41,6 @@ public class PerfumeService {
     private RequestRepository requestRepository;
 
 
-
     @Autowired
     public PerfumeService(PerfumeRepository perfumeRepository, PerfumeNoteRepository perfumeNoteRepository,
                           NoteRepository noteRepository, BrandRepository brandRepository, RequestPerfumeNoteRepository requestPerfumeNoteRepository,
@@ -128,14 +127,32 @@ public class PerfumeService {
     }
 
     /**
-     * 요청 수락
+     * 요청 타입별 요청 수락
      */
     @Transactional
-    public SuccessResponse<NoneResponse> registerPerfumeRequest(Long requestId) {
+    public SuccessResponse<NoneResponse> acceptPerfumeRequest(Long requestId) {
         // 요청 정보 조회
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new AppException(REQUEST_NOT_FOUND));
 
+        // 요청 타입에 따라 처리
+        switch (request.getRequestType()) {
+            case CREATE:
+                return acceptRegisterRequest(request); // 등록 요청 처리
+            case UPDATE:
+                return acceptUpdateRequest(request);   // 수정 요청 처리
+            case DELETE:
+                return acceptDeleteRequest(request);   // 삭제 요청 처리
+            default:
+                throw new AppException(INVALID_REQUEST_TYPE);
+        }
+    }
+
+    /**
+     * 등록 요청 처리
+     */
+    @Transactional
+    public SuccessResponse<NoneResponse> acceptRegisterRequest(Request request) {
         // 요청한 향수 정보 조회(등록 -> RequestPerfume에서 조회)
         RequestPerfume reqPerfume = request.getRequestPerfume();
 
@@ -189,8 +206,92 @@ public class PerfumeService {
 
 
     /**
+     * 수락 요청 처리
+     */
+    @Transactional
+    public SuccessResponse<NoneResponse> acceptUpdateRequest(Request request) {
+        // 기존 향수 정보 조회
+        Perfume perfume = request.getPerfume(); // 기존 향수 정보
+
+        // 요청된 향수 정보 조회
+        RequestPerfume reqPerfume = request.getRequestPerfume(); // 요청된 향수 정보
+
+        // 기존 브랜드가 있는지 확인 없으면 새로 생성
+        Brand brand = brandRepository.findByName(reqPerfume.getRequestBrand().getName())
+                .orElseGet(() -> brandRepository.save(
+                        Brand.builder()
+                                .name(reqPerfume.getRequestBrand().getName())
+                                .url(reqPerfume.getRequestBrand().getUrl())
+                                .build()
+                ));
+
+        // 기존 향수의 정보를 요청된 정보로 업데이트
+        perfume = Perfume.builder()
+                .id(perfume.getId())
+                .name(reqPerfume.getName())
+                .price(reqPerfume.getPrice())
+                .brand(brand)
+                .build();
+
+        perfumeRepository.save(perfume);
+
+        // 기존 향수와 연결된 모든 PerfumeNote 삭제
+        perfumeNoteRepository.deleteByPerfume(perfume);
+
+        // 요청된 노트 정보 처리
+        List<RequestPerfumeNote> reqPerfumeNotes = requestPerfumeNoteRepository.findByRequestPerfume(reqPerfume);
+        for (RequestPerfumeNote reqPerfumeNote : reqPerfumeNotes) {
+            // 기존 노트가 있으면 사용, 없으면 새로 생성
+            Note note = noteRepository.findByName(reqPerfumeNote.getRequestNote().getName())
+                    .orElseGet(() -> noteRepository.save(
+                            Note.builder()
+                                    .name(reqPerfumeNote.getRequestNote().getName())
+                                    .build()
+                    ));
+
+            // PerfumeNote 테이블에 새로운 노트 추가
+            perfumeNoteRepository.save(
+                    PerfumeNote.builder()
+                            .perfume(perfume)
+                            .note(note)
+                            .noteType(reqPerfumeNote.getNoteType())
+                            .build()
+            );
+        }
+
+        // 요청 상태를 승인으로 변경
+        request.updateRequestStatus(RequestStatus.APPROVED);
+        requestRepository.save(request);
+
+        return new SuccessResponse<>(UPDATE_COMPLETED, NoneResponse.NONE);
+    }
+
+
+    /**
+     * 삭제 요청 처리
+     */
+    @Transactional
+    public SuccessResponse<NoneResponse> acceptDeleteRequest(Request request) {
+        // 삭제할 향수 정보 조회
+        Perfume perfume = request.getPerfume();
+
+        // 향수-노트 관계 삭제
+        List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByPerfume(perfume);
+        perfumeNoteRepository.deleteAll(perfumeNotes);
+
+        // 향수 삭제
+        perfumeRepository.delete(perfume);
+
+        request.updateRequestStatus(RequestStatus.APPROVED);
+        requestRepository.save(request);
+
+        return new SuccessResponse<>(DELETE_COMPLETED, NoneResponse.NONE);
+    }
+
+
+    /**
      * 요청 거절
-     * */
+     */
     @Transactional
     public SuccessResponse<NoneResponse> rejectPerfumeRequest(Long requestId) {
         Request request = requestRepository.findById(requestId)
@@ -202,11 +303,4 @@ public class PerfumeService {
 
         return new SuccessResponse<>(REJECTED_COMPLETED, NoneResponse.NONE);
     }
-
-
-
-
-
-
-
 }

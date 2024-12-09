@@ -143,7 +143,7 @@ public class RequestController {
      */
     @PostMapping("/perfumes/admins/{requestId}/accept")
     public ResponseEntity<Response<NoneResponse>> acceptPerfumeRequest(@PathVariable Long requestId) {
-        SuccessResponse<NoneResponse> response = perfumeService.registerPerfumeRequest(requestId);
+        SuccessResponse<NoneResponse> response = perfumeService.acceptPerfumeRequest(requestId);
         return Response.success(response);
     }
 

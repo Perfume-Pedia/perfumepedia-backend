@@ -19,7 +19,9 @@ public enum SuccessCode implements ResponseCode {
 
     // 향수 등록 관련
     REGISTER_COMPLETED(HttpStatus.OK, "향수 등록이 성공적으로 이루어졌습니다."),
-    REJECTED_COMPLETED(HttpStatus.OK, "향수 등록이 거절되었습니다.");
+    REJECTED_COMPLETED(HttpStatus.OK, "향수 등록이 거절되었습니다."),
+    DELETE_COMPLETED(HttpStatus.OK, "향수 삭제가 성공적으로 이루어졌습니다."),
+    UPDATE_COMPLETED(HttpStatus.OK, "향수 수정이 성공적으로 이루어졌습니다.");
 
 
 
