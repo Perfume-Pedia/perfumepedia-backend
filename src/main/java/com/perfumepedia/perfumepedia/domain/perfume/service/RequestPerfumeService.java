@@ -1,16 +1,23 @@
 package com.perfumepedia.perfumepedia.domain.perfume.service;
 
+import com.perfumepedia.perfumepedia.domain.brand.entity.Brand;
+import com.perfumepedia.perfumepedia.domain.note.entity.Note;
+
 import com.perfumepedia.perfumepedia.domain.brand.entity.RequestBrand;
+import com.perfumepedia.perfumepedia.domain.brand.repository.BrandRepository;
 import com.perfumepedia.perfumepedia.domain.brand.repository.RequestBrandRepository;
 import com.perfumepedia.perfumepedia.domain.note.entity.NoteType;
 import com.perfumepedia.perfumepedia.domain.note.entity.RequestNote;
+import com.perfumepedia.perfumepedia.domain.note.repository.NoteRepository;
 import com.perfumepedia.perfumepedia.domain.note.repository.RequestNoteRepository;
 import com.perfumepedia.perfumepedia.domain.perfume.entity.Perfume;
 import com.perfumepedia.perfumepedia.domain.perfume.entity.RequestPerfume;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.PerfumeRepository;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.RequestPerfumeRepository;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.RequestPerfumeDetailReq;
+import com.perfumepedia.perfumepedia.domain.perfumeNote.entity.PerfumeNote;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.entity.RequestPerfumeNote;
+import com.perfumepedia.perfumepedia.domain.perfumeNote.repository.PerfumeNoteRepository;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.repository.RequestPerfumeNoteRepository;
 import com.perfumepedia.perfumepedia.domain.request.entity.Request;
 import com.perfumepedia.perfumepedia.domain.request.entity.RequestStatus;
@@ -25,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.PERFUME_NOT_FOUND;
+import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.REGISTER_COMPLETED;
 import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.REQUEST_COMPLETED;
 
 @Service
@@ -36,17 +44,24 @@ public class RequestPerfumeService {
     private final RequestPerfumeNoteRepository reqPerfumeNoteRepository;
     private final RequestRepository requestRepository;
     private final PerfumeRepository perfumeRepository;
+    private final BrandRepository brandRepository;
+    private final NoteRepository noteRepository;
+    private final PerfumeNoteRepository perfumeNoteRepository;
 
     @Autowired
     public RequestPerfumeService(RequestPerfumeRepository requestPerfumeRepository, RequestBrandRepository requestBrandRepository,
                                  RequestNoteRepository requestNoteRepository, RequestPerfumeNoteRepository reqPerfumeNoteRepository,
-                                 RequestRepository requestRepository, PerfumeRepository perfumeRepository) {
+                                 RequestRepository requestRepository, PerfumeRepository perfumeRepository, BrandRepository brandRepository,
+                                 NoteRepository noteRepository, PerfumeNoteRepository perfumeNoteRepository) {
         this.requestPerfumeRepository = requestPerfumeRepository;
         this.requestBrandRepository = requestBrandRepository;
         this.requestNoteRepository = requestNoteRepository;
         this.reqPerfumeNoteRepository = reqPerfumeNoteRepository;
         this.requestRepository = requestRepository;
         this.perfumeRepository = perfumeRepository;
+        this.brandRepository = brandRepository;
+        this.noteRepository = noteRepository;
+        this.perfumeNoteRepository = perfumeNoteRepository;
     }
 
 
@@ -224,4 +239,89 @@ public class RequestPerfumeService {
     }
 
 
-}
+
+
+    /**
+     * 향수 등록
+     * */
+    @Transactional
+    public SuccessResponse<NoneResponse> registerPerfume(RequestPerfumeDetailReq reqPerfumeDetailReq) {
+        // 브랜드에 저장
+        Brand Brand = saveBrand(reqPerfumeDetailReq.getBrand());
+
+        // 향수에 저장
+        Perfume perfume = savePerfume(reqPerfumeDetailReq.getName(), reqPerfumeDetailReq.getPrice(), Brand);
+
+        // 노트 & 퍼퓸 노트 저장
+        saveNotes(reqPerfumeDetailReq, perfume);
+
+        return new SuccessResponse<>(REGISTER_COMPLETED, NoneResponse.NONE);
+    }
+
+
+    // 브랜드 저장
+    @Transactional
+    public Brand saveBrand(String brandName) {
+
+        Brand newBrand = Brand.builder()
+                .name(brandName)
+                .url(null) // 임시 처리
+                .build();
+
+        return brandRepository.save(newBrand);
+    }
+
+    // 향수 저장
+    @Transactional
+    public Perfume savePerfume(String name, int price, Brand brand) {
+
+        Perfume perfume = Perfume.builder()
+                .name(name)
+                .price(price)
+                .brand(brand)
+                .build();
+
+        return perfumeRepository.save(perfume);
+    }
+
+    private void saveNotesAndPerfumeNote(String notes, Perfume Perfume, NoteType type) {
+
+        if (notes != null && !notes.isEmpty()) {
+            String[] noteList = notes.split(","); // ,기준으로 노트를 분리
+            for (String rawNote : noteList) {
+                String note = rawNote.trim(); // 분리된 노트 앞뒤 공백 제거
+                if (!note.isEmpty()) {
+                    //  Note 저장
+                    Note noteEntity = noteRepository.findByName(note)
+                            .orElseGet(() -> noteRepository.save(
+                                    Note.builder()
+                                            .name(note)
+                                            .build())
+                            );
+
+                    // PerfumeNote 저장
+                    savePerfumeNote(Perfume, noteEntity, type);
+                }
+            }
+        }
+    }
+
+    private void savePerfumeNote(Perfume perfume, Note note, NoteType type) {
+        PerfumeNote perfumeNote = PerfumeNote.builder()
+                .perfume(perfume)
+                .note(note)
+                .noteType(type)
+                .build();
+        // PerfumeNote 저장
+        perfumeNoteRepository.save(perfumeNote);
+    }
+
+    private void saveNotes(RequestPerfumeDetailReq dto, Perfume Perfume) {
+        saveNotesAndPerfumeNote(dto.getTopNote(), Perfume, NoteType.TOP);
+        saveNotesAndPerfumeNote(dto.getMiddleNote(), Perfume, NoteType.MIDDLE);
+        saveNotesAndPerfumeNote(dto.getBaseNote(), Perfume, NoteType.BASE);
+        saveNotesAndPerfumeNote(dto.getSingleNote(), Perfume, NoteType.SINGLE);
+    }
+
+
+    }

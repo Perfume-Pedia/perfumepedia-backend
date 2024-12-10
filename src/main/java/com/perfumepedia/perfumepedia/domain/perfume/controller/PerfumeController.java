@@ -2,7 +2,10 @@ package com.perfumepedia.perfumepedia.domain.perfume.controller;
 
 import com.perfumepedia.perfumepedia.domain.perfume.dto.PerfumeUpdateReq;
 import com.perfumepedia.perfumepedia.domain.perfume.service.PerfumeService;
+import com.perfumepedia.perfumepedia.domain.perfume.service.RequestPerfumeService;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
+import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.RequestPerfumeDetailReq;
+import com.perfumepedia.perfumepedia.global.enums.NoneResponse;
 import com.perfumepedia.perfumepedia.global.response.Response;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,10 +20,12 @@ import java.util.List;
 public class PerfumeController {
 
     private final PerfumeService perfumeService;
+    private final RequestPerfumeService requestPerfumeService;
 
     @Autowired
-    public PerfumeController(PerfumeService perfumeService) {
+    public PerfumeController(PerfumeService perfumeService, RequestPerfumeService requestPerfumeService) {
         this.perfumeService = perfumeService;
+        this.requestPerfumeService = requestPerfumeService;
     }
 
     /**
@@ -45,6 +50,15 @@ public class PerfumeController {
     @GetMapping("/search/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getPerfumeDetail(@PathVariable Long perfumeId) {
         SuccessResponse<PerfumeDetailResponse> response = perfumeService.getPerfumeDetail(perfumeId);
+        return Response.success(response);
+    }
+
+    /**
+     * 향수 등록 api
+     */
+    @PostMapping("/perfumes/admins")
+    public ResponseEntity<Response<NoneResponse>> registerPerfume(@RequestBody RequestPerfumeDetailReq requestPerfumeDetailReq) {
+        SuccessResponse<NoneResponse> response = requestPerfumeService.registerPerfume(requestPerfumeDetailReq);
         return Response.success(response);
     }
 
