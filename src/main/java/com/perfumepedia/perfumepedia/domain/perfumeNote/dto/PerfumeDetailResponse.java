@@ -1,9 +1,8 @@
 package com.perfumepedia.perfumepedia.domain.perfumeNote.dto;
 
 import com.perfumepedia.perfumepedia.domain.perfume.entity.Perfume;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.perfumepedia.perfumepedia.domain.perfume.entity.RequestPerfume;
+
 
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,7 @@ public record PerfumeDetailResponse(
         Map<String, List<String>> notes,
         int price
 ) {
-    // Entity -> DTO
+    // Entity -> DTO (기존 향수)
     public static PerfumeDetailResponse toDto(Perfume perfume, Map<String, List<String>> notes) {
         return new PerfumeDetailResponse(
                 perfume.getId(),
@@ -24,6 +23,17 @@ public record PerfumeDetailResponse(
                 perfume.getBrand().getName(),
                 notes,
                 perfume.getPrice()
+        );
+    }
+
+    // Entity -> DTO (신규 향수)
+    public static PerfumeDetailResponse fromEntity(RequestPerfume requestPerfume, Map<String, List<String>> notes) {
+        return new PerfumeDetailResponse(
+                requestPerfume.getId(),
+                requestPerfume.getName(),
+                requestPerfume.getRequestBrand().getName(),
+                notes,
+                requestPerfume.getPrice()
         );
     }
 }
