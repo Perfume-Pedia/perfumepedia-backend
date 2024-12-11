@@ -20,7 +20,7 @@ public class PerfumeNote extends BaseEntity {
     @Column(name = "PERFUME_NOTE_ID")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PERFUME_ID")
     private Perfume perfume;
 

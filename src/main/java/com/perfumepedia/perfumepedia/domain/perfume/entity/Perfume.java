@@ -32,4 +32,11 @@ public class Perfume extends BaseEntity {
         this.price = price;
         this.brand = brand;
     }
+
+    // 수정 메서드
+    public void update(String name, int price, Brand brand) {
+        this.name = name;
+        this.price = price;
+        this.brand = brand;
+    }
 }
