@@ -31,9 +31,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.util.List;
+
 import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.PERFUME_NOT_FOUND;
-import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.REGISTER_COMPLETED;
-import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.REQUEST_COMPLETED;
+import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.*;
 
 @Service
 public class RequestPerfumeService {
@@ -72,21 +73,23 @@ public class RequestPerfumeService {
      * @param userId              요청한 유저의 ID
      * @return perfumeDetailReq
      */
+
     public SuccessResponse<NoneResponse> registerPerfumeRequest(RequestPerfumeDetailReq reqPerfumeDetailReq, Long userId) {
         // 요청 브랜드에 저장
-        RequestBrand reqBrand = saveReqBrand(reqPerfumeDetailReq.getBrand());
+        RequestBrand reqBrand = saveReqBrand(reqPerfumeDetailReq.getBrandName());
 
         // 요청 향수에 저장
         RequestPerfume reqPerfume = saveReqPerfume(reqPerfumeDetailReq.getName(), reqPerfumeDetailReq.getPrice(), reqBrand);
 
         // 요청 노트 & 요청 퍼퓸 노트 저장
-        saveNotes(reqPerfumeDetailReq, reqPerfume);
+        saveReqNotes(reqPerfumeDetailReq, reqPerfume);
 
         // 요청 저장
         Request request = Request.builder()
                 .requestType(RequestType.CREATE) // 등록 요청
                 .requestStatus(RequestStatus.PENDING) // 대기중
                 .userId(userId)
+                .perfume(null) // 등록 요청 상태인 향수 정보
                 .requestPerfume(reqPerfume) // 등록 요청 상태인 향수 정보
                 .build();
 
@@ -109,13 +112,13 @@ public class RequestPerfumeService {
                 .orElseThrow(() -> new AppException(PERFUME_NOT_FOUND));
 
         // 요청 브랜드에 저장
-        RequestBrand reqBrand = saveReqBrand(reqPerfumeDetailReq.getBrand());
+        RequestBrand reqBrand = saveReqBrand(reqPerfumeDetailReq.getBrandName());
 
         // 요청 향수에 저장
         RequestPerfume reqPerfume = saveReqPerfume(reqPerfumeDetailReq.getName(), reqPerfumeDetailReq.getPrice(), reqBrand);
 
         // 요청 노트 & 요청 퍼퓸 노트 저장
-        saveNotes(reqPerfumeDetailReq, reqPerfume);
+        saveReqNotes(reqPerfumeDetailReq, reqPerfume);
 
 
         Request request = Request.builder()
@@ -125,6 +128,8 @@ public class RequestPerfumeService {
                 .requestPerfume(reqPerfume) // 수정 요청 된 향수
                 .perfume(originPerfume)   // 기존 향수
                 .build();
+
+        requestRepository.save(request);
 
         return new SuccessResponse<>(REQUEST_COMPLETED, NoneResponse.NONE);
 
@@ -145,9 +150,11 @@ public class RequestPerfumeService {
                 .requestType(RequestType.DELETE) // 삭제 요청
                 .requestStatus(RequestStatus.PENDING) // 대기중
                 .userId(userId)
-                .perfume(perfume)   // 기존 향수
+                .perfume(perfume) // 기존 향수
+                .requestPerfume(null) // 삭제 요청 된 향수
                 .build();
 
+        requestRepository.save(request);
 
         return new SuccessResponse<>(REQUEST_COMPLETED, NoneResponse.NONE);
     }
@@ -160,7 +167,7 @@ public class RequestPerfumeService {
      * @param requestNote 요청 노트 정보
      * @param type        노트 타입
      */
-    private void savePerfumeNote(RequestPerfume perfume, RequestNote requestNote, NoteType type) {
+    private void saveReqPerfumeNote(RequestPerfume perfume, RequestNote requestNote, NoteType type) {
         RequestPerfumeNote perfumeNote = RequestPerfumeNote.builder()
                 .requestPerfume(perfume)
                 .requestNote(requestNote)
@@ -176,7 +183,7 @@ public class RequestPerfumeService {
      * @param dto     요청된 모든 정보
      * @param Perfume 요청 향수 정보
      */
-    private void saveNotes(RequestPerfumeDetailReq dto, RequestPerfume Perfume) {
+    private void saveReqNotes(RequestPerfumeDetailReq dto, RequestPerfume Perfume) {
         saveNotesAndReqPerfumeNote(dto.getTopNote(), Perfume, NoteType.TOP);
         saveNotesAndReqPerfumeNote(dto.getMiddleNote(), Perfume, NoteType.MIDDLE);
         saveNotesAndReqPerfumeNote(dto.getBaseNote(), Perfume, NoteType.BASE);
@@ -207,14 +214,14 @@ public class RequestPerfumeService {
                                             .build())
                             );
                     // RequestPerfumeNote 저장
-                    savePerfumeNote(reqPerfume, reqNote, type);
+                    saveReqPerfumeNote(reqPerfume, reqNote, type);
                 }
             }
         }
     }
 
     // 요청 브렌드를 저장 후 반환
-    @Transactional
+
     public RequestBrand saveReqBrand(String brandName) {
 
         RequestBrand newBrand = RequestBrand.builder()
@@ -226,7 +233,7 @@ public class RequestPerfumeService {
     }
 
     // 요청 향수를 저장 후 반환
-    @Transactional
+
     public RequestPerfume saveReqPerfume(String name, int price, RequestBrand requestBrand) {
 
         RequestPerfume perfume = RequestPerfume.builder()
@@ -241,13 +248,21 @@ public class RequestPerfumeService {
 
 
 
+
+
+
+
+
+
+
+
     /**
      * 향수 등록
-     * */
+     */
     @Transactional
     public SuccessResponse<NoneResponse> registerPerfume(RequestPerfumeDetailReq reqPerfumeDetailReq) {
         // 브랜드에 저장
-        Brand Brand = saveBrand(reqPerfumeDetailReq.getBrand());
+        Brand Brand = saveBrand(reqPerfumeDetailReq.getBrandName());
 
         // 향수에 저장
         Perfume perfume = savePerfume(reqPerfumeDetailReq.getName(), reqPerfumeDetailReq.getPrice(), Brand);
@@ -260,7 +275,6 @@ public class RequestPerfumeService {
 
 
     // 브랜드 저장
-    @Transactional
     public Brand saveBrand(String brandName) {
 
         Brand newBrand = Brand.builder()
@@ -272,7 +286,7 @@ public class RequestPerfumeService {
     }
 
     // 향수 저장
-    @Transactional
+
     public Perfume savePerfume(String name, int price, Brand brand) {
 
         Perfume perfume = Perfume.builder()
@@ -284,6 +298,7 @@ public class RequestPerfumeService {
         return perfumeRepository.save(perfume);
     }
 
+    // 노트를 분리후 저장
     private void saveNotesAndPerfumeNote(String notes, Perfume Perfume, NoteType type) {
 
         if (notes != null && !notes.isEmpty()) {
@@ -306,6 +321,7 @@ public class RequestPerfumeService {
         }
     }
 
+    // PerfumeNote 저장
     private void savePerfumeNote(Perfume perfume, Note note, NoteType type) {
         PerfumeNote perfumeNote = PerfumeNote.builder()
                 .perfume(perfume)
@@ -316,6 +332,7 @@ public class RequestPerfumeService {
         perfumeNoteRepository.save(perfumeNote);
     }
 
+    // 타입별로 노트 저장
     private void saveNotes(RequestPerfumeDetailReq dto, Perfume Perfume) {
         saveNotesAndPerfumeNote(dto.getTopNote(), Perfume, NoteType.TOP);
         saveNotesAndPerfumeNote(dto.getMiddleNote(), Perfume, NoteType.MIDDLE);
@@ -324,4 +341,49 @@ public class RequestPerfumeService {
     }
 
 
+    /**
+     * 향수 수정 api
+     * */
+    @Transactional
+    public SuccessResponse<NoneResponse> updatePerfume(RequestPerfumeDetailReq reqPerfumeDetailReq, Long perfumeId) {
+        // 수정할 향수 조회
+        Perfume perfume = perfumeRepository.findById(perfumeId)
+                .orElseThrow(() -> new AppException(PERFUME_NOT_FOUND));
+
+        // 기존 브랜드 조회 또는 생성
+        Brand brand = brandRepository.findByName(reqPerfumeDetailReq.getBrandName())
+                .orElseGet(() -> brandRepository.save(
+                        Brand.builder()
+                                .name(reqPerfumeDetailReq.getBrandName())
+                                .build()
+                ));
+
+        perfume.update(reqPerfumeDetailReq.getName(), reqPerfumeDetailReq.getPrice(), brand);
+
+        perfumeRepository.save(perfume);
+
+        perfumeNoteRepository.deleteByPerfume(perfume);
+
+        saveNotes(reqPerfumeDetailReq, perfume);
+
+        return new SuccessResponse<>(UPDATE_COMPLETED, NoneResponse.NONE);
     }
+
+
+    /**
+     * 향수 삭제 api
+     * */
+    @Transactional
+    public SuccessResponse<NoneResponse> deletePerfume(Long perfumeId) {
+        Perfume perfume = perfumeRepository.findById(perfumeId)
+                .orElseThrow(() -> new AppException(PERFUME_NOT_FOUND));
+
+        List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByPerfume(perfume);
+
+        perfumeNoteRepository.deleteAll(perfumeNotes);
+        perfumeRepository.delete(perfume);
+
+        return new SuccessResponse<>(DELETE_COMPLETED, NoneResponse.NONE);
+
+    }
+}

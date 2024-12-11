@@ -62,5 +62,24 @@ public class PerfumeController {
         return Response.success(response);
     }
 
+    /**
+     * 향수 수정 api
+     */
+    @PutMapping("/perfumes/admins/{perfumeId}")
+    public ResponseEntity<Response<NoneResponse>> updatePerfume(@RequestBody RequestPerfumeDetailReq requestPerfumeDetailReq, @PathVariable Long perfumeId) {
+        SuccessResponse<NoneResponse> response = requestPerfumeService.updatePerfume(requestPerfumeDetailReq, perfumeId);
+        return Response.success(response);
+    }
+
+    /**
+     * 향수 삭제 api
+     */
+    @DeleteMapping("/perfumes/admins/{perfumeId}")
+    public ResponseEntity<Response<NoneResponse>> deletePerfume(@PathVariable Long perfumeId) {
+        SuccessResponse<NoneResponse> response = requestPerfumeService.deletePerfume(perfumeId);
+        return Response.success(response);
+    }
+
+
 
 }
