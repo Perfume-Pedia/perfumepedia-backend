@@ -225,13 +225,16 @@ public class PerfumeService {
                                 .build()
                 ));
 
-        // 기존 향수의 정보를 요청된 정보로 업데이트
-        perfume = Perfume.builder()
-                .id(perfume.getId())
-                .name(reqPerfume.getName())
-                .price(reqPerfume.getPrice())
-                .brand(brand)
-                .build();
+        // 기존 향수의 정보를 요청된 정보로 업데이트 - 영속성 문제?
+//        perfume = Perfume.builder()
+//                .id(perfume.getId())
+//                .name(reqPerfume.getName())
+//                .price(reqPerfume.getPrice())
+//                .brand(brand)
+//                .build();
+
+        perfume.update(reqPerfume.getName(), reqPerfume.getPrice(), brand);
+
 
         perfumeRepository.save(perfume);
 
@@ -267,6 +270,7 @@ public class PerfumeService {
     }
 
 
+
     /**
      * 삭제 요청 처리
      */
@@ -279,11 +283,14 @@ public class PerfumeService {
         List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByPerfume(perfume);
         perfumeNoteRepository.deleteAll(perfumeNotes);
 
+        //  새로운 Request 객체 생성 Perfume, requestPerfume을 null로 설정
+        Request updatedRequest = new Request(request.getId(), request.getRequestType(), RequestStatus.APPROVED,
+                request.getUserId(), null, null);
+
+        requestRepository.save(updatedRequest);
+
         // 향수 삭제
         perfumeRepository.delete(perfume);
-
-        request.updateRequestStatus(RequestStatus.APPROVED);
-        requestRepository.save(request);
 
         return new SuccessResponse<>(DELETE_COMPLETED, NoneResponse.NONE);
     }

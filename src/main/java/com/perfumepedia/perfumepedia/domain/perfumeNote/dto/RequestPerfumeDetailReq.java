@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 public class RequestPerfumeDetailReq {
 
     private String name;            // 향수 이름
-    private String brand;           // 브랜드 이름
+    private String brandName;           // 브랜드 이름
     private String topNote;         // 탑 노트
     private String middleNote;      // 미들 노트
     private String baseNote;        // 베이스 노트
@@ -19,7 +19,7 @@ public class RequestPerfumeDetailReq {
     @Builder
     public RequestPerfumeDetailReq(String name, String brand, String topNote, String middleNote, String baseNote, String singleNote, int price) {
         this.name = name;
-        this.brand = brand;
+        this.brandName = brand;
         this.topNote = topNote;
         this.middleNote = middleNote;
         this.baseNote = baseNote;
