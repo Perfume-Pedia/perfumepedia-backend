@@ -1,8 +1,10 @@
 package com.perfumepedia.perfumepedia.domain.brand.controller;
 
+import com.perfumepedia.perfumepedia.domain.brand.dto.BrandAndPerfumeCountDto;
 import com.perfumepedia.perfumepedia.domain.brand.service.BrandService;
 import com.perfumepedia.perfumepedia.global.response.Response;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +28,10 @@ public class BrandController {
     /**
      * 모든 브랜드와 향수 개수 조회 api
      */
+    @Operation(summary = "브랜드와 향수 개수 조회", description = "등록 되어있는 브랜드와 향수의 개수를 조회합니다.")
     @GetMapping("/perfumes/admins/counts")
-    public ResponseEntity<Response<Map<String, Long>>> getBrandAndPerfumeCount() {
-        SuccessResponse<Map<String, Long>> response = brandService.BrandAndPerfumeCount();
+    public ResponseEntity<Response<BrandAndPerfumeCountDto>> getBrandAndPerfumeCount() {
+        SuccessResponse<BrandAndPerfumeCountDto> response = brandService.BrandAndPerfumeCount();
         return Response.success(response);
     }
 
