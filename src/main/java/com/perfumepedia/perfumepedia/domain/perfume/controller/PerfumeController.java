@@ -4,10 +4,12 @@ import com.perfumepedia.perfumepedia.domain.perfume.dto.PerfumeUpdateReq;
 import com.perfumepedia.perfumepedia.domain.perfume.service.PerfumeService;
 import com.perfumepedia.perfumepedia.domain.perfume.service.RequestPerfumeService;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
+import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeSearchDetail;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.RequestPerfumeDetailReq;
 import com.perfumepedia.perfumepedia.global.enums.NoneResponse;
 import com.perfumepedia.perfumepedia.global.response.Response;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,58 +30,44 @@ public class PerfumeController {
         this.requestPerfumeService = requestPerfumeService;
     }
 
-    /**
-     * 향수 검색 API (브랜드, 향수 이름, 노트 이름으로 검색)
-     *
-     * @param keyword 검색어
-     * @return 검색된 향수 리스트
-     */
     @GetMapping("/search")
+    @Operation(summary = "향수 검색", description = "입력한 keyword와 일치하는 향수의 목록이 검색됩니다.")
     public ResponseEntity<Response<List<PerfumeUpdateReq>>> searchPerfumes(@RequestParam String keyword) {
         SuccessResponse<List<PerfumeUpdateReq>> successResponse = perfumeService.searchPerfumes(keyword);
         return Response.success(successResponse);
     }
 
 
-    /**
-     * 향수 세부정보 조회 API (
-     *
-     * @param perfumeId 향수 아이디
-     * @return 검색된 향수 세부정보
-     */
+    @Operation(summary = "향수 세부정보 검색", description = "선택한 향수의 세부정보가 조회됩니다.")
     @GetMapping("/search/{perfumeId}")
-    public ResponseEntity<Response<PerfumeDetailResponse>> getPerfumeDetail(@PathVariable Long perfumeId) {
-        SuccessResponse<PerfumeDetailResponse> response = perfumeService.getPerfumeDetail(perfumeId);
+    public ResponseEntity<Response<PerfumeSearchDetail>> getPerfumeDetail(@PathVariable Long perfumeId) {
+        SuccessResponse<PerfumeSearchDetail> response = perfumeService.getPerfumeDetail(perfumeId);
         return Response.success(response);
     }
 
-    /**
-     * 향수 등록 api
-     */
+
+    @Operation(summary = "향수 등록", description = "관리자가 향수의 정보를 입력해 등록합니다.")
     @PostMapping("/perfumes/admins")
     public ResponseEntity<Response<NoneResponse>> registerPerfume(@RequestBody RequestPerfumeDetailReq requestPerfumeDetailReq) {
         SuccessResponse<NoneResponse> response = requestPerfumeService.registerPerfume(requestPerfumeDetailReq);
         return Response.success(response);
     }
 
-    /**
-     * 향수 수정 api
-     */
+
+    @Operation(summary = "향수 수정", description = "관리자가 등록되어 있는 향수의 정보를 수정합니다.")
     @PutMapping("/perfumes/admins/{perfumeId}")
     public ResponseEntity<Response<NoneResponse>> updatePerfume(@RequestBody RequestPerfumeDetailReq requestPerfumeDetailReq, @PathVariable Long perfumeId) {
         SuccessResponse<NoneResponse> response = requestPerfumeService.updatePerfume(requestPerfumeDetailReq, perfumeId);
         return Response.success(response);
     }
 
-    /**
-     * 향수 삭제 api
-     */
+
+    @Operation(summary = "향수 삭제", description = "관리자가 등록되어 있는 향수를 삭제합니다.")
     @DeleteMapping("/perfumes/admins/{perfumeId}")
     public ResponseEntity<Response<NoneResponse>> deletePerfume(@PathVariable Long perfumeId) {
         SuccessResponse<NoneResponse> response = requestPerfumeService.deletePerfume(perfumeId);
         return Response.success(response);
     }
-
 
 
 }

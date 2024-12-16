@@ -31,12 +31,12 @@ public class Request extends BaseEntity {
 
     // 요청한 향수에 대한 정보
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "REQUEST_PERFUME_NOTE_ID", nullable = true)
+    @JoinColumn(name = "REQUEST_PERFUME_ID", nullable = true)
     private RequestPerfume requestPerfume;
 
     // 수정, 삭제 요청시 이전 향수에 대한 정보
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PERFUME_NOTE_ID", nullable = true)
+    @JoinColumn(name = "PERFUME_ID", nullable = true)
     private Perfume perfume;
 
     @Builder

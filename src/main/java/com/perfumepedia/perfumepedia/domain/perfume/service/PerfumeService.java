@@ -10,6 +10,7 @@ import com.perfumepedia.perfumepedia.domain.perfume.entity.RequestPerfume;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.PerfumeRepository;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.RequestPerfumeRepository;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
+import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeSearchDetail;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.entity.PerfumeNote;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.entity.RequestPerfumeNote;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.repository.PerfumeNoteRepository;
@@ -99,7 +100,7 @@ public class PerfumeService {
      * @param perfumaId 향수 아이디
      * @return 검색된 향수 세부정보
      */
-    public SuccessResponse<PerfumeDetailResponse> getPerfumeDetail(Long perfumaId) {
+    public SuccessResponse<PerfumeSearchDetail> getPerfumeDetail(Long perfumaId) {
 
         // 해당하는 향수가 존재하는지 확인
         Perfume perfume = perfumeRepository.findById(perfumaId)
@@ -120,17 +121,22 @@ public class PerfumeService {
             }
             notes.get(noteType).add(perfumeNote.getNote().getName());
         }
-        PerfumeDetailResponse detailPerfume = PerfumeDetailResponse.toDto(perfume, notes);
+        PerfumeSearchDetail detailPerfume = PerfumeSearchDetail.toDto(perfume, notes);
 
 
         return new SuccessResponse<>(SEARCH_COMPLETED, detailPerfume);
     }
 
     /**
-     * 요청 타입별 요청 수락
+     * 요청 타입별 요청 수락 -> 유저 아이디 포함 role 이 관리자인지 확인한는 로직
      */
     @Transactional
+//    public SuccessResponse<NoneResponse> acceptPerfumeRequest(Long requestId, String role) {
     public SuccessResponse<NoneResponse> acceptPerfumeRequest(Long requestId) {
+
+//        if (!"ADMIN".equals(role)) {
+//            throw new AppException(ACCESS_DENIED);
+//        }
         // 요청 정보 조회
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new AppException(REQUEST_NOT_FOUND));
@@ -149,7 +155,7 @@ public class PerfumeService {
     }
 
     /**
-     * 등록 요청 처리
+     * 등록 요청 처리 batch Note, PerfumeNote 리스트값 저장할때 쓰기
      */
     @Transactional
     public SuccessResponse<NoneResponse> acceptRegisterRequest(Request request) {

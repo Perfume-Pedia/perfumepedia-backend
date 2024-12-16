@@ -70,7 +70,7 @@ public class RequestPerfumeNoteService {
         }
 
         // entity -> dto
-        PerfumeDetailResponse detailPerfume = PerfumeDetailResponse.fromEntity(requestPerfume, notes);
+        PerfumeDetailResponse detailPerfume = PerfumeDetailResponse.fromEntity(requestPerfume, notes, requestId);
         return new SuccessResponse<>(SEARCH_COMPLETED, detailPerfume);
     }
 
@@ -109,7 +109,7 @@ public class RequestPerfumeNoteService {
             notes.get(noteType).add(perfumeNote.getNote().getName());
         }
         // entity -> dto
-        PerfumeDetailResponse detailPerfume = PerfumeDetailResponse.toDto(perfume, notes);
+        PerfumeDetailResponse detailPerfume = PerfumeDetailResponse.toDto(perfume, notes, requestId);
 
         return new SuccessResponse<>(SEARCH_COMPLETED, detailPerfume);
     }

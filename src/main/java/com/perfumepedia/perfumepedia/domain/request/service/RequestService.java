@@ -66,6 +66,7 @@ public class RequestService {
         List<RequestListDto> requestList = new ArrayList<>();
 
         for (Request request : requests) {
+            Long requestId = request.getId();
             Long perfumeId = null;
             String perfumeName = null;
 
@@ -78,6 +79,7 @@ public class RequestService {
             }
 
             RequestListDto requestDto = RequestListDto.builder()
+                    .requestId(requestId)
                     .perfumeId(perfumeId)
                     .perfumeName(perfumeName)
                     .build();
