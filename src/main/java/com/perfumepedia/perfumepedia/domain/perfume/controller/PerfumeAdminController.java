@@ -1,5 +1,7 @@
-package com.perfumepedia.perfumepedia.domain.request.controller;
+package com.perfumepedia.perfumepedia.domain.perfume.controller;
 
+import com.perfumepedia.perfumepedia.domain.brand.dto.BrandAndPerfumeCountDto;
+import com.perfumepedia.perfumepedia.domain.brand.service.BrandService;
 import com.perfumepedia.perfumepedia.domain.perfume.service.PerfumeService;
 import com.perfumepedia.perfumepedia.domain.perfume.service.RequestPerfumeService;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
@@ -12,65 +14,52 @@ import com.perfumepedia.perfumepedia.global.response.Response;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
-@Tag(name = "향수 요청", description = "향수 요청 관련 API")
-public class RequestController {
+@RequiredArgsConstructor
+@Tag(name = "향수 관리", description = "관리자의 향수 관리 관련 API")
+public class PerfumeAdminController {
 
+    private final BrandService brandService;
     private final RequestPerfumeService requestPerfumeService;
+    private final PerfumeService perfumeService;
     private final RequestService requestService;
     private final RequestPerfumeNoteService requestPerfumeNoteService;
-    private final PerfumeService perfumeService;
 
 
-    @Autowired
-    public RequestController(RequestPerfumeService requestPerfumeService, RequestService requestService,
-                             RequestPerfumeNoteService requestPerfumeNoteService, PerfumeService perfumeService) {
-        this.requestPerfumeService = requestPerfumeService;
-        this.requestService = requestService;
-        this.requestPerfumeNoteService = requestPerfumeNoteService;
-        this.perfumeService = perfumeService;
+    @Operation(summary = "브랜드와 향수 개수 조회", description = "등록 되어있는 브랜드와 향수의 개수를 조회합니다.")
+    @GetMapping("/perfumes/admins/counts")
+    public ResponseEntity<Response<BrandAndPerfumeCountDto>> getBrandAndPerfumeCount() {
+        SuccessResponse<BrandAndPerfumeCountDto> response = brandService.BrandAndPerfumeCount();
+        return Response.success(response);
     }
 
-
-    @Operation(summary = "향수 등록 요청", description = "유저가 향수의 정보를 작성해 등록 요청합니다.")
-
-    @PostMapping("/perfumes/users")
-    public ResponseEntity<Response<NoneResponse>> registerPerfumeRequest(
-            @RequestBody RequestPerfumeDetailReq reqPerfumeDetailReq
-//            @AuthenticationPrincipal Long userId
-    ) {
-        SuccessResponse<NoneResponse> response = requestPerfumeService.registerPerfumeRequest(reqPerfumeDetailReq, 1L);
+    @Operation(summary = "향수 등록", description = "관리자가 향수의 정보를 입력해 등록합니다.")
+    @PostMapping("/perfumes/admins")
+    public ResponseEntity<Response<NoneResponse>> registerPerfume(@RequestBody RequestPerfumeDetailReq requestPerfumeDetailReq) {
+        SuccessResponse<NoneResponse> response = requestPerfumeService.registerPerfume(requestPerfumeDetailReq);
         return Response.success(response);
     }
 
 
-    @Operation(summary = "향수 수정 요청", description = "유저가 향수의 정보를 작성해 수정 요청합니다.")
-    @PostMapping("/perfumes/users/{perfumeId}/update")
-    public ResponseEntity<Response<NoneResponse>> updatePerfumeRequest(
-            @RequestBody RequestPerfumeDetailReq reqPerfumeDetailReq,
-            @PathVariable Long perfumeId
-//            @AuthenticationPrincipal Long userId
-    ) {
-        SuccessResponse<NoneResponse> response = requestPerfumeService.updatePerfumeRequest(reqPerfumeDetailReq, perfumeId, 1L);
+    @Operation(summary = "향수 수정", description = "관리자가 등록되어 있는 향수의 정보를 수정합니다.")
+    @PutMapping("/perfumes/admins/{perfumeId}")
+    public ResponseEntity<Response<NoneResponse>> updatePerfume(@RequestBody RequestPerfumeDetailReq requestPerfumeDetailReq, @PathVariable Long perfumeId) {
+        SuccessResponse<NoneResponse> response = requestPerfumeService.updatePerfume(requestPerfumeDetailReq, perfumeId);
         return Response.success(response);
     }
 
 
-    @Operation(summary = "향수 삭제 요청", description = "유저가 삭제를 원하는 향수를 삭제 요청합니다.")
-    @PostMapping("/perfumes/users/{perfumeId}/delete")
-    public ResponseEntity<Response<NoneResponse>> deletePerfumeRequest(
-            @PathVariable Long perfumeId
-//            @AuthenticationPrincipal Long userId
-    ) {
-        SuccessResponse<NoneResponse> response = requestPerfumeService.deletePerfumeRequest(perfumeId, 1L);
+    @Operation(summary = "향수 삭제", description = "관리자가 등록되어 있는 향수를 삭제합니다.")
+    @DeleteMapping("/perfumes/admins/{perfumeId}")
+    public ResponseEntity<Response<NoneResponse>> deletePerfume(@PathVariable Long perfumeId) {
+        SuccessResponse<NoneResponse> response = requestPerfumeService.deletePerfume(perfumeId);
         return Response.success(response);
     }
 
@@ -91,7 +80,7 @@ public class RequestController {
     }
 
 
-    @Operation(summary = "등록 요청 목록 조회", description = "관리자가 수정 요청된 향수의 목록을 조회합니다.")
+    @Operation(summary = "수정 요청 목록 조회", description = "관리자가 수정 요청된 향수의 목록을 조회합니다.")
     @GetMapping("/perfumes/admins/requests/update")
     public ResponseEntity<Response<List<RequestListDto>>> getUpdateRequests() {
         SuccessResponse<List<RequestListDto>> response = requestService.getUpdateRequests();
@@ -141,7 +130,7 @@ public class RequestController {
     }
 
 
-    @Operation(summary = "요청 수락", description = "관리자가 요청을 거절합니다.")
+    @Operation(summary = "요청 거절", description = "관리자가 요청을 거절합니다.")
     @PostMapping("/perfumes/admins/{requestId}/reject")
     public ResponseEntity<Response<NoneResponse>> rejectPerfumeRequest(@PathVariable Long requestId) {
         SuccessResponse<NoneResponse> response = perfumeService.rejectPerfumeRequest(requestId);
