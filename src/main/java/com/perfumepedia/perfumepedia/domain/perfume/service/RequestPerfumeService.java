@@ -221,16 +221,17 @@ public class RequestPerfumeService {
     }
 
     // 요청 브렌드를 저장 후 반환
-
     public RequestBrand saveReqBrand(String brandName) {
-
-        RequestBrand newBrand = RequestBrand.builder()
-                .name(brandName)
-                .url(null) // 임시 처리
-                .build();
-
-        return requestBrandRepository.save(newBrand);
+        // 브랜드 이름이 이미 존재하면 해당 브랜드를 반환, 없으면 새 브랜드를 생성하여 저장
+        return requestBrandRepository.findByName(brandName)
+                .orElseGet(() -> requestBrandRepository.save(
+                        RequestBrand.builder()
+                                .name(brandName)
+                                .url(null) // 임시 처리
+                                .build()
+                ));
     }
+
 
     // 요청 향수를 저장 후 반환
 
@@ -276,13 +277,14 @@ public class RequestPerfumeService {
 
     // 브랜드 저장
     public Brand saveBrand(String brandName) {
-
-        Brand newBrand = Brand.builder()
-                .name(brandName)
-                .url(null) // 임시 처리
-                .build();
-
-        return brandRepository.save(newBrand);
+        // 브랜드 이름이 이미 존재하면 해당 브랜드를 반환, 없으면 새 브랜드를 생성하여 저장
+        return brandRepository.findByName(brandName)
+                .orElseGet(() -> brandRepository.save(
+                        Brand.builder()
+                                .name(brandName)
+                                .url(null) // 임시 처리
+                                .build()
+                ));
     }
 
     // 향수 저장
