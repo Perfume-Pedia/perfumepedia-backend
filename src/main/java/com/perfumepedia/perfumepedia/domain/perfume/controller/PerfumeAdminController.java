@@ -101,9 +101,9 @@ public class PerfumeAdminController {
     @GetMapping("/register/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getRegisterRequestDetail(
             @RequestParam String requestType,
-            @PathVariable Long perfumeId
+            @PathVariable Long requestId
     ) {
-        SuccessResponse<PerfumeDetailResponse> response = requestPerfumeNoteService.getRegisterRequestDetail(perfumeId, requestType);
+        SuccessResponse<PerfumeDetailResponse> response = requestPerfumeNoteService.getRegisterRequestDetail(requestId, requestType);
         return Response.success(response);
     }
 
@@ -112,9 +112,9 @@ public class PerfumeAdminController {
     @GetMapping("/update/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getUpdateRequestDetail(
             @RequestParam String requestType,
-            @PathVariable Long perfumeId
+            @PathVariable Long requestId
     ) {
-        SuccessResponse<PerfumeDetailResponse> response = requestPerfumeNoteService.getDeleteRequestDetail(perfumeId, requestType);
+        SuccessResponse<PerfumeDetailResponse> response = requestPerfumeNoteService.getDeleteRequestDetail(requestId, requestType);
         return Response.success(response);
     }
 
