@@ -130,6 +130,7 @@ public class PerfumeService {
     /**
      * 요청 타입별 요청 수락 -> 유저 아이디 포함 role 이 관리자인지 확인한는 로직
      */
+    @Transactional
 //    public SuccessResponse<NoneResponse> acceptPerfumeRequest(Long requestId, String role) {
     public SuccessResponse<NoneResponse> acceptPerfumeRequest(Long requestId) {
 
@@ -283,7 +284,6 @@ public class PerfumeService {
 
         // 향수-노트 관계 삭제
         List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByPerfume(perfume);
-        perfumeNoteRepository.deleteAll(perfumeNotes);
 
 //        //  새로운 Request 객체 생성 Perfume, requestPerfume을 null로 설정
 //        Request updatedRequest = new Request(request.getId(), request.getRequestType(), RequestStatus.APPROVED,
@@ -293,8 +293,9 @@ public class PerfumeService {
         request.clearPerfumeAndRequestPerfume();
 
         // 향수 삭제
-        perfumeRepository.delete(perfume);
         requestRepository.save(request);
+        perfumeNoteRepository.deleteAll(perfumeNotes);
+        perfumeRepository.delete(perfume);
 
 
         return new SuccessResponse<>(DELETE_COMPLETED, NoneResponse.NONE);
