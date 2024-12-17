@@ -26,8 +26,8 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Binddog Hub API") // API 제목
+                        .title("향수 프로젝트 API") // API 제목
                         .version("0.0.1") // API 버전
-                        .description("Binddog Hub API Documentation")); // API 설명
+                        .description("향수 프로젝트 API 문서")); // API 설명
     }
 }

@@ -1,5 +1,6 @@
 package com.perfumepedia.perfumepedia.domain.brand.service;
 
+import com.perfumepedia.perfumepedia.domain.brand.dto.BrandAndPerfumeCountDto;
 import com.perfumepedia.perfumepedia.domain.brand.repository.BrandRepository;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.PerfumeRepository;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
@@ -24,17 +25,20 @@ public class BrandService {
         this.perfumeRepository = perfumeRepository;
     }
 
-
     /**
      * 저장되어있는 브랜드와 향수의 개수를 반환하는 메서드
      */
-    public SuccessResponse<Map<String, Long>> BrandAndPerfumeCount() {
-        Map<String, Long> brandAndPerfumeCount = new HashMap<>();
+    public SuccessResponse<BrandAndPerfumeCountDto> BrandAndPerfumeCount() {
 
-        brandAndPerfumeCount.put("brandCount", brandRepository.count());
-        brandAndPerfumeCount.put("perfumeCount", perfumeRepository.count());
+        Long brandCount = brandRepository.count();
+        Long perfumeCount = perfumeRepository.count();
 
-        return new SuccessResponse<>(REQUEST_COMPLETED, brandAndPerfumeCount);
+        BrandAndPerfumeCountDto brandAndPerfumeCountDto = BrandAndPerfumeCountDto.builder()
+                .brandCount(brandCount)
+                .perfumeCount(perfumeCount)
+                .build();
+
+        return new SuccessResponse<>(REQUEST_COMPLETED, brandAndPerfumeCountDto);
     }
 
 

@@ -1,6 +1,7 @@
 package com.perfumepedia.perfumepedia.domain.perfume.entity;
 
 import com.perfumepedia.perfumepedia.domain.brand.entity.Brand;
+import com.perfumepedia.perfumepedia.domain.request.entity.Request;
 import com.perfumepedia.perfumepedia.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;

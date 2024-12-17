@@ -9,6 +9,7 @@ import java.util.Map;
 
 public record PerfumeDetailResponse(
 
+        Long requestId,
         Long perfumeId,
         String name,
         String brandName,
@@ -16,8 +17,9 @@ public record PerfumeDetailResponse(
         int price
 ) {
     // Entity -> DTO (기존 향수)
-    public static PerfumeDetailResponse toDto(Perfume perfume, Map<String, List<String>> notes) {
+    public static PerfumeDetailResponse toDto(Perfume perfume, Map<String, List<String>> notes, Long requestId) {
         return new PerfumeDetailResponse(
+                requestId,
                 perfume.getId(),
                 perfume.getName(),
                 perfume.getBrand().getName(),
@@ -27,8 +29,9 @@ public record PerfumeDetailResponse(
     }
 
     // Entity -> DTO (신규 향수)
-    public static PerfumeDetailResponse fromEntity(RequestPerfume requestPerfume, Map<String, List<String>> notes) {
+    public static PerfumeDetailResponse fromEntity(RequestPerfume requestPerfume, Map<String, List<String>> notes, Long requestId) {
         return new PerfumeDetailResponse(
+                requestId,
                 requestPerfume.getId(),
                 requestPerfume.getName(),
                 requestPerfume.getRequestBrand().getName(),
