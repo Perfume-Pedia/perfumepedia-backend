@@ -23,6 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/perfumes/admins") // 공통 URL 경로 앞으로 빼기
 @Tag(name = "향수 관리", description = "관리자의 향수 관리 관련 API")
 public class PerfumeAdminController {
 
@@ -34,14 +35,14 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "브랜드와 향수 개수 조회", description = "등록 되어있는 브랜드와 향수의 개수를 조회합니다.")
-    @GetMapping("/perfumes/admins/counts")
+    @GetMapping("/counts")
     public ResponseEntity<Response<BrandAndPerfumeCountDto>> getBrandAndPerfumeCount() {
         SuccessResponse<BrandAndPerfumeCountDto> response = brandService.BrandAndPerfumeCount();
         return Response.success(response);
     }
 
     @Operation(summary = "향수 등록", description = "관리자가 향수의 정보를 입력해 등록합니다.")
-    @PostMapping("/perfumes/admins")
+    @PostMapping
     public ResponseEntity<Response<NoneResponse>> registerPerfume(@RequestBody RequestPerfumeDetailReq requestPerfumeDetailReq) {
         SuccessResponse<NoneResponse> response = requestPerfumeService.registerPerfume(requestPerfumeDetailReq);
         return Response.success(response);
@@ -49,7 +50,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "향수 수정", description = "관리자가 등록되어 있는 향수의 정보를 수정합니다.")
-    @PutMapping("/perfumes/admins/{perfumeId}")
+    @PutMapping("/{perfumeId}")
     public ResponseEntity<Response<NoneResponse>> updatePerfume(@RequestBody RequestPerfumeDetailReq requestPerfumeDetailReq, @PathVariable Long perfumeId) {
         SuccessResponse<NoneResponse> response = requestPerfumeService.updatePerfume(requestPerfumeDetailReq, perfumeId);
         return Response.success(response);
@@ -57,7 +58,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "향수 삭제", description = "관리자가 등록되어 있는 향수를 삭제합니다.")
-    @DeleteMapping("/perfumes/admins/{perfumeId}")
+    @DeleteMapping("/{perfumeId}")
     public ResponseEntity<Response<NoneResponse>> deletePerfume(@PathVariable Long perfumeId) {
         SuccessResponse<NoneResponse> response = requestPerfumeService.deletePerfume(perfumeId);
         return Response.success(response);
@@ -65,7 +66,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "향수 요청 개수 조회", description = "관리자가 등록된 향수 요청개수를 조회합니다.")
-    @GetMapping("/perfumes/admins/request-counts")
+    @GetMapping("/request-counts")
     public ResponseEntity<Response<Map<String, Long>>> getRequestCounts() {
         SuccessResponse<Map<String, Long>> response = requestService.getRequestCount();
         return Response.success(response);
@@ -73,7 +74,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "등록 요청 목록 조회", description = "관리자가 등록 요청된 향수의 목록을 조회합니다.")
-    @GetMapping("/perfumes/admins/requests/register")
+    @GetMapping("/requests/register")
     public ResponseEntity<Response<List<RequestListDto>>> getRegisterRequests() {
         SuccessResponse<List<RequestListDto>> response = requestService.getRegisterRequests();
         return Response.success(response);
@@ -81,7 +82,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "수정 요청 목록 조회", description = "관리자가 수정 요청된 향수의 목록을 조회합니다.")
-    @GetMapping("/perfumes/admins/requests/update")
+    @GetMapping("/requests/update")
     public ResponseEntity<Response<List<RequestListDto>>> getUpdateRequests() {
         SuccessResponse<List<RequestListDto>> response = requestService.getUpdateRequests();
         return Response.success(response);
@@ -89,7 +90,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "삭제 요청 목록 조회", description = "관리자가 삭제 요청된 향수의 목록을 조회합니다.")
-    @GetMapping("/perfumes/admins/requests/delete")
+    @GetMapping("/requests/delete")
     public ResponseEntity<Response<List<RequestListDto>>> getDeleteRequests() {
         SuccessResponse<List<RequestListDto>> response = requestService.getDeleteRequests();
         return Response.success(response);
@@ -97,8 +98,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "등록 요청 향수 상세 조회", description = "관리자가 등록 요청된 향수의 세부정보를 조회합니다.(수정 요청조회에도 사용)")
-
-    @GetMapping("/perfumes/admins/register/{perfumeId}")
+    @GetMapping("/register/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getRegisterRequestDetail(
             @RequestParam String requestType,
             @PathVariable Long perfumeId
@@ -109,7 +109,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "삭제 요청 상세 조회", description = "관리자가 삭제 요청된 향수의 세부정보를 조회합니다.(수정 요청조회에도 사용)")
-    @GetMapping("/perfumes/admins/update/{perfumeId}")
+    @GetMapping("/update/{perfumeId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getUpdateRequestDetail(
             @RequestParam String requestType,
             @PathVariable Long perfumeId
@@ -120,7 +120,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "요청 수락", description = "관리자가 요청을 수락합니다.")
-    @PostMapping("/perfumes/admins/{requestId}/accept")
+    @PostMapping("/{requestId}/accept")
     public ResponseEntity<Response<NoneResponse>> acceptPerfumeRequest(@PathVariable Long requestId
 //            ,@AuthenticationPrincipal User user
     ) { // 추후에 User 받아와야함
@@ -131,7 +131,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "요청 거절", description = "관리자가 요청을 거절합니다.")
-    @PostMapping("/perfumes/admins/{requestId}/reject")
+    @PostMapping("/{requestId}/reject")
     public ResponseEntity<Response<NoneResponse>> rejectPerfumeRequest(@PathVariable Long requestId) {
         SuccessResponse<NoneResponse> response = perfumeService.rejectPerfumeRequest(requestId);
         return Response.success(response);

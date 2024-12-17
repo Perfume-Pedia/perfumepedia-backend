@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/perfumes/users")
 @Tag(name = "향수 요청", description = "유저의 향수 요청 관련 API")
 public class PerfumeRequestController {
 
@@ -21,7 +22,7 @@ public class PerfumeRequestController {
 
 
     @Operation(summary = "향수 등록 요청", description = "유저가 향수의 정보를 작성해 등록 요청합니다.")
-    @PostMapping("/perfumes/users")
+    @PostMapping
     public ResponseEntity<Response<NoneResponse>> registerPerfumeRequest(
             @RequestBody RequestPerfumeDetailReq reqPerfumeDetailReq
 //            @AuthenticationPrincipal Long userId
@@ -32,7 +33,7 @@ public class PerfumeRequestController {
 
 
     @Operation(summary = "향수 수정 요청", description = "유저가 향수의 정보를 작성해 수정 요청합니다.")
-    @PostMapping("/perfumes/users/{perfumeId}/update")
+    @PostMapping("/{perfumeId}/update")
     public ResponseEntity<Response<NoneResponse>> updatePerfumeRequest(
             @RequestBody RequestPerfumeDetailReq reqPerfumeDetailReq,
             @PathVariable Long perfumeId
@@ -44,7 +45,7 @@ public class PerfumeRequestController {
 
 
     @Operation(summary = "향수 삭제 요청", description = "유저가 삭제를 원하는 향수를 삭제 요청합니다.")
-    @PostMapping("/perfumes/users/{perfumeId}/delete")
+    @PostMapping("/{perfumeId}/delete")
     public ResponseEntity<Response<NoneResponse>> deletePerfumeRequest(
             @PathVariable Long perfumeId
 //            @AuthenticationPrincipal Long userId

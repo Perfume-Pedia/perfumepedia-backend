@@ -35,7 +35,7 @@ public class Request extends BaseEntity {
     private RequestPerfume requestPerfume;
 
     // 수정, 삭제 요청시 이전 향수에 대한 정보
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "PERFUME_ID", nullable = true)
     private Perfume perfume;
 
@@ -52,5 +52,11 @@ public class Request extends BaseEntity {
 
     public void updateRequestStatus(RequestStatus newStatus) {
         this.requestStatus = newStatus;
+    }
+
+    // perfume과 requestPerfume을 null로 설정하
+    public void clearPerfumeAndRequestPerfume() {
+        this.perfume = null;
+        this.requestPerfume = null;
     }
 }
