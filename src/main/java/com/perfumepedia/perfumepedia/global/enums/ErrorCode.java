@@ -19,6 +19,7 @@ public enum ErrorCode implements ResponseCode {
     PERFUME_NOT_FOUND(HttpStatus.NOT_FOUND, "일치하는 향수가 업서용."),
     NOTE_NOT_FOUND(HttpStatus.NOT_FOUND, "일치하는 노트가 없습니다."),
     REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "요청이 존재하지 않습니다."),
+    NOTES_FORMAT_INVALID(HttpStatus.BAD_REQUEST, "노트의 형식이 잘못되었습니다. 싱글 노트와 탑/미들/베이스 노트 중 하나만 제공되어야 합니다."),
 
     // DTO 관련
     INVALID_REQUEST_TYPE(HttpStatus.BAD_REQUEST, "요청 타입이 잘못되었습니다."),
