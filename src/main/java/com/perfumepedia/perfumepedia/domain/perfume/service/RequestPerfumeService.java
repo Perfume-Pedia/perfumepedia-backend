@@ -33,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.NOTES_FORMAT_INVALID;
 import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.PERFUME_NOT_FOUND;
 import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.*;
 
@@ -335,11 +336,21 @@ public class RequestPerfumeService {
     }
 
     // 타입별로 노트 저장
-    private void saveNotes(RequestPerfumeDetailReq dto, Perfume Perfume) {
-        saveNotesAndPerfumeNote(dto.getTopNote(), Perfume, NoteType.TOP);
-        saveNotesAndPerfumeNote(dto.getMiddleNote(), Perfume, NoteType.MIDDLE);
-        saveNotesAndPerfumeNote(dto.getBaseNote(), Perfume, NoteType.BASE);
-        saveNotesAndPerfumeNote(dto.getSingleNote(), Perfume, NoteType.SINGLE);
+    private void saveNotes(RequestPerfumeDetailReq dto, Perfume perfume) {
+        // 싱글 노트가 비어 있으면 탑, 미들, 베이스 노트 저장
+        if (dto.getSingleNote() == null || dto.getSingleNote().isEmpty()) {
+            saveNotesAndPerfumeNote(dto.getTopNote(), perfume, NoteType.TOP);
+            saveNotesAndPerfumeNote(dto.getMiddleNote(), perfume, NoteType.MIDDLE);
+            saveNotesAndPerfumeNote(dto.getBaseNote(), perfume, NoteType.BASE);
+        }
+        // 탑, 미들, 베이스 노트가 비어 있으면 싱글 노트를 저장
+        else if ((dto.getTopNote() == null || dto.getTopNote().isEmpty())
+                && (dto.getMiddleNote() == null || dto.getMiddleNote().isEmpty())
+                && (dto.getBaseNote() == null || dto.getBaseNote().isEmpty())) {
+            saveNotesAndPerfumeNote(dto.getSingleNote(), perfume, NoteType.SINGLE);
+        } else {
+            throw new AppException(NOTES_FORMAT_INVALID);
+        }
     }
 
 

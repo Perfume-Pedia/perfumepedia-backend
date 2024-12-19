@@ -98,7 +98,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "등록 요청 향수 상세 조회", description = "관리자가 등록 요청된 향수의 세부정보를 조회합니다.(수정 요청조회에도 사용)")
-    @GetMapping("/register/{perfumeId}")
+    @GetMapping("/register/{requestId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getRegisterRequestDetail(
             @RequestParam String requestType,
             @PathVariable Long requestId
@@ -109,7 +109,7 @@ public class PerfumeAdminController {
 
 
     @Operation(summary = "삭제 요청 상세 조회", description = "관리자가 삭제 요청된 향수의 세부정보를 조회합니다.(수정 요청조회에도 사용)")
-    @GetMapping("/update/{perfumeId}")
+    @GetMapping("/update/{requestId}")
     public ResponseEntity<Response<PerfumeDetailResponse>> getUpdateRequestDetail(
             @RequestParam String requestType,
             @PathVariable Long requestId
