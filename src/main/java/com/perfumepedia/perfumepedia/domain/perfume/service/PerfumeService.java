@@ -62,63 +62,63 @@ public class PerfumeService {
      * @param keyword 검색어
      * @return 검색된 향수 리스트
      */
-//    public SuccessResponse<List<PerfumeUpdateReq>> searchPerfumes(String keyword) {
-//        // 브렌드 이름으로 향수 검색
-//        List<Perfume> perfumesByBrand = perfumeRepository.findByBrand_NameContaining(keyword);
-//        // 향수 이름으로 향수 검색
-//        List<Perfume> perfumesByName = perfumeRepository.findByNameContaining(keyword);
-//        // 노트 이름으로 향수 검색
-//        List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByNote_NameContaining(keyword);
-//
-//        // 중복 제거를 위함
-//        Set<Perfume> resultPerfume = new HashSet<>();
-//
-//        resultPerfume.addAll(perfumesByBrand);
-//        resultPerfume.addAll(perfumesByName);
-//
-//        for (PerfumeNote perfumeNote : perfumeNotes) {
-//            resultPerfume.add(perfumeNote.getPerfume());
-//        }
-//        // 검색 결과가 없을 경우 예외 처리
-//        if (resultPerfume.isEmpty()) {
-//            throw new AppException(PERFUME_NOT_FOUND);
-//        }
-//
-//        // Perfume -> DTO
-//        List<PerfumeUpdateReq> searchResult = new ArrayList<>();
-//
-//        for (Perfume perfume : resultPerfume) {
-//            searchResult.add(PerfumeUpdateReq.toDto(perfume));
-//        }
-//
-//        return new SuccessResponse<>(SEARCH_COMPLETED, searchResult);
-//    }
-
-
-    /**
-     * 키워드별 향수 검색 (QueryDSL 사용)
-     */
     public SuccessResponse<List<PerfumeUpdateReq>> searchPerfumes(String keyword) {
-        // 키워드가 null이거나 빈 문자열인 경우 예외 처리
-        if (keyword == null || keyword.trim().isEmpty()) {
-            throw new AppException(INVALID_SEARCH_KEYWORD);
+        // 브렌드 이름으로 향수 검색
+        List<Perfume> perfumesByBrand = perfumeRepository.findByBrand_NameContaining(keyword);
+        // 향수 이름으로 향수 검색
+        List<Perfume> perfumesByName = perfumeRepository.findByNameContaining(keyword);
+        // 노트 이름으로 향수 검색
+        List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByNote_NameContaining(keyword);
+
+        // 중복 제거를 위함
+        Set<Perfume> resultPerfume = new HashSet<>();
+
+        resultPerfume.addAll(perfumesByBrand);
+        resultPerfume.addAll(perfumesByName);
+
+        for (PerfumeNote perfumeNote : perfumeNotes) {
+            resultPerfume.add(perfumeNote.getPerfume());
         }
-
-        // QueryDSL로 향수 검색
-        List<Perfume> perfumes = perfumeRepository.searchPerfumesByKeyword(keyword.trim());
-
-        // 검색 결과가 없는 경우 예외 처리
-        if (perfumes.isEmpty()) {
+        // 검색 결과가 없을 경우 예외 처리
+        if (resultPerfume.isEmpty()) {
             throw new AppException(PERFUME_NOT_FOUND);
         }
 
-        // Perfume -> DTO 변환
-        List<PerfumeUpdateReq> searchResult = perfumes.stream()
-                .map(PerfumeUpdateReq::toDto)
-                .collect(Collectors.toList());
+        // Perfume -> DTO
+        List<PerfumeUpdateReq> searchResult = new ArrayList<>();
+
+        for (Perfume perfume : resultPerfume) {
+            searchResult.add(PerfumeUpdateReq.toDto(perfume));
+        }
 
         return new SuccessResponse<>(SEARCH_COMPLETED, searchResult);
     }
+
+//
+//    /**
+//     * 키워드별 향수 검색 (QueryDSL 사용)
+//     */
+//    public SuccessResponse<List<PerfumeUpdateReq>> searchPerfumes(String keyword) {
+//        // 키워드가 null이거나 빈 문자열인 경우 예외 처리
+//        if (keyword == null || keyword.trim().isEmpty()) {
+//            throw new AppException(INVALID_SEARCH_KEYWORD);
+//        }
+//
+//        // QueryDSL로 향수 검색
+//        List<Perfume> perfumes = perfumeRepository.searchPerfumesByKeyword(keyword.trim());
+//
+//        // 검색 결과가 없는 경우 예외 처리
+//        if (perfumes.isEmpty()) {
+//            throw new AppException(PERFUME_NOT_FOUND);
+//        }
+//
+//        // Perfume -> DTO 변환
+//        List<PerfumeUpdateReq> searchResult = perfumes.stream()
+//                .map(PerfumeUpdateReq::toDto)
+//                .collect(Collectors.toList());
+//
+//        return new SuccessResponse<>(SEARCH_COMPLETED, searchResult);
+//    }
 
 
     /**
