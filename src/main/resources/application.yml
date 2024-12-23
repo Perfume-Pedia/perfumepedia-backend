@@ -2,10 +2,10 @@ spring:
   application:
     name: perfumepedia-backend
   datasource:
-    url: jdbc:mysql://localhost:3306/PerfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
-#    url: jdbc:mysql://localhost:3306/PerfumeProject?serverTimezone=UTC&characterEncoding=UTF-8
+#    url: jdbc:mysql://localhost:3306/perfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/PerfumeProject?serverTimezone=UTC&characterEncoding=UTF-8
     username: perfume
-    password: Password
+    password: password
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:

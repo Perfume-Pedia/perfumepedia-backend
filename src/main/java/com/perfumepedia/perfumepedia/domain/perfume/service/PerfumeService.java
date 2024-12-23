@@ -7,6 +7,7 @@ import com.perfumepedia.perfumepedia.domain.note.repository.NoteRepository;
 import com.perfumepedia.perfumepedia.domain.perfume.dto.PerfumeUpdateReq;
 import com.perfumepedia.perfumepedia.domain.perfume.entity.Perfume;
 import com.perfumepedia.perfumepedia.domain.perfume.entity.RequestPerfume;
+import com.perfumepedia.perfumepedia.domain.perfume.queryDSLRepository.PerfumeRepositoryCustom;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.PerfumeRepository;
 import com.perfumepedia.perfumepedia.domain.perfume.repository.RequestPerfumeRepository;
 import com.perfumepedia.perfumepedia.domain.perfumeNote.dto.PerfumeDetailResponse;
@@ -21,11 +22,13 @@ import com.perfumepedia.perfumepedia.domain.request.repository.RequestRepository
 import com.perfumepedia.perfumepedia.global.enums.NoneResponse;
 import com.perfumepedia.perfumepedia.global.handler.AppException;
 import com.perfumepedia.perfumepedia.global.response.SuccessResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.perfumepedia.perfumepedia.global.enums.ErrorCode.*;
 import static com.perfumepedia.perfumepedia.global.enums.SuccessCode.*;
@@ -38,57 +41,81 @@ public class PerfumeService {
     private NoteRepository noteRepository;
     private BrandRepository brandRepository;
     private RequestPerfumeNoteRepository requestPerfumeNoteRepository;
-    private RequestPerfumeRepository requestPerfumeRepository;
     private RequestRepository requestRepository;
-
 
     @Autowired
     public PerfumeService(PerfumeRepository perfumeRepository, PerfumeNoteRepository perfumeNoteRepository,
-                          NoteRepository noteRepository, BrandRepository brandRepository, RequestPerfumeNoteRepository requestPerfumeNoteRepository,
-                          RequestPerfumeRepository requestPerfumeRepository, RequestRepository requestRepository) {
-        this.perfumeNoteRepository = perfumeNoteRepository;
+                          NoteRepository noteRepository, BrandRepository brandRepository,
+                          RequestPerfumeNoteRepository requestPerfumeNoteRepository,
+                          RequestRepository requestRepository) {
         this.perfumeRepository = perfumeRepository;
+        this.perfumeNoteRepository = perfumeNoteRepository;
         this.noteRepository = noteRepository;
         this.brandRepository = brandRepository;
         this.requestPerfumeNoteRepository = requestPerfumeNoteRepository;
-        this.requestPerfumeRepository = requestPerfumeRepository;
         this.requestRepository = requestRepository;
+
     }
 
     /**
      * 키워드별 향수 검색
-     *
      * @param keyword 검색어
      * @return 검색된 향수 리스트
      */
+//    public SuccessResponse<List<PerfumeUpdateReq>> searchPerfumes(String keyword) {
+//        // 브렌드 이름으로 향수 검색
+//        List<Perfume> perfumesByBrand = perfumeRepository.findByBrand_NameContaining(keyword);
+//        // 향수 이름으로 향수 검색
+//        List<Perfume> perfumesByName = perfumeRepository.findByNameContaining(keyword);
+//        // 노트 이름으로 향수 검색
+//        List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByNote_NameContaining(keyword);
+//
+//        // 중복 제거를 위함
+//        Set<Perfume> resultPerfume = new HashSet<>();
+//
+//        resultPerfume.addAll(perfumesByBrand);
+//        resultPerfume.addAll(perfumesByName);
+//
+//        for (PerfumeNote perfumeNote : perfumeNotes) {
+//            resultPerfume.add(perfumeNote.getPerfume());
+//        }
+//        // 검색 결과가 없을 경우 예외 처리
+//        if (resultPerfume.isEmpty()) {
+//            throw new AppException(PERFUME_NOT_FOUND);
+//        }
+//
+//        // Perfume -> DTO
+//        List<PerfumeUpdateReq> searchResult = new ArrayList<>();
+//
+//        for (Perfume perfume : resultPerfume) {
+//            searchResult.add(PerfumeUpdateReq.toDto(perfume));
+//        }
+//
+//        return new SuccessResponse<>(SEARCH_COMPLETED, searchResult);
+//    }
+
+
+    /**
+     * 키워드별 향수 검색 (QueryDSL 사용)
+     */
     public SuccessResponse<List<PerfumeUpdateReq>> searchPerfumes(String keyword) {
-        // 브렌드 이름으로 향수 검색
-        List<Perfume> perfumesByBrand = perfumeRepository.findByBrand_NameContaining(keyword);
-        // 향수 이름으로 향수 검색
-        List<Perfume> perfumesByName = perfumeRepository.findByNameContaining(keyword);
-        // 노트 이름으로 향수 검색
-        List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByNote_NameContaining(keyword);
-
-        // 중복 제거를 위함
-        Set<Perfume> resultPerfume = new HashSet<>();
-
-        resultPerfume.addAll(perfumesByBrand);
-        resultPerfume.addAll(perfumesByName);
-
-        for (PerfumeNote perfumeNote : perfumeNotes) {
-            resultPerfume.add(perfumeNote.getPerfume());
+        // 키워드가 null이거나 빈 문자열인 경우 예외 처리
+        if (keyword == null || keyword.trim().isEmpty()) {
+            throw new AppException(INVALID_SEARCH_KEYWORD);
         }
-        // 검색 결과가 없을 경우 예외 처리
-        if (resultPerfume.isEmpty()) {
+
+        // QueryDSL로 향수 검색
+        List<Perfume> perfumes = perfumeRepository.searchPerfumesByKeyword(keyword.trim());
+
+        // 검색 결과가 없는 경우 예외 처리
+        if (perfumes.isEmpty()) {
             throw new AppException(PERFUME_NOT_FOUND);
         }
 
-        // Perfume -> DTO
-        List<PerfumeUpdateReq> searchResult = new ArrayList<>();
-
-        for (Perfume perfume : resultPerfume) {
-            searchResult.add(PerfumeUpdateReq.toDto(perfume));
-        }
+        // Perfume -> DTO 변환
+        List<PerfumeUpdateReq> searchResult = perfumes.stream()
+                .map(PerfumeUpdateReq::toDto)
+                .collect(Collectors.toList());
 
         return new SuccessResponse<>(SEARCH_COMPLETED, searchResult);
     }
@@ -272,7 +299,6 @@ public class PerfumeService {
 
         return new SuccessResponse<>(UPDATE_COMPLETED, NoneResponse.NONE);
     }
-
 
 
     /**
