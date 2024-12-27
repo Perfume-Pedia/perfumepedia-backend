@@ -57,10 +57,10 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
             cd /home/argo/Perfume-project/Docker
-            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" > .env
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-            echo "DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }}" >> .env
-            echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
             docker-compose down
             docker-compose pull
+            DB_USERNAME=${{ secrets.DB_USERNAME }} \
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }} \
+            DB_ROOT_PASSWORD=${{ secrets.DB_ROOT_PASSWORD }} \
+            DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} \
             docker-compose up -d
