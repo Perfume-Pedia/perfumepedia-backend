@@ -71,7 +71,7 @@ public class PerfumeService {
         List<PerfumeNote> perfumeNotes = perfumeNoteRepository.findByNote_NameContaining(keyword);
 
         // 중복 제거를 위함
-        Set<Perfume> resultPerfume = new HashSet<>();
+        Set<Perfume> resultPerfume = new LinkedHashSet<>();
 
         resultPerfume.addAll(perfumesByBrand);
         resultPerfume.addAll(perfumesByName);
