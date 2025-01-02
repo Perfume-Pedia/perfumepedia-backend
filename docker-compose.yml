@@ -13,9 +13,11 @@ services:
     volumes:
       - /home/argo/Perfume-project/Docker:/app/data
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - perfume-network
+    restart: unless-stopped
 
   db:
     image: mysql:8.0
@@ -23,12 +25,20 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}  # root 비밀번호 설정
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MYSQL_DATABASE=perfumePedia
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
       - perfume-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${DB_USERNAME}", "-p${DB_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
 volumes:
   mysql_data:

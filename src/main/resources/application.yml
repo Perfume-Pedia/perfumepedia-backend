@@ -2,21 +2,26 @@ spring:
   application:
     name: perfumepedia-backend
   datasource:
-    url:  jdbc:mysql://db:3306/perfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
-#    url: jdbc:mysql://localhost:3306/PerfumeProject?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://db:3306/perfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
+    #    url: jdbc:mysql://localhost:3306/PerfumeProject?serverTimezone=UTC&characterEncoding=UTF-8
+
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      initialization-fail-timeout: 30000
 
   jpa:
     hibernate:
-      ddl-auto: update  # 스키마 자동 업데이트 설정
-    show-sql: true  # SQL 쿼리 출력
+      ddl-auto: update
+    show-sql: true
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
     database-platform: org.hibernate.dialect.MySQL8Dialect
-
 
 springdoc:
   api-docs:
@@ -36,4 +41,3 @@ logging:
     org:
       springframework:
         security: "trace"
-
