@@ -5,19 +5,18 @@ services:
     image: ${DOCKER_USERNAME}/perfume-pedia:latest
     container_name: perfume-pedia
     ports:
-      - "8080:8080"
+      - "8080:8080"  # 호스트:컨테이너 포트 매핑
     environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/perfumePedia?serverTimezone=UTC&characterEncoding=UTF-8
       - SPRING_DATASOURCE_USERNAME=${DB_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
     volumes:
-      - /home/argo/Perfume-project/Docker:/app/data
+      - /home/argo/Perfume-project/Docker:/app/data  # 데이터 영구 저장
     depends_on:
-      db:
-        condition: service_healthy
+      - db  # DB 컨테이너 먼저 실행
     networks:
       - perfume-network
-    restart: unless-stopped
+    restart: unless-stopped  # 컨테이너 자동 재시작
 
   db:
     image: mysql:8.0
@@ -27,17 +26,10 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
       - MYSQL_DATABASE=perfumePedia
-#      - MYSQL_USER=${DB_USERNAME}
-#      - MYSQL_PASSWORD=${DB_PASSWORD}
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql  # MySQL 데이터 저장
     networks:
       - perfume-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u${DB_USERNAME}", "-p${DB_PASSWORD}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     restart: unless-stopped
 
 volumes:
